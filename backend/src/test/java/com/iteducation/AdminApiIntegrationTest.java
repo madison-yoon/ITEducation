@@ -89,6 +89,42 @@ class AdminApiIntegrationTest {
                 .andExpect(status().isForbidden());
     }
 
+    @Test
+    void superAdminCanCreateCourseWithCsrfProtection() throws Exception {
+        MockHttpSession session = login(SUPER_LOGIN);
+        String token = csrfToken(session);
+
+        mvc.perform(post("/api/admin/courses")
+                        .session(session)
+                        .header("X-CSRF-TOKEN", token)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"title\":\"관리자 등록 과정\",\"category\":\"AI\",\"recruitmentStatus\":\"모집 중\"}"))
+                .andExpect(status().isCreated());
+    }
+
+    @Test
+    void superAdminCanPublishNoticeAndPublicApiCanReadIt() throws Exception {
+        MockHttpSession session = login(SUPER_LOGIN);
+        String token = csrfToken(session);
+
+        mvc.perform(post("/api/admin/notices")
+                        .session(session)
+                        .header("X-CSRF-TOKEN", token)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"title\":\"통합 테스트 공지\",\"content\":\"공지 내용\",\"status\":\"게시 중\"}"))
+                .andExpect(status().isCreated());
+
+        mvc.perform(get("/api/notices"))
+                .andExpect(status().isOk());
+    }
+
+    private String csrfToken(MockHttpSession session) throws Exception {
+        MvcResult result = mvc.perform(get("/api/csrf").session(session))
+                .andExpect(status().isOk())
+                .andReturn();
+        return objectMapper.readTree(result.getResponse().getContentAsString()).get("token").asText();
+    }
+
     private void saveAdmin(String loginId, String role) {
         Admin admin = new Admin();
         admin.setLoginId(loginId);
