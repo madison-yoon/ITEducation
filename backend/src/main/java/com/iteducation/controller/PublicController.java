@@ -35,7 +35,7 @@ public class PublicController {
 
     @GetMapping("/notices")
     public List<Notice> notices() {
-        return notices.findByStatusOrderByCreatedAtDesc("게시 중");
+        return notices.findByStatusOrderByPinnedDescCreatedAtDesc("게시 중");
     }
 
     @GetMapping("/notices/{id}")
