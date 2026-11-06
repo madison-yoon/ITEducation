@@ -388,6 +388,20 @@ function formatNoticeDate(value) {
   return String(value).replace("T", " ").slice(0, 10).replace(/-/g, ".");
 }
 
+const isStaticPreview = import.meta.env.VITE_STATIC_PREVIEW === "true";
+
+// GitHub Pages는 백엔드 없이 화면을 공개하므로 미리보기 전용 안내를 사용합니다.
+const previewNotices = [
+  {
+    id: "preview",
+    title: "IT ACADEMY 홈페이지 공개 미리보기 안내",
+    category: "운영 안내",
+    content: "현재 홈페이지는 GitHub Pages를 통한 정적 미리보기로 제공됩니다. 교육과정 실시간 조회, 공지사항 운영, 상담 신청 및 관리자 기능은 별도 백엔드 서버 연결 후 사용할 수 있습니다.",
+    createdAt: "2026-11-06T09:00:00",
+    pinned: true
+  }
+];
+
 function Notices() {
   const [items, setItems] = React.useState([]);
   const [keyword, setKeyword] = React.useState("");
@@ -406,7 +420,11 @@ function Notices() {
       const response = await api.get("/notices");
       setItems(Array.isArray(response.data) ? response.data : []);
     } catch (requestError) {
-      setError("공지사항을 불러오지 못했습니다. 서버 연결 상태를 확인한 뒤 다시 시도해 주세요.");
+      if (isStaticPreview) {
+        setItems(previewNotices);
+      } else {
+        setError("공지사항을 불러오지 못했습니다. 서버 연결 상태를 확인한 뒤 다시 시도해 주세요.");
+      }
     } finally {
       setLoading(false);
     }
@@ -561,7 +579,13 @@ function NoticeDetail() {
       const response = await api.get("/notices/" + params.id);
       setNotice(response.data);
     } catch (requestError) {
-      setError("해당 공지사항을 찾을 수 없거나 현재 공개되지 않은 게시글입니다.");
+      if (isStaticPreview) {
+        const preview = previewNotices.find(function (item) { return String(item.id) === String(params.id); });
+        if (preview) setNotice(preview);
+        else setError("해당 공지사항을 찾을 수 없습니다.");
+      } else {
+        setError("해당 공지사항을 찾을 수 없거나 현재 공개되지 않은 게시글입니다.");
+      }
     } finally {
       setLoading(false);
     }
@@ -643,7 +667,7 @@ function About() {
 }
 
 function App() {
-  return h(BrowserRouter, null,
+  return h(BrowserRouter, { basename: import.meta.env.BASE_URL },
     h(Routes, null,
       h(Route, { element: h(Layout) },
         h(Route, { path: "/", element: h(Home) }),
