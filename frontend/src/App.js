@@ -428,10 +428,11 @@ function Notices() {
     return String(b.createdAt || "").localeCompare(String(a.createdAt || ""));
   });
 
-  const totalPages = Math.max(1, Math.ceil(filtered.length / pageSize));
-  const currentPage = Math.min(page, totalPages);
-  const visibleItems = filtered.slice((currentPage - 1) * pageSize, currentPage * pageSize);
   const pinnedNotice = filtered.find(function (notice) { return Boolean(notice.pinned); });
+  const listItems = pinnedNotice ? filtered.filter(function (notice) { return String(notice.id) !== String(pinnedNotice.id); }) : filtered;
+  const totalPages = Math.max(1, Math.ceil(listItems.length / pageSize));
+  const currentPage = Math.min(page, totalPages);
+  const visibleItems = listItems.slice((currentPage - 1) * pageSize, currentPage * pageSize);
 
   function changeKeyword(value) {
     setKeyword(value);
@@ -502,7 +503,7 @@ function Notices() {
             h("div", null,
               h("span", { className: "notice-tag featured-tag" }, pinnedNotice.category || "공지"),
               h("h2", null, pinnedNotice.title),
-              h("p", null, String(pinnedNotice.content || "").replace(/\\s+/g, " ").slice(0, 125))
+              h("p", null, String(pinnedNotice.content || "").replace(/\s+/g, " ").slice(0, 125))
             ),
             h("span", { className: "notice-featured-arrow" }, "→")
           ),
