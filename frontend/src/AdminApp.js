@@ -11,7 +11,7 @@ const emptyCourse = {
   curriculum: "", skills: "", featured: false
 };
 
-const emptyNotice = { title: "", content: "", status: "게시 중" };
+const emptyNotice = { title: "", category: "공지", content: "", status: "게시 중", pinned: false };
 
 function AdminApp() {
   const navigate = useNavigate();
@@ -172,7 +172,7 @@ function AdminApp() {
 
   function startNoticeEdit(notice) {
     setEditingNotice(notice.id);
-    setNoticeForm({ title: notice.title, content: notice.content, status: notice.status });
+    setNoticeForm({ title: notice.title, category: notice.category || "공지", content: notice.content, status: notice.status, pinned: Boolean(notice.pinned) });
   }
 
   async function saveNotice(event) {
@@ -373,8 +373,17 @@ function AdminApp() {
         h("h2", null, editingNotice ? "공지사항 수정" : "공지사항 등록"),
         h("form", { onSubmit: saveNotice, className: "admin-form" },
           field("제목 *", noticeForm.title, function (v) { changeNotice("title", v); }),
+          selectField("공지 분류", noticeForm.category, ["공지", "모집 안내", "교육과정", "교육 소식", "운영 안내"], function (v) { changeNotice("category", v); }),
           selectField("게시 상태", noticeForm.status, ["게시 중", "비공개"], function (v) { changeNotice("status", v); }),
           area("내용 *", noticeForm.content, function (v) { changeNotice("content", v); }, 9),
+          h("label", { className: "admin-check" },
+            h("input", {
+              type: "checkbox",
+              checked: Boolean(noticeForm.pinned),
+              onChange: function (event) { changeNotice("pinned", event.target.checked); }
+            }),
+            h("span", null, "중요 공지로 상단 고정")
+          ),
           h("div", { className: "admin-actions" },
             h("button", { className: "admin-primary", disabled: busy }, editingNotice ? "수정 저장" : "공지 등록"),
             editingNotice ? h("button", { type: "button", className: "admin-secondary", onClick: function () { setEditingNotice(null); setNoticeForm(emptyNotice); } }, "취소") : null
@@ -385,7 +394,10 @@ function AdminApp() {
         h("h2", null, "공지사항 목록"),
         h("div", { className: "admin-list" }, notices.map(function (notice) {
           return h("article", { key: notice.id },
-            h("div", null, h("b", null, notice.title), h("small", null, notice.status + " · " + String(notice.createdAt || "").slice(0, 10))),
+            h("div", null,
+              h("b", null, notice.pinned ? "중요 · " + notice.title : notice.title),
+              h("small", null, (notice.category || "공지") + " · " + notice.status + " · " + String(notice.createdAt || "").slice(0, 10))
+            ),
             h("div", { className: "admin-actions" },
               h("button", { className: "admin-secondary", onClick: function () { startNoticeEdit(notice); } }, "수정"),
               h("button", { className: "admin-danger", onClick: function () { deleteNotice(notice.id); } }, "삭제")
