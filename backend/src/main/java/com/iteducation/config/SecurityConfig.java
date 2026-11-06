@@ -58,7 +58,7 @@ public class SecurityConfig {
                 }))
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/api/csrf", "/api/admin/login").permitAll()
-                .requestMatchers("/api/admin/accounts/**").hasRole("SUPER_ADMIN")
+                .requestMatchers("/api/admin/accounts", "/api/admin/accounts/**").hasRole("SUPER_ADMIN")
                 .requestMatchers("/api/admin/**").hasAnyRole("SUPER_ADMIN", "ADMIN")
                 .requestMatchers("/api/**").permitAll()
                 .anyRequest().permitAll())
