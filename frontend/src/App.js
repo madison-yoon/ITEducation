@@ -10,6 +10,7 @@ import {
   useNavigate
 } from "react-router-dom";
 import api from "./api.js";
+import AdminApp from "./AdminApp.js";
 
 const h = React.createElement;
 
@@ -459,17 +460,6 @@ function About() {
   );
 }
 
-function Admin() {
-  return h("section", { className: "page" },
-    h("div", { className: "container" },
-      h("span", { className: "eyebrow" }, "ADMIN"),
-      h("h1", null, "관리자 기능 준비 중"),
-      h("p", { className: "lead" }, "현재 버전에는 관리자 인증 및 상담 관리 API가 완성되지 않았습니다. 공개 페이지와 상담 신청 기능을 먼저 확인해 주세요."),
-      h(Link, { to: "/", className: "btn" }, "메인 페이지로 이동")
-    )
-  );
-}
-
 function App() {
   return h(BrowserRouter, null,
     h(Routes, null,
@@ -482,7 +472,7 @@ function App() {
         h(Route, { path: "/consultation", element: h(Consultation) }),
         h(Route, { path: "/notices", element: h(Notices) })
       ),
-      h(Route, { path: "/admin/*", element: h(Admin) })
+      h(Route, { path: "/admin/*", element: h(AdminApp) })
     )
   );
 }
