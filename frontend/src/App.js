@@ -622,24 +622,64 @@ function NoticeDetail() {
 }
 
 function Projects() {
-  return h("section", { className: "page" },
+  const [category, setCategory] = React.useState("전체");
+  const [selected, setSelected] = React.useState(null);
+  const categories = ["전체", "AI · WEB", "DATA", "GEN AI", "AI · DATA", "WEB"];
+  const projects = [
+    { id: 1, title: "AI 영화 추천 플랫폼", category: "AI · WEB", period: "6주", team: "4명", description: "사용자 취향과 영화 메타데이터를 결합해 개인화 추천을 제공하는 웹 서비스", stack: ["Python", "Scikit-learn", "Spring Boot", "React", "MySQL"], problem: "사용자가 수많은 작품 중 취향에 맞는 영화를 찾기 어렵습니다.", solution: "장르·평점·선호 이력을 정리하고 유사도 기반 추천 로직과 검색 화면을 연결합니다.", features: ["회원별 선호 장르 설정", "영화 검색 및 상세 정보", "추천 결과와 찜 목록", "관리자 데이터 관리"], result: "추천 결과 화면과 데이터 흐름을 포함한 서비스형 포트폴리오를 완성합니다." },
+    { id: 2, title: "소비 데이터 인사이트 대시보드", category: "DATA", period: "4주", team: "3명", description: "거래 데이터를 정제하고 소비 패턴을 분석해 시각화하는 데이터 분석 프로젝트", stack: ["Python", "Pandas", "SQL", "Plotly"], problem: "원시 거래 데이터만으로는 소비 패턴과 주요 변화 요인을 파악하기 어렵습니다.", solution: "결측치와 이상치를 처리하고 기간·지역·카테고리별 지표를 구성합니다.", features: ["데이터 정제 파이프라인", "월별·카테고리별 추이", "고객 세그먼트 비교", "분석 결과 리포트"], result: "분석 과정과 의사결정 근거를 설명할 수 있는 대시보드를 구성합니다." },
+    { id: 3, title: "사내 문서 AI 검색 도우미", category: "GEN AI", period: "5주", team: "4명", description: "업로드한 문서를 검색하고 근거 문단을 바탕으로 답변하는 RAG 서비스", stack: ["Python", "LLM API", "Embedding", "Vector DB"], problem: "여러 문서에 흩어진 정보를 사람이 직접 찾아야 해 응답 시간이 길어집니다.", solution: "문서를 분할·임베딩하고 검색된 문맥을 LLM에 전달하는 RAG 흐름을 구현합니다.", features: ["문서 업로드와 텍스트 추출", "질문 기반 유사 문단 검색", "출처 문서 표시", "대화 기록 관리"], result: "검색 근거를 확인할 수 있는 문서 질의응답 프로토타입을 제작합니다." },
+    { id: 4, title: "지역 상권 데이터 분석", category: "DATA", period: "4주", team: "3명", description: "상권별 유동 인구와 업종 데이터를 분석해 입지 판단 자료를 제공합니다.", stack: ["Python", "Pandas", "SQL", "지도 시각화"], problem: "상권 선택 시 여러 지표를 따로 확인해야 하므로 비교가 번거롭습니다.", solution: "상권·업종·기간 기준으로 데이터를 통합하고 핵심 지표를 시각화합니다.", features: ["상권별 지표 비교", "업종 분포 분석", "기간별 변화 확인", "요약 리포트"], result: "데이터에 근거한 상권 비교 화면을 완성합니다." },
+    { id: 5, title: "스마트 학습 관리 서비스", category: "WEB", period: "6주", team: "4명", description: "학습 일정과 진도, 과제 제출 현황을 통합 관리하는 웹 애플리케이션", stack: ["Java", "Spring Boot", "React", "MySQL"], problem: "학습 일정과 과제 상태가 분산되어 진행 상황을 한눈에 보기 어렵습니다.", solution: "사용자·과정·과제 데이터를 설계하고 역할별 화면과 API를 구현합니다.", features: ["회원 및 권한 관리", "과정별 학습 일정", "과제 제출과 상태 관리", "진도 현황 대시보드"], result: "실제 운영 흐름을 갖춘 풀스택 웹 프로젝트를 구성합니다." },
+    { id: 6, title: "고객 문의 자동 분류 시스템", category: "AI · DATA", period: "5주", team: "3명", description: "문의 텍스트를 유형별로 분류하고 담당 업무를 추천하는 NLP 프로젝트", stack: ["Python", "Scikit-learn", "FastAPI", "React"], problem: "반복 문의가 누적되면 유형 확인과 분배에 시간이 소요됩니다.", solution: "문의 텍스트를 전처리하고 분류 모델을 학습해 결과를 업무 화면에 표시합니다.", features: ["문의 텍스트 입력", "유형별 자동 분류", "분류 신뢰도 표시", "분류 결과 통계"], result: "텍스트 분류 모델과 웹 화면을 연결한 AI 응용 사례를 완성합니다." }
+  ];
+  const visible = projects.filter(function (project) { return category === "전체" || project.category === category; });
+  const current = projects.find(function (project) { return project.id === selected; });
+  return h("section", { className: "page projects-page" },
     h("div", { className: "container" },
-      h("span", { className: "eyebrow" }, "PROJECT SHOWCASE"),
-      h("h1", null, "교육과정 프로젝트"),
-      h("p", { className: "lead" }, "각 교육과정에서 구현하는 프로젝트 예시입니다."),
-      h("div", { className: "grid4" },
-        projectSeed.map(function (project) {
-          return h("article", { className: "projectcard lightcard", key: project.title },
-            h("small", null, project.category),
-            h("h3", null, project.title),
-            h("p", null, project.description)
-          );
-        })
-      )
+      h("div", { className: "project-intro" },
+        h("span", { className: "eyebrow" }, "PROJECT SHOWCASE · DEMO PORTFOLIO"),
+        h("h1", null, "배운 기술을 실제 결과물로 연결합니다."),
+        h("p", { className: "lead" }, "문제 정의부터 데이터 설계, 개발, 테스트와 발표까지 팀 프로젝트의 전체 과정을 경험합니다."),
+        h("div", { className: "project-metrics" },
+          [["06", "프로젝트 사례"], ["03–06", "프로젝트 기간(주)"], ["03–04", "팀 구성 예시(명)"]].map(function (item) {
+            return h("div", { key: item[1] }, h("strong", null, item[0]), h("span", null, item[1]));
+          })
+        )
+      ),
+      h("div", { className: "project-filter" }, categories.map(function (item) {
+        return h("button", { type: "button", key: item, className: category === item ? "active" : "", onClick: function () { setCategory(item); } }, item);
+      })),
+      h("div", { className: "project-showcase-grid" }, visible.map(function (project) {
+        return h("article", { className: "project-showcase-card", key: project.id },
+          h("div", { className: "project-visual project-visual-" + (project.id % 4) }, h("span", null, project.category), h("b", null, String(project.id).padStart(2, "0")), h("i", null, "BUILD · TEST · PRESENT")),
+          h("div", { className: "project-showcase-content" },
+            h("div", { className: "project-meta" }, h("span", null, project.period), h("span", null, "팀 " + project.team)),
+            h("h2", null, project.title), h("p", null, project.description),
+            h("div", { className: "project-stack" }, project.stack.map(function (item) { return h("span", { key: item }, item); })),
+            h("button", { type: "button", className: "project-more", onClick: function () { setSelected(project.id); } }, "프로젝트 상세 보기 →")
+          )
+        );
+      })),
+      h("p", { className: "project-note" }, "※ 위 프로젝트는 교육과정 소개를 위한 가상 포트폴리오 예시이며 실제 수강생 작품이나 취업 성과가 아닙니다."),
+      current ? h("div", { className: "project-detail-overlay", role: "dialog", "aria-modal": "true" },
+        h("article", { className: "project-detail-panel" },
+          h("button", { type: "button", className: "project-detail-close", onClick: function () { setSelected(null); } }, "×"),
+          h("span", { className: "eyebrow" }, current.category + " · " + current.period),
+          h("h2", null, current.title), h("p", { className: "lead" }, current.description),
+          h("div", { className: "project-detail-columns" },
+            h("section", null, h("h3", null, "문제 정의"), h("p", null, current.problem)),
+            h("section", null, h("h3", null, "해결 접근"), h("p", null, current.solution)),
+            h("section", null, h("h3", null, "주요 기능"), h("ul", null, current.features.map(function (item) { return h("li", { key: item }, item); }))),
+            h("section", null, h("h3", null, "기대 결과물"), h("p", null, current.result))
+          ),
+          h("div", { className: "project-stack" }, current.stack.map(function (item) { return h("span", { key: item }, item); })),
+          h(Link, { to: "/consultation", className: "btn", onClick: function () { setSelected(null); } }, "관련 교육과정 상담하기")
+        )
+      ) : null
     )
   );
 }
-
 function About() {
   const items = [
     ["01", "실전 중심", "직접 만들고 검증하는 학습"],
