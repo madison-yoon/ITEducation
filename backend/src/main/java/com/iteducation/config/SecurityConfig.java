@@ -4,12 +4,15 @@ import com.iteducation.security.AdminDetailsService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.csrf.CsrfTokenRequestAttributeHandler;
+import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -29,12 +32,32 @@ public class SecurityConfig {
 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http, AdminDetailsService users) throws Exception {
+        HttpSessionCsrfTokenRepository csrfRepository = new HttpSessionCsrfTokenRepository();
+        CsrfTokenRequestAttributeHandler csrfHandler = new CsrfTokenRequestAttributeHandler();
+        csrfHandler.setCsrfRequestAttributeName(null);
+
         http.cors(Customizer.withDefaults())
-            .csrf(csrf -> csrf.disable())
+            .csrf(csrf -> csrf
+                .csrfTokenRepository(csrfRepository)
+                .csrfTokenRequestHandler(csrfHandler))
             .userDetailsService(users)
-            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
+            .sessionManagement(session -> session
+                .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
+                .sessionFixation(fixation -> fixation.migrateSession()))
+            .requestCache(cache -> cache.disable())
+            .exceptionHandling(errors -> errors
+                .authenticationEntryPoint((request, response, exception) -> {
+                    response.setStatus(HttpStatus.UNAUTHORIZED.value());
+                    response.setContentType("application/json;charset=UTF-8");
+                    response.getWriter().write("{\"message\":\"관리자 로그인이 필요합니다.\"}");
+                })
+                .accessDeniedHandler((request, response, exception) -> {
+                    response.setStatus(HttpStatus.FORBIDDEN.value());
+                    response.setContentType("application/json;charset=UTF-8");
+                    response.getWriter().write("{\"message\":\"접근 권한이 없습니다.\"}");
+                }))
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/admin/login").permitAll()
+                .requestMatchers("/api/csrf", "/api/admin/login").permitAll()
                 .requestMatchers("/api/admin/accounts/**").hasRole("SUPER_ADMIN")
                 .requestMatchers("/api/admin/**").hasAnyRole("SUPER_ADMIN", "ADMIN")
                 .requestMatchers("/api/**").permitAll()
@@ -48,7 +71,7 @@ public class SecurityConfig {
                     response.getWriter().write("{\"success\":true}");
                 })
                 .failureHandler((request, response, exception) -> {
-                    response.setStatus(401);
+                    response.setStatus(HttpStatus.UNAUTHORIZED.value());
                     response.setContentType("application/json;charset=UTF-8");
                     response.getWriter().write("{\"message\":\"아이디 또는 비밀번호를 확인해 주세요.\"}");
                 }))
