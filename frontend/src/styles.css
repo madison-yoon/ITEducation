@@ -84,3 +84,75 @@
  .notice-skeleton-row em{display:none}
  .notice-detail-footer{align-items:flex-start;flex-direction:column;gap:16px}
 }
+
+
+/* COURSE DETAIL EXPANSION */
+.course-detail-page{background:#fff}
+.course-detail-hero{position:relative;overflow:hidden;background:radial-gradient(circle at 82% 20%,#5868e6 0,transparent 32%),linear-gradient(118deg,#0b1020,#17234b 62%,#34245f);color:#fff;padding:88px 0 82px}
+.course-detail-hero-inner{position:relative;z-index:1}
+.course-detail-hero h1{max-width:900px;font-size:clamp(36px,5vw,58px);line-height:1.22;letter-spacing:-2px;margin:18px 0}
+.course-detail-hero>div>p{max-width:780px;color:#d3daf0;font-size:17px;line-height:1.9}
+.course-status-pill{display:inline-flex;margin-left:12px;padding:7px 12px;border-radius:30px;background:#ffffff20;border:1px solid #ffffff35;color:#fff;font-size:11px;font-weight:700}
+.course-detail-tags{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px}
+.course-detail-tags span{padding:9px 13px;border:1px solid #ffffff35;border-radius:8px;color:#e0e6ff;font-size:12px}
+.course-detail-content{padding-top:58px;padding-bottom:80px}
+.course-recruit-panel{display:grid;grid-template-columns:.8fr 1.2fr;gap:35px;padding:30px;border:1px solid #e5e9f2;border-radius:18px;background:linear-gradient(120deg,#f7f8ff,#fff)}
+.course-recruit-panel h2,.course-section-heading h2{font-size:30px;letter-spacing:-1px;margin:0 0 12px;color:#172033}
+.course-recruit-panel p,.course-section-heading>p{color:#667085;line-height:1.8;font-size:14px;margin:0}
+.recruit-facts{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.recruit-facts article{padding:17px;background:#fff;border:1px solid #e8ebf2;border-radius:11px;min-width:0}
+.recruit-facts small{display:block;color:#8993a7;font-size:11px;margin-bottom:8px}
+.recruit-facts b{display:block;color:#26324c;font-size:13px;line-height:1.6;overflow-wrap:anywhere}
+.course-detail-section{padding:76px 0 0}
+.course-section-heading{max-width:760px;margin-bottom:28px}
+.course-outcomes{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.course-outcomes article,.course-benefits article{padding:25px;border:1px solid #e7ebf2;border-radius:15px;background:#fff}
+.course-outcomes article>span{display:inline-grid;place-items:center;width:38px;height:38px;border-radius:10px;background:#edf1ff;color:#4169f5;font-size:12px;font-weight:800}
+.course-outcomes h3,.course-benefits h3{font-size:17px;margin:18px 0 8px}
+.course-outcomes p,.course-benefits p{font-size:13px;line-height:1.8;color:#667085;margin:0}
+.curriculum-section{padding-bottom:4px}
+.curriculum-list{border-top:1px solid #e5e9f1}
+.curriculum-item{display:grid;grid-template-columns:115px 1fr;gap:20px;padding:23px 15px;border-bottom:1px solid #e8ebf2}
+.curriculum-number{color:#4169f5;font-size:11px;font-weight:800;letter-spacing:1px;padding-top:4px}
+.curriculum-item h3{font-size:17px;margin:0 0 7px}
+.curriculum-item p{font-size:13px;color:#667085;line-height:1.7;margin:0 0 8px}
+.curriculum-item small{color:#8792a8;font-size:11px}
+.course-project-feature{display:grid;grid-template-columns:1.1fr .9fr;gap:25px;align-items:center;padding:32px;border-radius:18px;background:linear-gradient(120deg,#17234b,#303e83 65%,#514080);color:#fff}
+.course-project-feature small{color:#b9c6ff;font-size:10px;letter-spacing:1.5px;font-weight:800}
+.course-project-feature h3{font-size:24px;line-height:1.4;margin:13px 0}
+.course-project-feature p{font-size:13px;line-height:1.8;color:#d5dcf5;margin:0}
+.project-deliverables{display:flex;flex-wrap:wrap;gap:9px}
+.project-deliverables span{padding:10px 12px;border:1px solid #ffffff35;border-radius:8px;background:#ffffff10;font-size:12px;color:#f0f2ff}
+.course-benefits{display:grid;grid-template-columns:repeat(3,1fr);gap:15px}
+.course-benefits article{background:#f9faff}
+.application-steps{display:grid;grid-template-columns:repeat(4,1fr);gap:13px}
+.application-steps article{padding:22px 18px;border:1px solid #e6eaf2;border-radius:14px}
+.application-steps b{font-size:12px;color:#4169f5}
+.application-steps h3{font-size:15px;margin:15px 0 7px}
+.application-steps p{font-size:12px;line-height:1.7;color:#667085;margin:0}
+.course-faq-list{border-top:1px solid #e4e8f0}
+.course-faq-list details{padding:20px 5px;border-bottom:1px solid #e8ebf2}
+.course-faq-list summary{cursor:pointer;list-style:none;font-size:14px;font-weight:700;color:#25304a}
+.course-faq-list summary:after{content:"+";float:right;color:#4169f5;font-size:20px}
+.course-faq-list details[open] summary:after{content:"−"}
+.course-faq-list p{padding:14px 25px 0 0;margin:0;color:#667085;font-size:13px;line-height:1.9}
+.course-final-cta{display:flex;align-items:center;justify-content:space-between;gap:25px;margin-top:78px;padding:38px;border-radius:18px;background:linear-gradient(110deg,#4169f5,#8655e5);color:#fff}
+.course-final-cta h2{font-size:25px;line-height:1.4;margin:0 0 9px}
+.course-final-cta p{margin:0;color:#e2e8ff;font-size:13px}
+@media(max-width:850px){.course-recruit-panel,.course-project-feature{grid-template-columns:1fr}.course-outcomes,.course-benefits{grid-template-columns:1fr 1fr}.application-steps{grid-template-columns:1fr 1fr}}
+@media(max-width:600px){.course-detail-hero{padding:65px 0}.course-detail-hero h1{font-size:35px}.course-detail-hero>div>p{font-size:14px}.course-detail-content{padding-top:35px}.course-recruit-panel{padding:22px}.recruit-facts,.course-outcomes,.course-benefits,.application-steps{grid-template-columns:1fr}.course-detail-section{padding-top:55px}.course-section-heading h2,.course-recruit-panel h2{font-size:25px}.curriculum-item{grid-template-columns:1fr;gap:8px;padding:20px 5px}.course-final-cta{align-items:flex-start;flex-direction:column;padding:27px;margin-top:55px}.course-final-cta h2{font-size:22px}}
+
+/* HOMEPAGE RECRUITMENT PREVIEW */
+.recruitment-preview{background:#f7f8fc}
+.recruitment-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:17px}
+.recruitment-card{padding:24px;background:#fff;border:1px solid #e6eaf2;border-radius:15px;box-shadow:0 8px 24px #17234b08}
+.recruitment-card-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px}
+.recruitment-card-top span{font-size:11px;font-weight:800;letter-spacing:1px;color:#4169f5}
+.recruitment-card-top b{font-size:10px;color:#16815b;background:#e9f8f0;padding:6px 9px;border-radius:20px}
+.recruitment-card h3{font-size:17px;line-height:1.5;margin:0 0 13px}
+.recruitment-card p{font-size:12px;color:#667085;margin:0 0 7px}
+.recruitment-card small{display:block;color:#98a2b3;font-size:11px;margin-bottom:20px}
+.recruitment-card>a{display:inline-block;color:#4169f5;font-size:12px;font-weight:700;border-top:1px solid #edf0f5;padding-top:15px;width:100%}
+.demo-disclaimer{font-size:11px;color:#98a2b3;margin:18px 0 0}
+@media(max-width:800px){.recruitment-cards{grid-template-columns:1fr 1fr}}
+@media(max-width:600px){.recruitment-cards{grid-template-columns:1fr}}
