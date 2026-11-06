@@ -38,3 +38,12 @@ jobs:
           gradle-version: "8.14.3"
       - name: Test and build backend
         run: gradle clean build --no-daemon
+
+  deployment-config:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate Docker Compose configuration
+        run: |
+          cp .env.example .env
+          docker compose config --quiet
