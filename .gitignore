@@ -1,0 +1,24 @@
+# Node
+node_modules/
+frontend/dist/
+npm-debug.log*
+
+# Java / Gradle
+.gradle/
+**/build/
+*.class
+
+# IDE
+.idea/
+.vscode/
+*.iml
+
+# Local configuration
+.env
+.env.*
+!.env.example
+application-local.yml
+
+# OS
+.DS_Store
+Thumbs.db
