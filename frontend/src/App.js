@@ -591,13 +591,9 @@ function NoticeDetail() {
       const response = await api.get("/notices/" + params.id);
       setNotice(response.data);
     } catch (requestError) {
-      if (isStaticPreview) {
-        const preview = previewNotices.find(function (item) { return String(item.id) === String(params.id); });
-        if (preview) setNotice(preview);
-        else setError("해당 공지사항을 찾을 수 없습니다.");
-      } else {
-        setError("해당 공지사항을 찾을 수 없거나 현재 공개되지 않은 게시글입니다.");
-      }
+      const preview = previewNotices.find(function (item) { return String(item.id) === String(params.id); });
+      if (preview) setNotice(preview);
+      else setError("해당 공지사항을 찾을 수 없거나 현재 공개되지 않은 게시글입니다.");
     } finally {
       setLoading(false);
     }
