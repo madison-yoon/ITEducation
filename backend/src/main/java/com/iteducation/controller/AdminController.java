@@ -7,6 +7,7 @@ import com.iteducation.repository.InquiryRepository;
 import com.iteducation.repository.NoticeRepository;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -35,7 +36,7 @@ public class AdminController {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public record AccountRequest(@NotBlank String loginId, @NotBlank String password,
+    public record AccountRequest(@NotBlank String loginId, @NotBlank @Size(min = 12) String password,
                                  @NotBlank String name, @NotBlank String role) {}
     public record RoleRequest(@NotBlank String role) {}
 
@@ -88,13 +89,13 @@ public class AdminController {
     }
 
     @PatchMapping("/accounts/{id}/role")
-    public Map<String, Object> changeRole(@PathVariable Long id, @Valid @RequestBody RoleRequest request) {
+    public Map<String, Object> changeRole(@PathVariable Long id, @Valid @RequestBody RoleRequest request, Authentication authentication) {
         if (!List.of("ADMIN", "SUPER_ADMIN").contains(request.role())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "올바르지 않은 권한입니다.");
         }
         Admin target = admins.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-        if ("SUPER_ADMIN".equals(target.getRole()) && "ADMIN".equals(request.role())
+        if (target.getLoginId().equals(authentication.getName())) {\n            throw new ResponseStatusException(HttpStatus.CONFLICT, "현재 로그인한 계정의 권한은 변경할 수 없습니다.");\n        }\n        if ("SUPER_ADMIN".equals(target.getRole()) && "ADMIN".equals(request.role())
                 && admins.countByRole("SUPER_ADMIN") <= 1) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "마지막 최고 관리자의 권한은 변경할 수 없습니다.");
         }
