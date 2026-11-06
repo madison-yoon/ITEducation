@@ -32,6 +32,10 @@ public class AdminInitializer implements CommandLineRunner {
             return;
         }
 
+        if (password.length() < 12) {
+            throw new IllegalStateException("최초 관리자 비밀번호는 12자 이상이어야 합니다.");
+        }
+
         Admin admin = new Admin();
         admin.setLoginId(loginId.trim());
         admin.setPassword(passwordEncoder.encode(password));
