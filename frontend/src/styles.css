@@ -141,3 +141,18 @@
 .course-final-cta p{margin:0;color:#e2e8ff;font-size:13px}
 @media(max-width:850px){.course-recruit-panel,.course-project-feature{grid-template-columns:1fr}.course-outcomes,.course-benefits{grid-template-columns:1fr 1fr}.application-steps{grid-template-columns:1fr 1fr}}
 @media(max-width:600px){.course-detail-hero{padding:65px 0}.course-detail-hero h1{font-size:35px}.course-detail-hero>div>p{font-size:14px}.course-detail-content{padding-top:35px}.course-recruit-panel{padding:22px}.recruit-facts,.course-outcomes,.course-benefits,.application-steps{grid-template-columns:1fr}.course-detail-section{padding-top:55px}.course-section-heading h2,.course-recruit-panel h2{font-size:25px}.curriculum-item{grid-template-columns:1fr;gap:8px;padding:20px 5px}.course-final-cta{align-items:flex-start;flex-direction:column;padding:27px;margin-top:55px}.course-final-cta h2{font-size:22px}}
+
+/* HOMEPAGE RECRUITMENT PREVIEW */
+.recruitment-preview{background:#f7f8fc}
+.recruitment-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:17px}
+.recruitment-card{padding:24px;background:#fff;border:1px solid #e6eaf2;border-radius:15px;box-shadow:0 8px 24px #17234b08}
+.recruitment-card-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px}
+.recruitment-card-top span{font-size:11px;font-weight:800;letter-spacing:1px;color:#4169f5}
+.recruitment-card-top b{font-size:10px;color:#16815b;background:#e9f8f0;padding:6px 9px;border-radius:20px}
+.recruitment-card h3{font-size:17px;line-height:1.5;margin:0 0 13px}
+.recruitment-card p{font-size:12px;color:#667085;margin:0 0 7px}
+.recruitment-card small{display:block;color:#98a2b3;font-size:11px;margin-bottom:20px}
+.recruitment-card>a{display:inline-block;color:#4169f5;font-size:12px;font-weight:700;border-top:1px solid #edf0f5;padding-top:15px;width:100%}
+.demo-disclaimer{font-size:11px;color:#98a2b3;margin:18px 0 0}
+@media(max-width:800px){.recruitment-cards{grid-template-columns:1fr 1fr}}
+@media(max-width:600px){.recruitment-cards{grid-template-columns:1fr}}
