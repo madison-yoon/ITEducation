@@ -391,16 +391,7 @@ function formatNoticeDate(value) {
 const isStaticPreview = import.meta.env.VITE_STATIC_PREVIEW === "true";
 
 // GitHub Pages는 백엔드 없이 화면을 공개하므로 미리보기 전용 안내를 사용합니다.
-const previewNotices = [
-  {
-    id: "preview",
-    title: "IT ACADEMY 홈페이지 공개 미리보기 안내",
-    category: "운영 안내",
-    content: "현재 홈페이지는 GitHub Pages를 통한 정적 미리보기로 제공됩니다. 교육과정 실시간 조회, 공지사항 운영, 상담 신청 및 관리자 기능은 별도 백엔드 서버 연결 후 사용할 수 있습니다.",
-    createdAt: "2026-11-06T09:00:00",
-    pinned: true
-  }
-];
+const previewNotices = [{"id":"demo-1","title":"2026년 11월 AI·머신러닝 실무 개발자 과정 모집 안내","category":"모집 안내","content":"AI·머신러닝 실무 개발자 과정의 교육생 모집을 안내하는 데모 게시글입니다.\n\n모집 상태: 모집 중\n교육 기간: 6개월\n교육 대상: 비전공자 및 전공자\n학습 내용: Python, 데이터 분석, 머신러닝, 딥러닝, 팀 프로젝트\n\n상세 일정과 실제 모집 여부는 상담을 통해 확인해 주세요. 본 게시글의 일정은 화면 확인을 위한 예시 데이터입니다.","createdAt":"2026-11-06T09:00:00","pinned":true},{"id":"demo-2","title":"교육과정 상담 신청 및 진행 절차 안내","category":"운영 안내","content":"상담 신청 페이지에서 희망 과정과 연락 가능한 정보를 입력해 주세요.\n\n1. 온라인 상담 신청\n2. 담당자 신청 내용 확인\n3. 교육 목표와 학습 수준 상담\n4. 과정 및 일정 안내\n5. 등록 절차 안내\n\n실제 운영 시간과 상담 가능 일정은 별도 확인이 필요합니다.","createdAt":"2026-11-05T10:00:00","pinned":false},{"id":"demo-3","title":"AI·머신러닝 과정 프로젝트 주제 공개","category":"교육과정","content":"교육 후반에는 데이터 분석과 모델 구현을 연결하는 팀 프로젝트를 진행하는 예시입니다.\n\n예시 주제: 영화 추천 시스템, 고객 문의 분류, 이미지 데이터 분석\n\n프로젝트는 문제 정의, 데이터 수집 및 정제, 모델 구현, 평가, 결과 발표 순서로 구성됩니다. 실제 과정 운영 내용은 변경될 수 있습니다.","createdAt":"2026-11-04T14:00:00","pinned":false},{"id":"demo-4","title":"팀 프로젝트 포트폴리오 페이지 업데이트","category":"교육 소식","content":"교육과정에서 다룰 수 있는 프로젝트 예시를 포트폴리오 형태로 정리했습니다. AI, 데이터 분석, 생성형 AI, 웹 서비스 분야의 가상 사례를 확인할 수 있습니다.\n\n소개용 데모 콘텐츠이며 실제 수강생 작품이 아닙니다.","createdAt":"2026-11-03T11:00:00","pinned":false},{"id":"demo-5","title":"생성형 AI 서비스 개발 과정 모집 예정 안내","category":"모집 안내","content":"생성형 AI 서비스 개발 과정의 모집 예정 상태를 안내하는 데모 게시글입니다.\n\n주요 학습 주제: LLM API, 프롬프트 설계, 임베딩, 벡터 검색, RAG\n교육 기간 예시: 4개월\n\n모집 일정과 실제 개강 여부는 확정 정보가 아니므로 상담을 통해 확인해 주세요.","createdAt":"2026-11-02T09:30:00","pinned":false},{"id":"demo-6","title":"교육생 프로젝트 발표회 운영 예시","category":"교육 소식","content":"과정 마지막 단계에서 팀별 프로젝트 발표와 결과물 시연을 진행하는 운영 예시입니다.\n\n발표 구성: 프로젝트 배경, 해결하려는 문제, 기술 구조, 구현 기능, 테스트 결과, 회고\n\n실제 발표 일정은 과정별로 다르게 운영될 수 있습니다.","createdAt":"2026-10-30T13:00:00","pinned":false},{"id":"demo-7","title":"홈페이지 이용 및 상담 신청 안내","category":"공지","content":"홈페이지에서 교육기관 소개, 교육과정, 프로젝트 사례, 공지사항을 확인할 수 있습니다. 상담 신청은 상단 메뉴의 상담 신청 페이지에서 접수할 수 있습니다.\n\n본 사이트는 IT ACADEMY 교육기관 소개용 데모 프로젝트입니다.","createdAt":"2026-10-28T09:00:00","pinned":false}];
 
 function Notices() {
   const [items, setItems] = React.useState([]);
@@ -418,13 +409,9 @@ function Notices() {
     setError("");
     try {
       const response = await api.get("/notices");
-      setItems(Array.isArray(response.data) ? response.data : []);
+      setItems(Array.isArray(response.data) && response.data.length > 0 ? response.data : previewNotices);
     } catch (requestError) {
-      if (isStaticPreview) {
-        setItems(previewNotices);
-      } else {
-        setError("공지사항을 불러오지 못했습니다. 서버 연결 상태를 확인한 뒤 다시 시도해 주세요.");
-      }
+      setItems(previewNotices);
     } finally {
       setLoading(false);
     }
