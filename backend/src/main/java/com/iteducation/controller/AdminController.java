@@ -95,7 +95,10 @@ public class AdminController {
         }
         Admin target = admins.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-        if (target.getLoginId().equals(authentication.getName())) {\n            throw new ResponseStatusException(HttpStatus.CONFLICT, "현재 로그인한 계정의 권한은 변경할 수 없습니다.");\n        }\n        if ("SUPER_ADMIN".equals(target.getRole()) && "ADMIN".equals(request.role())
+        if (target.getLoginId().equals(authentication.getName())) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "현재 로그인한 계정의 권한은 변경할 수 없습니다.");
+        }
+        if ("SUPER_ADMIN".equals(target.getRole()) && "ADMIN".equals(request.role())
                 && admins.countByRole("SUPER_ADMIN") <= 1) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "마지막 최고 관리자의 권한은 변경할 수 없습니다.");
         }
