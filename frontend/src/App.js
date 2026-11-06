@@ -10,6 +10,7 @@ import {
   useNavigate
 } from "react-router-dom";
 import api from "./api.js";
+import AdminApp from "./AdminApp.js";
 
 const h = React.createElement;
 
@@ -100,6 +101,14 @@ function CourseCard(props) {
 }
 
 function Home() {
+  const [homeCourses, setHomeCourses] = React.useState(courseSeed);
+
+  React.useEffect(function () {
+    api.get("/courses").then(function (response) {
+      if (Array.isArray(response.data)) setHomeCourses(response.data);
+    }).catch(function () {});
+  }, []);
+
   const journey = [
     ["01", "기초 학습", "핵심 개념과 개발 기초"],
     ["02", "핵심 기술", "과정별 전문 기술 습득"],
@@ -140,7 +149,7 @@ function Home() {
           h(Link, { to: "/courses", className: "more" }, "전체 과정 보기 →")
         ),
         h("div", { className: "grid4" },
-          courseSeed.map(function (course) {
+          homeCourses.map(function (course) {
             return h(CourseCard, { course: course, key: course.id });
           })
         )
@@ -377,16 +386,12 @@ function Consultation() {
 function Notices() {
   const [items, setItems] = React.useState([]);
   const [keyword, setKeyword] = React.useState("");
+  const [error, setError] = React.useState("");
 
   React.useEffect(function () {
     api.get("/notices")
-      .then(function (response) { setItems(response.data); })
-      .catch(function () {
-        setItems([
-          { id: 1, title: "11월 교육과정 모집 안내", content: "교육과정 모집 안내입니다.", createdAt: "2026-11-06" },
-          { id: 2, title: "상담 신청 이용 안내", content: "상담 신청 페이지에서 문의를 남겨주세요.", createdAt: "2026-11-04" }
-        ]);
-      });
+      .then(function (response) { setItems(Array.isArray(response.data) ? response.data : []); })
+      .catch(function () { setError("공지사항을 불러오지 못했습니다. 잠시 후 다시 시도해 주세요."); });
   }, []);
 
   const filtered = items.filter(function (notice) {
@@ -399,17 +404,44 @@ function Notices() {
       h("h1", null, "공지사항"),
       h("p", { className: "lead" }, "IT ACADEMY의 새로운 소식을 확인하세요."),
       h("input", { className: "search", placeholder: "공지 제목 검색", value: keyword, onChange: function (e) { setKeyword(e.target.value); } }),
+      error ? h("p", { className: "error" }, error) : null,
       h("div", { className: "notices" },
-        filtered.map(function (notice) {
-          return h("article", { key: notice.id },
+        filtered.length ? filtered.map(function (notice) {
+          return h(Link, { key: notice.id, to: "/notices/" + notice.id, className: "notice-link" },
             h("div", null,
               h("b", null, notice.title),
               h("small", null, String(notice.createdAt || "").slice(0, 10))
             ),
-            h("p", null, notice.content)
+            h("span", null, "자세히 보기 →")
           );
-        })
+        }) : (!error ? h("p", null, "등록된 공지사항이 없습니다.") : null)
       )
+    )
+  );
+}
+
+function NoticeDetail() {
+  const params = useParams();
+  const navigate = useNavigate();
+  const [notice, setNotice] = React.useState(null);
+  const [error, setError] = React.useState("");
+
+  React.useEffect(function () {
+    api.get("/notices/" + params.id)
+      .then(function (response) { setNotice(response.data); })
+      .catch(function () { setError("공지사항을 찾을 수 없습니다."); });
+  }, [params.id]);
+
+  return h("section", { className: "page" },
+    h("div", { className: "container" },
+      h("button", { className: "btn ghost", onClick: function () { navigate("/notices"); } }, "목록으로"),
+      error ? h("p", { className: "error" }, error) : null,
+      notice ? h("article", { className: "notice-detail" },
+        h("span", { className: "eyebrow" }, "NOTICE"),
+        h("h1", null, notice.title),
+        h("small", null, String(notice.createdAt || "").slice(0, 10)),
+        h("div", { className: "notice-content" }, notice.content)
+      ) : (!error ? h("p", null, "공지사항을 불러오는 중입니다.") : null)
     )
   );
 }
@@ -459,17 +491,6 @@ function About() {
   );
 }
 
-function Admin() {
-  return h("section", { className: "page" },
-    h("div", { className: "container" },
-      h("span", { className: "eyebrow" }, "ADMIN"),
-      h("h1", null, "관리자 기능 준비 중"),
-      h("p", { className: "lead" }, "현재 버전에는 관리자 인증 및 상담 관리 API가 완성되지 않았습니다. 공개 페이지와 상담 신청 기능을 먼저 확인해 주세요."),
-      h(Link, { to: "/", className: "btn" }, "메인 페이지로 이동")
-    )
-  );
-}
-
 function App() {
   return h(BrowserRouter, null,
     h(Routes, null,
@@ -480,9 +501,10 @@ function App() {
         h(Route, { path: "/courses/:id", element: h(Courses) }),
         h(Route, { path: "/projects", element: h(Projects) }),
         h(Route, { path: "/consultation", element: h(Consultation) }),
-        h(Route, { path: "/notices", element: h(Notices) })
+        h(Route, { path: "/notices", element: h(Notices) }),
+        h(Route, { path: "/notices/:id", element: h(NoticeDetail) })
       ),
-      h(Route, { path: "/admin/*", element: h(Admin) })
+      h(Route, { path: "/admin/*", element: h(AdminApp) })
     )
   );
 }

@@ -1,13 +1,25 @@
 import axios from "axios";
 
-// 로컬과 배포 환경에서 같은 API 경로를 사용합니다.
-// VITE_API_URL을 지정하면 별도 API 서버 주소도 사용할 수 있습니다.
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL || "/api",
   withCredentials: true,
   headers: {
     "Content-Type": "application/json"
   }
+});
+
+// 관리자 로그인과 데이터 변경 요청에 세션 CSRF 토큰을 자동으로 첨부합니다.
+api.interceptors.request.use(async function (config) {
+  const method = String(config.method || "get").toLowerCase();
+  const needsToken = ["post", "put", "patch", "delete"].includes(method);
+
+  if (needsToken && !config.url.endsWith("/csrf")) {
+    const response = await api.get("/csrf");
+    config.headers = config.headers || {};
+    config.headers["X-CSRF-TOKEN"] = response.data.token;
+  }
+
+  return config;
 });
 
 export default api;

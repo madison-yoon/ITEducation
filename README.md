@@ -2,52 +2,57 @@
 
 AI·빅데이터 특화 IT 교육기관 홍보 웹사이트 프로젝트입니다.
 
-## 1. 개발 환경
+## 1. 기술 구성
 
-| 구분 | 기술 | 버전 |
-|---|---|---|
-| Frontend | React / JavaScript / Vite | React 18, Vite 6 |
-| Backend | Spring Boot / Java | Spring Boot 3.5.6, Java 21 |
-| Database | MySQL | 8.x 권장 |
-| Build | npm / Gradle | npm, Gradle 8.14.3 이상 |
+| 구분 | 기술 |
+|---|---|
+| 프론트엔드 | React 18, JavaScript, Vite 6 |
+| 백엔드 | Spring Boot 3.5.6, Java 21 |
+| 데이터베이스 | MySQL 8.x |
+| 인증 | Spring Security 세션 로그인, BCrypt, CSRF |
+| 배포 | Docker Compose, Nginx, Caddy HTTPS |
 
-프론트엔드는 `.js` 파일만 사용합니다. JSX와 TSX는 사용하지 않습니다.
+프론트엔드는 JavaScript `.js` 파일만 사용합니다. JSX, TSX, TypeScript는 사용하지 않습니다.
 
-## 2. 최초 실행 준비
+## 2. 로컬 실행 준비
 
 1. Node.js LTS를 설치합니다.
 2. JDK 21을 설치합니다.
 3. MySQL Server를 실행합니다.
-4. MySQL Workbench 또는 CMD에서 `database/createdb.sql`을 실행합니다.
-5. `backend/src/main/resources/application.yml`의 DB 계정과 비밀번호를 실제 MySQL 설정에 맞춥니다.
-6. Gradle 8.14.3 이상을 설치하거나 IntelliJ IDEA의 Gradle 실행 환경을 사용합니다.
+4. `database/createdb.sql`을 실행해 `it_academy` 데이터베이스를 생성합니다.
+5. `backend/src/main/resources/application.yml`의 기본 DB 계정과 실제 MySQL 계정이 다르면 `DB_URL`, `DB_USERNAME`, `DB_PASSWORD` 환경 변수를 설정합니다.
+6. Gradle 8.14.3 이상을 설치하거나 IntelliJ의 Gradle 실행 환경을 사용합니다.
 
-현재 기본 DB 연결 설정은 다음과 같습니다.
+기본 DB 연결은 `localhost:3306 / it_academy / root / 1234`입니다. 실제 로컬 DB 설정에 맞춰 변경할 수 있습니다.
 
-- 주소: `jdbc:mysql://localhost:3306/it_academy`
-- 계정: `root`
-- 비밀번호: `1234`
+## 3. 최초 최고 관리자 생성
 
-기본값과 실제 MySQL 계정이 다르면 환경 변수 `DB_URL`, `DB_USERNAME`, `DB_PASSWORD`를 지정하거나 application.yml을 수정해야 합니다.
+관리자 계정은 공개 회원가입으로 만들지 않습니다. 데이터베이스에 관리자가 한 명도 없을 때만 환경 변수로 지정한 최초 계정을 최고 관리자로 생성합니다.
 
-## 3. 실행 방법
+백엔드를 실행할 CMD 창에서 다음 명령을 실행합니다. 비밀번호는 12자 이상의 고유한 값으로 바꿉니다.
 
-### 방법 A. 실행 파일 사용
+```cmd
+set ADMIN_INITIAL_LOGIN_ID=siteadmin
+set ADMIN_INITIAL_PASSWORD=여기에_12자_이상의_고유_비밀번호
+set ADMIN_INITIAL_NAME=최고 관리자
+cd /d D:\dev\ITEducation\backend
+gradle bootRun
+```
 
-프로젝트 루트에서 `start-backend.bat`와 `start-frontend.bat`를 각각 실행합니다.
+최초 계정이 생성된 이후에는 환경 변수 값을 바꿔도 기존 계정 비밀번호가 변경되지 않습니다. 비밀번호는 관리자 계정 관리 정책에 따라 별도로 관리합니다.
 
-백엔드는 Java 21과 Gradle이 PATH에 등록되어 있어야 합니다. Gradle이 설치되어 있지 않다면 IntelliJ IDEA에서 `backend` 폴더를 Gradle 프로젝트로 열고 `Tasks > application > bootRun`을 실행합니다.
+## 4. 실행 방법
 
-### 방법 B. CMD에서 직접 실행
+백엔드와 프론트엔드를 각각 별도 CMD 창에서 실행합니다.
 
-백엔드 CMD:
+백엔드:
 
 ```cmd
 cd /d D:\dev\ITEducation\backend
 gradle bootRun
 ```
 
-프론트엔드 CMD:
+프론트엔드:
 
 ```cmd
 cd /d D:\dev\ITEducation\frontend
@@ -55,37 +60,50 @@ npm install
 npm run dev
 ```
 
-두 서버는 서로 다른 터미널에서 실행 상태를 유지해야 합니다.
+## 5. 접속 주소
 
-## 4. 접속 주소
-
-- 웹사이트: http://localhost:5173
+- 공개 웹사이트: http://localhost:5173
+- 관리자 로그인: http://localhost:5173/admin
 - 백엔드: http://localhost:8080
-- 공개 교육과정 API: http://localhost:8080/api/courses
-- 공개 공지사항 API: http://localhost:8080/api/notices
+- 교육과정 API: http://localhost:8080/api/courses
+- 공지사항 API: http://localhost:8080/api/notices
+- 상담 신청 API: http://localhost:8080/api/inquiries
 
-## 5. 자주 발생하는 실행 오류
+Vite 개발 서버가 `/api` 요청을 백엔드 8080 포트로 전달합니다. 프론트엔드 코드는 기본적으로 동일 출처의 `/api` 경로를 사용합니다.
 
-| 오류 | 원인 및 조치 |
-|---|---|
-| `node` 또는 `npm`을 찾을 수 없음 | Node.js LTS 설치 후 CMD를 새로 엽니다. |
-| `gradle`을 찾을 수 없음 | Gradle 설치 또는 IntelliJ Gradle Tasks에서 bootRun을 실행합니다. |
-| Unsupported class file major version | JDK 21을 설치하고 IntelliJ의 Project SDK와 Gradle JVM을 21로 설정합니다. |
-| Communications link failure | MySQL Server 실행 여부, 3306 포트, DB 계정과 비밀번호를 확인합니다. |
-| Unknown database 'it_academy' | `database/createdb.sql`을 실행합니다. |
-| Port 8080 already in use | 기존 8080 서버를 종료하거나 포트를 변경합니다. |
-| Port 5173 already in use | 기존 Vite 서버를 종료합니다. |
+## 6. 구현 기능
 
-## 6. 현재 구현 범위
+### 방문자
+- 기관 소개 및 메인 페이지
+- DB 기반 교육과정 목록과 상세 조회
+- 교육과정명 및 분야 검색
+- 프로젝트 소개
+- 게시 중인 공지사항 목록 및 상세 조회
+- 상담 신청 및 필수 개인정보 동의 확인
+- 진행 중인 동일 연락처 상담의 중복 신청 제한
 
-메인, 기관 소개, 교육과정, 프로젝트, 공지사항 조회, 상담 신청 화면이 포함되어 있습니다. 관리자 화면은 아직 필요한 관리 API가 완성되지 않아 전체 기능 검증 대상이 아닙니다.
+### 관리자
+- 세션 기반 로그인 및 로그아웃
+- 관리자 본인 및 권한 확인
+- 대시보드 운영 현황
+- 교육과정 등록·조회·수정·삭제 및 모집 상태 관리
+- 상담 신청 검색·상세 조회·상태 변경·내부 메모·삭제
+- 공지사항 등록·조회·수정·삭제 및 공개 여부 관리
+- 최고 관리자 전용 관리자 계정 생성·권한 변경·삭제
+- 마지막 최고 관리자 권한 강등 및 삭제 방지
+- 상태 변경 요청에 대한 CSRF 검증
 
-## 7. Git 최신화
+## 7. 배포
+
+전체 배포는 프로젝트 루트의 `DEPLOYMENT.md`를 참고합니다.
+
+Docker Compose는 MySQL, Spring Boot, React/Nginx, Caddy를 실행합니다. 실제 도메인, DNS, 서버 방화벽, 환경 변수 설정은 배포 서버에서 완료해야 합니다.
+
+## 8. Git 작업
 
 ```cmd
-cd /d D:\dev\ITEducation
 git switch main
 git pull origin main
 ```
 
-수정 작업 브랜치 적용은 Pull Request 검토 및 병합 후 진행합니다.
+기능 수정은 별도 브랜치에서 진행하고 Pull Request 검토 후 main에 병합합니다.
