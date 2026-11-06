@@ -220,6 +220,36 @@ function Home() {
         )
       )
     ),
+    h("section", { className: "section recruitment-preview" },
+      h("div", { className: "container" },
+        h("div", { className: "sectionhead" },
+          h("div", null,
+            h("span", { className: "eyebrow" }, "NOW RECRUITING · DEMO"),
+            h("h2", null, "새로운 커리어를 위한 다음 기수 안내")
+          ),
+          h(Link, { to: "/notices", className: "more" }, "모집 공지 전체 보기 →")
+        ),
+        h("div", { className: "recruitment-cards" },
+          [
+            ["AI", "AI·머신러닝 실무 개발자", "2026.11.09 ~ 11.30", "2026.12.07 개강 예정", "1"],
+            ["DATA", "빅데이터 분석 전문가", "2026.11.16 ~ 12.04", "2026.12.14 개강 예정", "2"],
+            ["GEN AI", "생성형 AI 서비스 개발", "2026.11.23 ~ 12.11", "2026.12.21 개강 예정", "3"]
+          ].map(function (item) {
+            return h("article", { className: "recruitment-card", key: item[0] },
+              h("div", { className: "recruitment-card-top" },
+                h("span", null, item[0]),
+                h("b", null, "모집 안내")
+              ),
+              h("h3", null, item[1]),
+              h("p", null, "모집 기간 " + item[2]),
+              h("small", null, item[3]),
+              h(Link, { to: "/courses/" + item[4] }, "과정 자세히 보기 →")
+            );
+          })
+        ),
+        h("p", { className: "demo-disclaimer" }, "※ 모집 일정과 개강일은 화면 구성을 위한 데모 데이터이며 실제 운영 일정이 아닙니다.")
+      )
+    ),
     h("section", { className: "section" },
       h("div", { className: "container" },
         h("span", { className: "eyebrow" }, "LEARNING JOURNEY"),
@@ -588,12 +618,34 @@ const isStaticPreview = import.meta.env.VITE_STATIC_PREVIEW === "true";
 // GitHub Pages는 백엔드 없이 화면을 공개하므로 미리보기 전용 안내를 사용합니다.
 const previewNotices = [
   {
-    id: "preview",
-    title: "IT ACADEMY 홈페이지 공개 미리보기 안내",
-    category: "운영 안내",
-    content: "현재 홈페이지는 GitHub Pages를 통한 정적 미리보기로 제공됩니다. 교육과정 실시간 조회, 공지사항 운영, 상담 신청 및 관리자 기능은 별도 백엔드 서버 연결 후 사용할 수 있습니다.",
-    createdAt: "2026-11-06T09:00:00",
-    pinned: true
+    id: "demo-1", title: "2026 겨울학기 AI·IT 교육과정 모집 안내", category: "모집 안내",
+    content: "AI·머신러닝, 빅데이터 분석, 생성형 AI 서비스, 웹 서비스 개발 과정의 데모 모집 안내입니다. 과정별 일정과 지원 조건은 과정 상세 페이지에서 확인할 수 있으며, 실제 운영 정보는 상담을 통해 확인해 주세요.",
+    createdAt: "2026-11-06T09:00:00", pinned: true
+  },
+  {
+    id: "demo-2", title: "AI·머신러닝 실무 개발 과정 커리큘럼 공개", category: "교육과정",
+    content: "Python 기초부터 데이터 전처리, 머신러닝, 딥러닝, 팀 프로젝트까지 이어지는 학습 로드맵을 공개합니다. 프로젝트 예시는 학습 결과물의 형태를 설명하기 위한 데모 콘텐츠입니다.",
+    createdAt: "2026-11-05T10:00:00", pinned: false
+  },
+  {
+    id: "demo-3", title: "교육과정 선택을 위한 온라인 설명회 안내", category: "모집 안내",
+    content: "관심 분야별 교육과정 구성과 프로젝트 진행 방식을 소개하는 설명회 예시 안내입니다. 일정과 참여 링크는 실제 운영 시 별도 공지됩니다.",
+    createdAt: "2026-11-04T14:00:00", pinned: false
+  },
+  {
+    id: "demo-4", title: "수강 신청 전 확인해야 할 준비 사항", category: "공지",
+    content: "관심 과정의 교육 목표와 주차별 커리큘럼을 확인하고, 본인의 학습 가능 시간과 노트북 사용 환경을 점검해 주세요. 선수 지식이 필요한 과정은 상담 단계에서 안내합니다.",
+    createdAt: "2026-11-03T09:30:00", pinned: false
+  },
+  {
+    id: "demo-5", title: "팀 프로젝트 결과물 및 포트폴리오 구성 소개", category: "교육 소식",
+    content: "팀 프로젝트는 문제 정의, 역할 분담, 기능 구현, 테스트, 결과 발표 순서로 진행하는 것을 기본 방향으로 합니다. 결과물 예시는 프로젝트 페이지에서 확인할 수 있습니다.",
+    createdAt: "2026-11-02T11:00:00", pinned: false
+  },
+  {
+    id: "demo-6", title: "IT ACADEMY 홈페이지 이용 안내", category: "운영 안내",
+    content: "교육과정에서 과정별 정보를 확인하고, 프로젝트에서 결과물 예시를 살펴볼 수 있습니다. 궁금한 점은 상담 신청 페이지를 통해 문의하는 데모 흐름으로 구성되어 있습니다.",
+    createdAt: "2026-11-01T09:00:00", pinned: false
   }
 ];
 
@@ -613,7 +665,7 @@ function Notices() {
     setError("");
     try {
       const response = await api.get("/notices");
-      setItems(Array.isArray(response.data) ? response.data : []);
+      setItems(Array.isArray(response.data) && response.data.length > 0 ? response.data : previewNotices);
     } catch (requestError) {
       if (isStaticPreview) {
         setItems(previewNotices);
