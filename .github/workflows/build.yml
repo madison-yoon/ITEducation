@@ -39,7 +39,7 @@ jobs:
       - name: Test and build backend
         run: gradle clean build --no-daemon
 
-  deployment-config:
+  deployment:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -47,3 +47,5 @@ jobs:
         run: |
           cp .env.example .env
           docker compose config --quiet
+      - name: Build frontend and backend images
+        run: docker compose build
