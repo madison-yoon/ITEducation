@@ -101,6 +101,14 @@ function CourseCard(props) {
 }
 
 function Home() {
+  const [homeCourses, setHomeCourses] = React.useState(courseSeed);
+
+  React.useEffect(function () {
+    api.get("/courses").then(function (response) {
+      if (Array.isArray(response.data)) setHomeCourses(response.data);
+    }).catch(function () {});
+  }, []);
+
   const journey = [
     ["01", "기초 학습", "핵심 개념과 개발 기초"],
     ["02", "핵심 기술", "과정별 전문 기술 습득"],
@@ -493,7 +501,8 @@ function App() {
         h(Route, { path: "/courses/:id", element: h(Courses) }),
         h(Route, { path: "/projects", element: h(Projects) }),
         h(Route, { path: "/consultation", element: h(Consultation) }),
-        h(Route, { path: "/notices", element: h(Notices) }),\n        h(Route, { path: "/notices/:id", element: h(NoticeDetail) })
+        h(Route, { path: "/notices", element: h(Notices) }),
+        h(Route, { path: "/notices/:id", element: h(NoticeDetail) })
       ),
       h(Route, { path: "/admin/*", element: h(AdminApp) })
     )
