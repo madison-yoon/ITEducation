@@ -227,18 +227,43 @@ function Courses() {
       );
     }
 
-    return h("section", { className: "page" },
+    const modules = String(selected.curriculum || "").split("→").map(function (item) { return item.trim(); }).filter(Boolean);
+    return h("section", { className: "page course-detail-page" },
       h("div", { className: "container" },
-        h("span", { className: "eyebrow" }, selected.category),
-        h("h1", null, selected.title),
-        h("p", { className: "lead" }, selected.summary),
-        h("div", { className: "detail" },
-          h("h3", null, "교육 대상"), h("p", null, selected.target),
-          h("h3", null, "교육 기간"), h("p", null, selected.duration),
-          h("h3", null, "단계별 커리큘럼"), h("p", null, selected.curriculum),
-          h("h3", null, "주요 기술"), h("p", null, selected.skills),
-          h(Link, { to: "/consultation", className: "btn" }, "이 과정 상담 신청")
-        )
+        h("div", { className: "course-detail-hero" },
+          h("span", { className: "eyebrow" }, selected.category + " · PRACTICAL PROGRAM"),
+          h("span", { className: "course-status-badge" }, selected.recruitmentStatus),
+          h("h1", null, selected.title),
+          h("p", { className: "lead" }, selected.summary),
+          h("p", { className: "course-description" }, "기초 개념을 익힌 뒤 핵심 기술을 직접 적용하고, 마지막에는 팀 단위 결과물을 완성하는 프로젝트 중심 과정입니다."),
+          h("div", { className: "course-facts" },
+            [["교육 기간", selected.duration], ["교육 대상", selected.target], ["수업 형태", "평일 주간 과정"], ["학습 방식", "이론 + 실습 + 팀 프로젝트"]].map(function (item) {
+              return h("div", { key: item[0] }, h("small", null, item[0]), h("strong", null, item[1]));
+            })
+          ),
+          h(Link, { to: "/consultation", className: "btn" }, "이 과정 상담 신청 →")
+        ),
+        h("div", { className: "course-detail-grid" },
+          h("section", { className: "course-detail-block" },
+            h("span", { className: "eyebrow" }, "LEARNING ROADMAP"),
+            h("h2", null, "단계별 교육 커리큘럼"),
+            h("div", { className: "course-module-list" }, modules.map(function (module, index) {
+              return h("article", { key: module }, h("b", null, String(index + 1).padStart(2, "0")), h("span", null, module));
+            }))
+          ),
+          h("section", { className: "course-detail-block course-outcomes" },
+            h("span", { className: "eyebrow" }, "SKILLS & OUTCOMES"),
+            h("h2", null, "주요 학습 기술"),
+            h("p", null, selected.skills),
+            h("h3", null, "교육 후 기대 역량"),
+            h("ul", null, ["핵심 기술을 활용한 기능 구현", "데이터와 서비스 흐름을 이해하는 설계 경험", "팀 프로젝트 결과물 및 발표 자료"].map(function (item) { return h("li", { key: item }, item); }))
+          )
+        ),
+        h("section", { className: "admission-panel" },
+          h("div", null, h("span", { className: "eyebrow" }, "ADMISSION GUIDE"), h("h2", null, "모집 및 상담 안내"), h("p", null, "모집 상태와 세부 일정은 운영 상황에 따라 달라질 수 있습니다. 정확한 개강일과 지원 절차는 상담을 통해 확인해 주세요.")),
+          h("div", { className: "admission-steps" }, [["01", "상담 신청", "희망 과정과 학습 목표 전달"], ["02", "과정 안내", "교육 일정과 지원 자격 확인"], ["03", "등록 안내", "신청 서류와 등록 절차 확인"]].map(function (item) { return h("article", { key: item[0] }, h("b", null, item[0]), h("strong", null, item[1]), h("span", null, item[2])); }))
+        ),
+        h("p", { className: "course-demo-note" }, "※ 교육 기간과 모집 상태는 화면 확인을 위한 데모 예시입니다. 실제 운영 정보는 상담을 통해 확인해 주세요.")
       )
     );
   }
