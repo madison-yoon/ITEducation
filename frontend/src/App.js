@@ -383,38 +383,164 @@ function Consultation() {
   );
 }
 
+function formatNoticeDate(value) {
+  if (!value) return "날짜 정보 없음";
+  return String(value).replace("T", " ").slice(0, 10).replace(/-/g, ".");
+}
+
 function Notices() {
   const [items, setItems] = React.useState([]);
   const [keyword, setKeyword] = React.useState("");
+  const [category, setCategory] = React.useState("전체");
+  const [page, setPage] = React.useState(1);
+  const [loading, setLoading] = React.useState(true);
   const [error, setError] = React.useState("");
 
+  const categories = ["전체", "공지", "모집 안내", "교육과정", "교육 소식", "운영 안내"];
+  const pageSize = 8;
+
+  async function loadNotices() {
+    setLoading(true);
+    setError("");
+    try {
+      const response = await api.get("/notices");
+      setItems(Array.isArray(response.data) ? response.data : []);
+    } catch (requestError) {
+      setError("공지사항을 불러오지 못했습니다. 서버 연결 상태를 확인한 뒤 다시 시도해 주세요.");
+    } finally {
+      setLoading(false);
+    }
+  }
+
   React.useEffect(function () {
-    api.get("/notices")
-      .then(function (response) { setItems(Array.isArray(response.data) ? response.data : []); })
-      .catch(function () { setError("공지사항을 불러오지 못했습니다. 잠시 후 다시 시도해 주세요."); });
+    loadNotices();
   }, []);
 
+  const normalizedKeyword = keyword.trim().toLowerCase();
   const filtered = items.filter(function (notice) {
-    return notice.title.includes(keyword);
+    const title = String(notice.title || "").toLowerCase();
+    const content = String(notice.content || "").toLowerCase();
+    const categoryMatches = category === "전체" || (notice.category || "공지") === category;
+    const keywordMatches = !normalizedKeyword || title.includes(normalizedKeyword) || content.includes(normalizedKeyword);
+    return categoryMatches && keywordMatches;
+  }).sort(function (a, b) {
+    if (Boolean(a.pinned) !== Boolean(b.pinned)) return a.pinned ? -1 : 1;
+    return String(b.createdAt || "").localeCompare(String(a.createdAt || ""));
   });
 
-  return h("section", { className: "page" },
+  const totalPages = Math.max(1, Math.ceil(filtered.length / pageSize));
+  const currentPage = Math.min(page, totalPages);
+  const visibleItems = filtered.slice((currentPage - 1) * pageSize, currentPage * pageSize);
+  const pinnedNotice = filtered.find(function (notice) { return Boolean(notice.pinned); });
+
+  function changeKeyword(value) {
+    setKeyword(value);
+    setPage(1);
+  }
+
+  function changeCategory(value) {
+    setCategory(value);
+    setPage(1);
+  }
+
+  return h("section", { className: "page notice-page" },
     h("div", { className: "container" },
-      h("span", { className: "eyebrow" }, "NOTICE"),
-      h("h1", null, "공지사항"),
-      h("p", { className: "lead" }, "IT ACADEMY의 새로운 소식을 확인하세요."),
-      h("input", { className: "search", placeholder: "공지 제목 검색", value: keyword, onChange: function (e) { setKeyword(e.target.value); } }),
-      error ? h("p", { className: "error" }, error) : null,
-      h("div", { className: "notices" },
-        filtered.length ? filtered.map(function (notice) {
-          return h(Link, { key: notice.id, to: "/notices/" + notice.id, className: "notice-link" },
-            h("div", null,
-              h("b", null, notice.title),
-              h("small", null, String(notice.createdAt || "").slice(0, 10))
-            ),
-            h("span", null, "자세히 보기 →")
+      h("div", { className: "notice-heading" },
+        h("div", null,
+          h("span", { className: "eyebrow" }, "NOTICE"),
+          h("h1", null, "IT ACADEMY 소식"),
+          h("p", { className: "lead" }, "교육과정 운영 소식부터 새로운 모집 안내까지, IT ACADEMY의 최신 소식을 확인하세요.")
+        ),
+        h("div", { className: "notice-heading-mark" }, "NEWS", h("b", null, " & NOTICE"))
+      ),
+      h("div", { className: "notice-toolbar" },
+        h("div", { className: "notice-categories", role: "group", "aria-label": "공지사항 분류" },
+          categories.map(function (value) {
+            return h("button", {
+              type: "button",
+              key: value,
+              className: category === value ? "notice-category active" : "notice-category",
+              onClick: function () { changeCategory(value); }
+            }, value);
+          })
+        ),
+        h("label", { className: "notice-search" },
+          h("span", { className: "sr-only" }, "공지사항 검색"),
+          h("input", {
+            type: "search",
+            placeholder: "제목 또는 내용 검색",
+            value: keyword,
+            onChange: function (event) { changeKeyword(event.target.value); }
+          }),
+          h("span", { "aria-hidden": "true" }, "⌕")
+        )
+      ),
+      h("div", { className: "notice-summary" },
+        h("span", null, "TOTAL ", h("b", null, loading ? "—" : filtered.length)),
+        h("span", null, "최신 공지사항을 확인하세요")
+      ),
+      loading ? h("div", { className: "notice-skeleton", "aria-label": "공지사항 불러오는 중" },
+        [1, 2, 3, 4].map(function (value) {
+          return h("div", { className: "notice-skeleton-row", key: value },
+            h("i", null), h("div", null, h("b", null), h("span", null)), h("em", null)
           );
-        }) : (!error ? h("p", null, "등록된 공지사항이 없습니다.") : null)
+        })
+      ) : error ? h("div", { className: "notice-state error-state" },
+        h("div", { className: "notice-state-icon" }, "!"),
+        h("h2", null, "공지사항을 불러오지 못했습니다."),
+        h("p", null, error),
+        h("button", { type: "button", className: "btn", onClick: loadNotices }, "다시 불러오기")
+      ) : filtered.length === 0 ? h("div", { className: "notice-state" },
+        h("div", { className: "notice-state-icon" }, "⌕"),
+        h("h2", null, items.length ? "검색 결과가 없습니다." : "등록된 공지사항이 없습니다."),
+        h("p", null, items.length ? "다른 검색어 또는 분류를 선택해 주세요." : "새로운 소식이 등록되면 이곳에서 확인할 수 있습니다."),
+        items.length ? h("button", { type: "button", className: "btn ghost", onClick: function () { changeKeyword(""); changeCategory("전체"); } }, "검색 초기화") : null
+      ) : h(React.Fragment, null,
+        pinnedNotice ? h(Link, { to: "/notices/" + pinnedNotice.id, className: "notice-featured" },
+          h("div", { className: "notice-featured-label" }, h("span", null, "IMPORTANT NOTICE"), h("b", null, "중요 공지")),
+          h("div", { className: "notice-featured-body" },
+            h("div", null,
+              h("span", { className: "notice-tag featured-tag" }, pinnedNotice.category || "공지"),
+              h("h2", null, pinnedNotice.title),
+              h("p", null, String(pinnedNotice.content || "").replace(/\\s+/g, " ").slice(0, 125))
+            ),
+            h("span", { className: "notice-featured-arrow" }, "→")
+          ),
+          h("small", null, formatNoticeDate(pinnedNotice.createdAt))
+        ) : null,
+        h("div", { className: "notice-list" },
+          h("div", { className: "notice-list-head" },
+            h("span", null, "분류"),
+            h("span", null, "제목"),
+            h("span", null, "등록일"),
+            h("span", null, " ")
+          ),
+          visibleItems.map(function (notice) {
+            return h(Link, { key: notice.id, to: "/notices/" + notice.id, className: notice.pinned ? "notice-row pinned" : "notice-row" },
+              h("span", { className: "notice-tag" }, notice.category || "공지"),
+              h("span", { className: "notice-row-title" },
+                notice.pinned ? h("b", { className: "notice-pin" }, "중요") : null,
+                h("strong", null, notice.title)
+              ),
+              h("time", null, formatNoticeDate(notice.createdAt)),
+              h("span", { className: "notice-row-arrow", "aria-hidden": "true" }, "→")
+            );
+          })
+        ),
+        totalPages > 1 ? h("nav", { className: "notice-pagination", "aria-label": "공지사항 페이지" },
+          h("button", { type: "button", disabled: currentPage === 1, onClick: function () { setPage(currentPage - 1); } }, "이전"),
+          Array.from({ length: totalPages }, function (_, index) {
+            const number = index + 1;
+            return h("button", {
+              type: "button",
+              key: number,
+              className: currentPage === number ? "active" : "",
+              "aria-current": currentPage === number ? "page" : undefined,
+              onClick: function () { setPage(number); }
+            }, String(number));
+          }),
+          h("button", { type: "button", disabled: currentPage === totalPages, onClick: function () { setPage(currentPage + 1); } }, "다음")
+        ) : null
       )
     )
   );
@@ -424,24 +550,48 @@ function NoticeDetail() {
   const params = useParams();
   const navigate = useNavigate();
   const [notice, setNotice] = React.useState(null);
+  const [loading, setLoading] = React.useState(true);
   const [error, setError] = React.useState("");
 
+  async function loadNotice() {
+    setLoading(true);
+    setError("");
+    try {
+      const response = await api.get("/notices/" + params.id);
+      setNotice(response.data);
+    } catch (requestError) {
+      setError("해당 공지사항을 찾을 수 없거나 현재 공개되지 않은 게시글입니다.");
+    } finally {
+      setLoading(false);
+    }
+  }
+
   React.useEffect(function () {
-    api.get("/notices/" + params.id)
-      .then(function (response) { setNotice(response.data); })
-      .catch(function () { setError("공지사항을 찾을 수 없습니다."); });
+    loadNotice();
   }, [params.id]);
 
-  return h("section", { className: "page" },
+  return h("section", { className: "page notice-detail-page" },
     h("div", { className: "container" },
-      h("button", { className: "btn ghost", onClick: function () { navigate("/notices"); } }, "목록으로"),
-      error ? h("p", { className: "error" }, error) : null,
-      notice ? h("article", { className: "notice-detail" },
-        h("span", { className: "eyebrow" }, "NOTICE"),
+      h("button", { className: "notice-back", onClick: function () { navigate("/notices"); } }, "← 공지사항 목록"),
+      loading ? h("div", { className: "notice-state" }, "공지사항을 불러오는 중입니다.") :
+      error ? h("div", { className: "notice-state error-state" },
+        h("h2", null, "게시글을 확인할 수 없습니다."),
+        h("p", null, error),
+        h("button", { className: "btn", onClick: loadNotice }, "다시 시도")
+      ) : h("article", { className: "notice-detail" },
+        h("div", { className: "notice-detail-meta" },
+          h("span", { className: "notice-tag" }, notice.category || "공지"),
+          notice.pinned ? h("b", { className: "notice-pin" }, "중요 공지") : null,
+          h("time", null, formatNoticeDate(notice.createdAt))
+        ),
         h("h1", null, notice.title),
-        h("small", null, String(notice.createdAt || "").slice(0, 10)),
-        h("div", { className: "notice-content" }, notice.content)
-      ) : (!error ? h("p", null, "공지사항을 불러오는 중입니다.") : null)
+        h("div", { className: "notice-detail-divider" }),
+        h("div", { className: "notice-content" }, notice.content),
+        h("div", { className: "notice-detail-footer" },
+          h("span", null, "IT ACADEMY"),
+          h("button", { className: "btn ghost", onClick: function () { navigate("/notices"); } }, "목록으로 돌아가기")
+        )
+      )
     )
   );
 }

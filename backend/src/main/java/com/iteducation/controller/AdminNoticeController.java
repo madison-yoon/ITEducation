@@ -14,18 +14,26 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/admin/notices")
 public class AdminNoticeController {
+    private static final List<String> CATEGORIES =
+            List.of("공지", "모집 안내", "교육과정", "교육 소식", "운영 안내");
+
     private final NoticeRepository notices;
 
     public AdminNoticeController(NoticeRepository notices) {
         this.notices = notices;
     }
 
-    public record NoticeRequest(@NotBlank String title, @NotBlank String content,
-                                @NotBlank String status) {}
+    public record NoticeRequest(
+            @NotBlank String title,
+            @NotBlank String content,
+            @NotBlank String status,
+            String category,
+            boolean pinned
+    ) {}
 
     @GetMapping
     public List<Notice> list() {
-        return notices.findAllByOrderByCreatedAtDesc();
+        return notices.findAllByOrderByPinnedDescCreatedAtDesc();
     }
 
     @PostMapping
@@ -60,8 +68,17 @@ public class AdminNoticeController {
         if (!List.of("게시 중", "비공개").contains(request.status())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "게시 상태를 확인해 주세요.");
         }
+
+        String category = request.category() == null || request.category().isBlank()
+                ? "공지" : request.category().trim();
+        if (!CATEGORIES.contains(category)) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "공지 분류를 확인해 주세요.");
+        }
+
         notice.setTitle(request.title().trim());
-        notice.setContent(request.content());
+        notice.setContent(request.content().trim());
+        notice.setCategory(category);
+        notice.setPinned(request.pinned());
         notice.setStatus(request.status());
     }
 }

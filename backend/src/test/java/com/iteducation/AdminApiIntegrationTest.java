@@ -111,7 +111,7 @@ class AdminApiIntegrationTest {
                         .session(session)
                         .header("X-CSRF-TOKEN", token)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"title\":\"통합 테스트 공지\",\"content\":\"공지 내용\",\"status\":\"게시 중\"}"))
+                        .content("{\"title\":\"통합 테스트 공지\",\"content\":\"공지 내용\",\"status\":\"게시 중\",\"category\":\"모집 안내\",\"pinned\":true}"))
                 .andExpect(status().isCreated());
 
         mvc.perform(get("/api/notices"))
