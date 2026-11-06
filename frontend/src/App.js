@@ -643,7 +643,7 @@ function About() {
 }
 
 function App() {
-  return h(BrowserRouter, null,
+  return h(BrowserRouter, { basename: import.meta.env.BASE_URL },
     h(Routes, null,
       h(Route, { element: h(Layout) },
         h(Route, { path: "/", element: h(Home) }),
