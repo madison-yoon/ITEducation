@@ -161,7 +161,7 @@ class AdminApiIntegrationTest {
                         .session(session)
                         .header("X-CSRF-TOKEN", token)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"name\":\"테스트 사용자\",\"phone\":\"010-1234-5678\",\"courseTitle\":\"AI 교육과정\",\"message\":\"교육과정과 프로젝트 운영 방식이 궁금합니다.\",\"privacyConsent\":false,\"marketingConsent\":false}"))
+                        .content("{\"name\":\"테스트 사용자\",\"phone\":\"010-1234-5678\",\"courseTitle\":\"AI·머신러닝 실무 개발자 과정\",\"message\":\"교육과정과 프로젝트 운영 방식이 궁금합니다.\",\"privacyConsent\":false,\"marketingConsent\":false}"))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.message").value("개인정보 수집 및 이용 동의가 필요합니다."));
     }
@@ -237,6 +237,24 @@ class AdminApiIntegrationTest {
                         .content("{\"title\":\"확인되지 않은 과정\",\"recruitmentStatus\":\"모집 정보 확인\",\"operatingInfoVerified\":true}"))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.message").value("운영정보 확인 완료로 공개하려면 모집 상태, 교육 기간, 지원 대상을 입력해 주세요."));
+    }
+
+
+    @Test
+    void inquiryRejectsCourseThatIsNotInThePublicCatalog() throws Exception {
+        MvcResult tokenResult = mvc.perform(get("/api/csrf"))
+                .andExpect(status().isOk())
+                .andReturn();
+        MockHttpSession session = (MockHttpSession) tokenResult.getRequest().getSession(false);
+        String token = csrfToken(session);
+
+        mvc.perform(post("/api/inquiries")
+                        .session(session)
+                        .header("X-CSRF-TOKEN", token)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"name\":\"테스트 사용자\",\"phone\":\"010-9999-8888\",\"courseTitle\":\"등록되지 않은 과정\",\"message\":\"상담 접수 테스트를 위한 충분한 문의 내용입니다.\",\"privacyConsent\":true}"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value("선택한 교육과정을 찾을 수 없습니다."));
     }
 
     private String csrfToken(MockHttpSession session) throws Exception {
