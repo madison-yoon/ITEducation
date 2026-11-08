@@ -320,7 +320,7 @@ function Courses() {
           h("div", { className: "recruit-facts" },
             h("article", null, h("small", null, "모집 기간"), h("b", null, detailData.recruitPeriod)),
             h("article", null, h("small", null, "개강 예정"), h("b", null, detailData.startDate)),
-            h("article", null, h("small", null, "교육 방식"), h("b", null, "오프라인 · 프로젝트 실습")),
+            h("article", null, h("small", null, "교육 방식"), h("b", null, "운영기관 확인 필요")),
             h("article", null, h("small", null, "교육 대상"), h("b", null, selected.target))
           )
         ),
@@ -488,14 +488,15 @@ function Courses() {
         filtered.map(function (course) {
           return h(CourseCard, { course: course, key: course.id });
         })
-      )
+      ),
+      h("p", { className: "course-data-disclosure" }, "※ 서버에 등록된 운영정보가 확인되기 전까지 기본 과정은 교육 설계 예시로 표시됩니다. 모집 여부·교육 기간·지원 대상은 관리자 확인 완료 후 공개됩니다.")
     )
   );
 }
 
 function Consultation() {
   const navigate = useNavigate();
-  const [availableCourses, setAvailableCourses] = React.useState(courseSeed);
+  const [availableCourses, setAvailableCourses] = React.useState(isStaticPreview ? courseSeed : []);\n  const [courseLoading, setCourseLoading] = React.useState(!isStaticPreview);\n  const [courseError, setCourseError] = React.useState("");
   const [form, setForm] = React.useState({
     name: "", phone: "", email: "", courseTitle: "",
     preferredDate: "", preferredPeriod: "오전", message: "",
@@ -506,14 +507,25 @@ function Consultation() {
   const [submitting, setSubmitting] = React.useState(false);
 
   React.useEffect(function () {
+    if (isStaticPreview) return undefined;
+
     let active = true;
     api.get("/courses")
       .then(function (response) {
-        if (active && Array.isArray(response.data) && response.data.length) {
-          setAvailableCourses(response.data);
-        }
+        if (!active) return;
+        const courseList = Array.isArray(response.data) ? response.data : [];
+        setAvailableCourses(courseList);
+        setCourseError(courseList.length ? "" : "현재 신청 가능한 교육과정이 등록되지 않았습니다.");
       })
-      .catch(function () {})
+      .catch(function () {
+        if (!active) return;
+        setAvailableCourses([]);
+        setCourseError("교육과정 정보를 불러오지 못했습니다. 백엔드 연결을 확인해 주세요.");
+      })
+      .finally(function () {
+        if (active) setCourseLoading(false);
+      });
+
     return function () { active = false; };
   }, []);
 
@@ -526,14 +538,10 @@ function Consultation() {
   async function submitForm(event) {
     event.preventDefault();
     setError("");
-    if (isStaticPreview) {
-      setError("정적 미리보기에서는 상담 신청이 실제로 전송되지 않습니다. 백엔드가 연결된 서비스 환경에서 이용해 주세요.");
-      return;
-    }
-    setSubmitting(true);
+    if (isStaticPreview) {\n      setError("정적 미리보기에서는 상담 신청이 실제로 전송되지 않습니다. 백엔드가 연결된 서비스 환경에서 이용해 주세요.");\n      return;\n    }\n    if (!availableCourses.some(function (course) { return course.title === form.courseTitle; })) {\n      setError("서버에서 제공하는 교육과정을 선택해 주세요.");\n      return;\n    }\n    setSubmitting(true);
 
     try {
-      const response = await api.post("/inquiries", form);
+      const payload = Object.assign({}, form, {\n        email: form.email.trim() || null,\n        preferredDate: form.preferredDate || null,\n        preferredPeriod: form.preferredPeriod || null\n      });\n      const response = await api.post("/inquiries", payload);
       setReceipt(response.data.receiptNo);
     } catch (requestError) {
       const message = requestError.response && requestError.response.data
@@ -577,14 +585,12 @@ function Consultation() {
           h("input", { type: "email", maxLength: 120, value: form.email, onChange: function (e) { updateField("email", e.target.value); } })
         ),
         h("label", null, "희망 교육과정 *",
-          h("select", { required: true, value: form.courseTitle, onChange: function (e) { updateField("courseTitle", e.target.value); } },
-            h("option", { value: "" }, "과정을 선택하세요"),
+          h("select", { required: true, disabled: courseLoading || availableCourses.length === 0, value: form.courseTitle, onChange: function (e) { updateField("courseTitle", e.target.value); } },
+            h("option", { value: "", disabled: true }, courseLoading ? "교육과정 불러오는 중..." : "과정을 선택하세요"),
             availableCourses.map(function (course) {
               return h("option", { key: course.id, value: course.title }, course.title);
             })
-          )
-        ),
-        h("div", { className: "two" },
+          ),\n          courseError ? h("small", { className: "form-help error-text" }, courseError) : null\n        ),\n        h("div", { className: "two" },
           h("label", null, "상담 희망 날짜",
             h("input", { type: "date", value: form.preferredDate, onChange: function (e) { updateField("preferredDate", e.target.value); } })
           ),
@@ -608,7 +614,7 @@ function Consultation() {
           " 마케팅 수신 동의 (선택)"
         ),
         error ? h("p", { className: "error" }, error) : null,
-        h("button", { className: "btn full", disabled: submitting || !form.privacyConsent },
+        h("button", { className: "btn full", disabled: submitting || !form.privacyConsent || isStaticPreview || courseLoading || availableCourses.length === 0 },
           submitting ? "신청 처리 중..." : "상담 신청하기"
         )
       )
