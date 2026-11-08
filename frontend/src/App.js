@@ -17,10 +17,10 @@ const h = React.createElement;
 
 // API 연결에 실패해도 화면을 확인할 수 있도록 준비한 교육과정 기본 데이터입니다.
 const courseSeed = [
-  { id: 1, title: "AI·머신러닝 실무 개발자 과정", category: "AI", duration: "6개월", recruitmentStatus: "모집 정보 확인", summary: "Python과 머신러닝으로 데이터를 분석하고 예측 모델을 구현합니다.", target: "지원 대상은 운영기관 확인 필요", curriculum: "Python 기초 → 데이터 처리 → 머신러닝 → 딥러닝 → 영화 추천 프로젝트", skills: "Python · NumPy · Pandas · Scikit-learn · PyTorch" },
-  { id: 2, title: "빅데이터 분석 전문가 과정", category: "DATA", duration: "5개월", recruitmentStatus: "모집 정보 확인", summary: "대규모 데이터를 분석하고 의미 있는 인사이트를 시각화합니다.", target: "지원 대상은 운영기관 확인 필요", curriculum: "Python·SQL → 전처리 → 통계 분석 → 시각화 → 분석 대시보드", skills: "Python · SQL · Pandas · Spark" },
-  { id: 3, title: "생성형 AI 서비스 개발 과정", category: "GEN AI", duration: "4개월", recruitmentStatus: "모집 중", summary: "LLM과 RAG를 활용해 실제 문제를 해결하는 AI 서비스를 만듭니다.", target: "지원 대상은 운영기관 확인 필요", curriculum: "API → LLM → 프롬프트 → 임베딩·RAG → 문서 질의응답", skills: "Python · LLM API · Embedding · RAG" },
-  { id: 4, title: "AI 기반 웹 서비스 개발 과정", category: "WEB", duration: "6개월", recruitmentStatus: "모집 정보 확인", summary: "웹 기술과 AI를 연결해 사용 가능한 서비스를 구현합니다.", target: "지원 대상은 운영기관 확인 필요", curriculum: "Java → Spring Boot → React → MySQL → AI API 연동", skills: "Java · Spring Boot · React · MySQL" }
+  { id: 1, title: "AI·머신러닝 실무 개발자 과정", category: "AI", duration: "운영 정보 확인", recruitmentStatus: "모집 정보 확인", summary: "Python과 머신러닝으로 데이터를 분석하고 예측 모델을 구현합니다.", target: "지원 대상은 운영기관 확인 필요", curriculum: "Python 기초 → 데이터 처리 → 머신러닝 → 딥러닝 → 영화 추천 프로젝트", skills: "Python · NumPy · Pandas · Scikit-learn · PyTorch" },
+  { id: 2, title: "빅데이터 분석 전문가 과정", category: "DATA", duration: "운영 정보 확인", recruitmentStatus: "모집 정보 확인", summary: "대규모 데이터를 분석하고 의미 있는 인사이트를 시각화합니다.", target: "지원 대상은 운영기관 확인 필요", curriculum: "Python·SQL → 전처리 → 통계 분석 → 시각화 → 분석 대시보드", skills: "Python · SQL · Pandas · Spark" },
+  { id: 3, title: "생성형 AI 서비스 개발 과정", category: "GEN AI", duration: "운영 정보 확인", recruitmentStatus: "모집 정보 확인", summary: "LLM과 RAG를 활용해 실제 문제를 해결하는 AI 서비스를 만듭니다.", target: "지원 대상은 운영기관 확인 필요", curriculum: "API → LLM → 프롬프트 → 임베딩·RAG → 문서 질의응답", skills: "Python · LLM API · Embedding · RAG" },
+  { id: 4, title: "AI 기반 웹 서비스 개발 과정", category: "WEB", duration: "운영 정보 확인", recruitmentStatus: "모집 정보 확인", summary: "웹 기술과 AI를 연결해 사용 가능한 서비스를 구현합니다.", target: "지원 대상은 운영기관 확인 필요", curriculum: "Java → Spring Boot → React → MySQL → AI API 연동", skills: "Java · Spring Boot · React · MySQL" }
 ];
 
 
