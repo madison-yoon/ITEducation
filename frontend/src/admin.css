@@ -80,3 +80,5 @@
 @media(prefers-reduced-motion:reduce){
  .admin-sidebar nav button,.admin-sidebar-bottom button,.admin-primary,.admin-secondary,.admin-danger{transition:none}
 }
+
+.admin-form-hint{margin:-4px 0 2px;padding:10px 12px;border-left:2px solid #8a9af1;border-radius:0 7px 7px 0;background:#f5f7ff;color:#78849c;font-size:10px;line-height:1.7}
