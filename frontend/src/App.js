@@ -182,6 +182,7 @@ function CourseCard(props) {
       h("span", { className: "status" }, course.recruitmentStatus)
     ),
     h("small", { className: "eyebrow" }, course.category),
+    h("span", { className: "course-info-disclosure" }, course.infoDisclosure || "교육과정 구성 예시"),
     h("h3", null, course.title),
     h("p", null, course.summary),
     h("div", { className: "coursefoot" },
@@ -342,6 +343,7 @@ function Courses() {
           h("span", { className: "eyebrow light" }, selected.category + " PROGRAM · LEARNING PATH"),
           h("span", { className: "course-status-pill" }, selected.recruitmentStatus || "모집 안내"),
           h("h1", null, selected.title),
+          h("p", { className: "course-info-disclosure hero-disclosure" }, selected.infoDisclosure || "교육과정 구성 예시"),
           h("p", null, detailData.intro),
           h("div", { className: "course-detail-tags" },
             h("span", null, "교육 기간 " + selected.duration),
