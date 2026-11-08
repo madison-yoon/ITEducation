@@ -192,6 +192,38 @@ class AdminApiIntegrationTest {
                 .andExpect(jsonPath("$.message").value("진행 중인 상담이 있습니다. 기존 접수 건의 안내를 확인해 주세요."));
     }
 
+
+    @Test
+    void publicCourseApiHidesUnverifiedRecruitmentAndEligibilityData() throws Exception {
+        mvc.perform(get("/api/courses"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].recruitmentStatus").value("모집 정보 확인"))
+                .andExpect(jsonPath("$[0].duration").value("운영 정보 확인"))
+                .andExpect(jsonPath("$[0].target").value("지원 대상은 운영기관 확인 필요"))
+                .andExpect(jsonPath("$[0].infoDisclosure").value("교육과정 구성 예시"));
+    }
+
+    @Test
+    void verifiedCourseInformationCanBePublishedByAdministrator() throws Exception {
+        MockHttpSession session = login(SUPER_LOGIN);
+        String token = csrfToken(session);
+
+        mvc.perform(post("/api/admin/courses")
+                        .session(session)
+                        .header("X-CSRF-TOKEN", token)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"title\":\"검증된 AI 과정\",\"category\":\"AI\",\"summary\":\"검증 테스트 과정\",\"target\":\"지원 대상 확인 완료\",\"duration\":\"5개월\",\"recruitmentStatus\":\"모집 중\",\"operatingInfoVerified\":true}"))
+                .andExpect(status().isCreated());
+
+        mvc.perform(get("/api/courses"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].title").value("검증된 AI 과정"))
+                .andExpect(jsonPath("$[0].recruitmentStatus").value("모집 중"))
+                .andExpect(jsonPath("$[0].duration").value("5개월"))
+                .andExpect(jsonPath("$[0].target").value("지원 대상 확인 완료"))
+                .andExpect(jsonPath("$[0].infoDisclosure").value("운영 정보 확인 완료"));
+    }
+
     private String csrfToken(MockHttpSession session) throws Exception {
         MvcResult result = mvc.perform(get("/api/csrf").session(session))
                 .andExpect(status().isOk())
