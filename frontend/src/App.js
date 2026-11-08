@@ -196,7 +196,7 @@ function CourseCard(props) {
 // 등록된 과정명·소개·커리큘럼·기술 정보를 기반으로 기본 상세 구성을 만듭니다.
 function buildCourseDetailData(course) {
   const modules = String(course.curriculum || "")
-    .split(/→|\\n|;/)
+    .split(/→|\r?\n|;/)
     .map(function (value) { return value.trim(); })
     .filter(Boolean)
     .map(function (title, index) {
