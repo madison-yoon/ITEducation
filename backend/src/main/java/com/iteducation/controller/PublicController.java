@@ -1,36 +1,48 @@
 package com.iteducation.controller;
 
+import com.iteducation.dto.CoursePublicResponse;
+import com.iteducation.dto.ProjectShowcaseResponse;
 import com.iteducation.entity.Course;
 import com.iteducation.entity.Notice;
 import com.iteducation.repository.CourseRepository;
 import com.iteducation.repository.NoticeRepository;
+import com.iteducation.service.ProjectCatalogService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api")
 public class PublicController {
     private final CourseRepository courses;
     private final NoticeRepository notices;
+    private final ProjectCatalogService projects;
 
-    public PublicController(CourseRepository courses, NoticeRepository notices) {
+    public PublicController(
+            CourseRepository courses,
+            NoticeRepository notices,
+            ProjectCatalogService projects
+    ) {
         this.courses = courses;
         this.notices = notices;
+        this.projects = projects;
     }
 
     @GetMapping("/courses")
-    public List<Course> courses() {
-        return courses.findAllByOrderByCreatedAtDesc();
+    public List<CoursePublicResponse> courses() {
+        return courses.findAllByOrderByCreatedAtDesc()
+                .stream()
+                .map(this::toPublicCourse)
+                .toList();
     }
 
     @GetMapping("/courses/{id}")
-    public Course course(@PathVariable Long id) {
-        return courses.findById(id)
+    public CoursePublicResponse course(@PathVariable Long id) {
+        Course course = courses.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        return toPublicCourse(course);
     }
 
     @GetMapping("/notices")
@@ -49,12 +61,27 @@ public class PublicController {
     }
 
     @GetMapping("/projects")
-    public List<Map<String, String>> projects() {
-        return List.of(
-                Map.of("title", "AI 영화 추천 시스템", "category", "AI·머신러닝", "description", "사용자 선호 데이터 기반 추천 모델"),
-                Map.of("title", "소비 데이터 분석 대시보드", "category", "빅데이터", "description", "대규모 소비 패턴 분석과 시각화"),
-                Map.of("title", "문서 질의응답 AI 서비스", "category", "생성형 AI", "description", "문서 검색과 LLM 응답을 결합한 서비스"),
-                Map.of("title", "AI 통합 웹 플랫폼", "category", "AI 웹서비스", "description", "AI 기능을 연결한 웹 서비스 예시")
+    public List<ProjectShowcaseResponse> projects() {
+        return projects.findAll();
+    }
+
+    private CoursePublicResponse toPublicCourse(Course course) {
+        boolean verified = course.isOperatingInfoVerified();
+
+        return new CoursePublicResponse(
+                course.getId(),
+                course.getTitle(),
+                course.getCategory(),
+                course.getSummary(),
+                course.getDescription(),
+                verified ? course.getTarget() : "지원 대상은 운영기관 확인 필요",
+                verified ? course.getDuration() : "운영 정보 확인",
+                verified ? course.getRecruitmentStatus() : "모집 정보 확인",
+                course.getImageUrl(),
+                course.getCurriculum(),
+                course.getSkills(),
+                course.isFeatured(),
+                verified ? "운영 정보 확인 완료" : "교육과정 구성 예시"
         );
     }
 }

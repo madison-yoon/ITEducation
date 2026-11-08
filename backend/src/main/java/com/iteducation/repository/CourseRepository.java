@@ -8,4 +8,5 @@ import java.util.List;
 public interface CourseRepository extends JpaRepository<Course, Long> {
     List<Course> findAllByOrderByCreatedAtDesc();
     long countByRecruitmentStatus(String recruitmentStatus);
+    boolean existsByTitle(String title);
 }

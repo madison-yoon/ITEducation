@@ -11,31 +11,27 @@ import {
 } from "react-router-dom";
 import api from "./api.js";
 import AdminApp from "./AdminApp.js";
+import { AcademyHome, AcademyAbout, AcademyProjects } from "./academy-pages.js";
 
 const h = React.createElement;
 
 // API 연결에 실패해도 화면을 확인할 수 있도록 준비한 교육과정 기본 데이터입니다.
 const courseSeed = [
-  { id: 1, title: "AI·머신러닝 실무 개발자 과정", category: "AI", duration: "6개월", recruitmentStatus: "모집 중", summary: "Python과 머신러닝으로 데이터를 분석하고 예측 모델을 구현합니다.", target: "비전공자 및 전공자 모두 수강 가능", curriculum: "Python 기초 → 데이터 처리 → 머신러닝 → 딥러닝 → 영화 추천 프로젝트", skills: "Python · NumPy · Pandas · Scikit-learn · PyTorch" },
-  { id: 2, title: "빅데이터 분석 전문가 과정", category: "DATA", duration: "5개월", recruitmentStatus: "모집 예정", summary: "대규모 데이터를 분석하고 의미 있는 인사이트를 시각화합니다.", target: "데이터 분석과 시각화에 관심 있는 사람", curriculum: "Python·SQL → 전처리 → 통계 분석 → 시각화 → 분석 대시보드", skills: "Python · SQL · Pandas · Spark" },
-  { id: 3, title: "생성형 AI 서비스 개발 과정", category: "GEN AI", duration: "4개월", recruitmentStatus: "모집 중", summary: "LLM과 RAG를 활용해 실제 문제를 해결하는 AI 서비스를 만듭니다.", target: "생성형 AI를 실제 서비스에 적용하고 싶은 사람", curriculum: "API → LLM → 프롬프트 → 임베딩·RAG → 문서 질의응답", skills: "Python · LLM API · Embedding · RAG" },
-  { id: 4, title: "AI 기반 웹 서비스 개발 과정", category: "WEB", duration: "6개월", recruitmentStatus: "모집 마감", summary: "웹 기술과 AI를 연결해 사용 가능한 서비스를 구현합니다.", target: "웹 개발과 AI 연동을 함께 학습하고 싶은 사람", curriculum: "Java → Spring Boot → React → MySQL → AI API 연동", skills: "Java · Spring Boot · React · MySQL" }
+  { id: 1, title: "AI·머신러닝 실무 개발자 과정", category: "AI", duration: "운영 정보 확인", recruitmentStatus: "모집 정보 확인", summary: "Python과 머신러닝으로 데이터를 분석하고 예측 모델을 구현합니다.", target: "지원 대상은 운영기관 확인 필요", curriculum: "Python 기초 → 데이터 처리 → 머신러닝 → 딥러닝 → 영화 추천 프로젝트", skills: "Python · NumPy · Pandas · Scikit-learn · PyTorch" },
+  { id: 2, title: "빅데이터 분석 전문가 과정", category: "DATA", duration: "운영 정보 확인", recruitmentStatus: "모집 정보 확인", summary: "대규모 데이터를 분석하고 의미 있는 인사이트를 시각화합니다.", target: "지원 대상은 운영기관 확인 필요", curriculum: "Python·SQL → 전처리 → 통계 분석 → 시각화 → 분석 대시보드", skills: "Python · SQL · Pandas · Spark" },
+  { id: 3, title: "생성형 AI 서비스 개발 과정", category: "GEN AI", duration: "운영 정보 확인", recruitmentStatus: "모집 정보 확인", summary: "LLM과 RAG를 활용해 실제 문제를 해결하는 AI 서비스를 만듭니다.", target: "지원 대상은 운영기관 확인 필요", curriculum: "API → LLM → 프롬프트 → 임베딩·RAG → 문서 질의응답", skills: "Python · LLM API · Embedding · RAG" },
+  { id: 4, title: "AI 기반 웹 서비스 개발 과정", category: "WEB", duration: "운영 정보 확인", recruitmentStatus: "모집 정보 확인", summary: "웹 기술과 AI를 연결해 사용 가능한 서비스를 구현합니다.", target: "지원 대상은 운영기관 확인 필요", curriculum: "Java → Spring Boot → React → MySQL → AI API 연동", skills: "Java · Spring Boot · React · MySQL" }
 ];
 
-const projectSeed = [
-  { title: "AI 영화 추천 시스템", description: "사용자 선호 데이터 기반 추천 모델", category: "AI · ML" },
-  { title: "소비 데이터 분석 대시보드", description: "대규모 소비 패턴 분석과 시각화", category: "BIG DATA" },
-  { title: "문서 질의응답 AI 서비스", description: "문서 검색과 생성형 AI 응답 결합", category: "GEN AI" },
-  { title: "AI 통합 웹 플랫폼", description: "AI 기능을 연결한 웹 서비스 구현", category: "WEB" }
-];
+
  
 // 과정 상세 소개용 콘텐츠입니다. 일정과 혜택은 실제 운영 정보가 아닌 데모 데이터입니다.
 const courseDetailData = {
   1: {
     intro: "데이터를 읽고 모델을 학습시키는 기초부터 실제 서비스에 적용하는 과정까지 경험합니다. 코딩 경험이 많지 않은 학습자도 Python 기초부터 순서대로 따라올 수 있도록 구성한 실습 중심 프로그램입니다.",
     description: "Python으로 데이터를 다루는 방법을 익힌 뒤 통계와 머신러닝의 핵심 원리를 학습합니다. 이후 모델 성능을 평가하고 개선하는 과정을 반복하며, 마지막에는 영화 추천 서비스를 주제로 데이터 수집·전처리·모델링·결과 시각화를 연결한 팀 프로젝트를 완성합니다.",
-    recruitPeriod: "2026.11.09 ~ 2026.11.30",
-    startDate: "2026.12.07 (예정)",
+    recruitPeriod: "운영기관 공지 확인",
+    startDate: "상담 시 최신 일정 안내",
     outcomes: [
       { title: "데이터 분석 기초", description: "Python과 Pandas로 데이터를 정리하고 분석 결과를 표와 그래프로 표현합니다." },
       { title: "예측 모델 구현", description: "분류·회귀·군집화 알고리즘을 적용하고 성능 지표를 비교합니다." },
@@ -59,23 +55,23 @@ const courseDetailData = {
     faqs: [
       { question: "프로그래밍을 처음 배우는 사람도 신청할 수 있나요?", answer: "과정은 Python 기초부터 시작하도록 설계했습니다. 다만 학습 시간과 실습 과제가 필요하므로 상담에서 현재 수준과 학습 가능 시간을 함께 확인하는 것을 권장합니다." },
       { question: "수료 후 어떤 결과물을 만들 수 있나요?", answer: "데이터 분석 노트북, 머신러닝 모델, 평가 보고서, 추천 서비스 시연 화면을 포트폴리오 형태로 정리하는 것을 목표로 합니다." },
-      { question: "교육 일정과 비용은 확정되어 있나요?", answer: "이 페이지의 일정은 데모 데이터입니다. 실제 개강일, 교육비, 지원 제도 및 모집 인원은 운영기관 확인이 필요합니다." }
+      { question: "교육 일정과 비용은 확정되어 있나요?", answer: "확인되지 않은 일정이나 비용은 이 화면에 임의로 표시하지 않습니다. 실제 개강일, 교육비, 지원 제도 및 모집 인원은 운영기관의 최신 공지로 확인해 주세요." }
     ]
   },
   2: {
     intro: "데이터를 수집하고 정리하는 단계부터 분석 결과를 시각화하고 대시보드로 전달하는 과정까지 학습합니다.",
     description: "SQL과 Python을 활용해 데이터를 추출·정제하고 기초 통계와 탐색적 데이터 분석을 수행합니다. 분석 목적에 맞는 시각화를 설계하고 결과를 대시보드 형태로 구성하는 프로젝트를 진행합니다.",
-    recruitPeriod: "2026.11.16 ~ 2026.12.04", startDate: "2026.12.14 (예정)",
+    recruitPeriod: "운영기관 공지 확인", startDate: "상담 시 최신 일정 안내",
     outcomes: [{title:"데이터 추출",description:"SQL로 필요한 데이터를 조회하고 구조를 이해합니다."},{title:"분석과 해석",description:"통계와 탐색적 분석으로 데이터의 특징을 설명합니다."},{title:"시각화 전달",description:"핵심 지표를 대시보드로 구성하고 분석 내용을 발표합니다."}],
     modules: [{title:"Python과 SQL",description:"분석 환경과 데이터베이스 기초를 익힙니다.",tools:"Python · SQL"},{title:"데이터 전처리",description:"결측치와 이상치를 처리하고 분석용 데이터를 구성합니다.",tools:"Pandas · NumPy"},{title:"통계 분석",description:"기술통계와 상관관계 등 분석 기초를 학습합니다.",tools:"Statistics"},{title:"데이터 시각화",description:"분석 결과를 목적에 맞는 차트와 대시보드로 표현합니다.",tools:"Matplotlib · Seaborn · BI"},{title:"분석 프로젝트",description:"주제를 정해 데이터 분석 보고서와 대시보드를 완성합니다.",tools:"SQL · Dashboard · Git"}],
     projectTitle:"소비 패턴 분석 대시보드",projectDescription:"가상의 소비 데이터를 바탕으로 기간·지역·카테고리별 추세를 분석하고 주요 지표를 시각화합니다.",deliverables:["SQL 분석 쿼리","전처리 노트북","대시보드","분석 보고서"],
     benefits:[{title:"분석 실습 데이터",description:"학습 단계에 맞춘 예제 데이터를 사용해 반복 실습합니다."},{title:"시각화 피드백",description:"차트 선택과 정보 전달 방식에 대한 피드백을 제공합니다."},{title:"결과 보고서 구성",description:"분석 목적과 근거, 결론을 연결해 보고서로 정리합니다."}],
-    faqs:[{question:"통계 전공 지식이 필요한가요?",answer:"기초 통계 개념부터 다루도록 구성했습니다. 수학적 배경과 학습 난이도는 상담에서 확인할 수 있습니다."},{question:"프로젝트 결과물은 무엇인가요?",answer:"분석용 SQL, 전처리 코드, 대시보드와 분석 보고서를 결과물로 정리합니다."},{question:"모집 일정은 확정인가요?",answer:"화면 구성용 데모 일정입니다. 실제 일정과 비용은 운영기관 확인이 필요합니다."}]
+    faqs:[{question:"통계 전공 지식이 필요한가요?",answer:"기초 통계 개념부터 다루도록 구성했습니다. 수학적 배경과 학습 난이도는 상담에서 확인할 수 있습니다."},{question:"프로젝트 결과물은 무엇인가요?",answer:"분석용 SQL, 전처리 코드, 대시보드와 분석 보고서를 결과물로 정리합니다."},{question:"모집 일정은 확정인가요?",answer:"확인되지 않은 일정이나 비용은 이 화면에 임의로 표시하지 않습니다. 실제 일정과 비용은 운영기관의 최신 공지로 확인해 주세요."}]
   },
   3: {
     intro: "대규모 언어 모델의 기본 개념을 이해하고 API와 검색 기술을 결합해 실용적인 생성형 AI 서비스를 구현합니다.",
     description: "프롬프트 설계, 임베딩, 벡터 검색, RAG 구조를 단계적으로 학습합니다. 문서 기반 질의응답 서비스를 주제로 데이터 준비부터 검색·응답 흐름과 간단한 사용자 화면까지 구현합니다.",
-    recruitPeriod: "2026.11.23 ~ 2026.12.11", startDate: "2026.12.21 (예정)",
+    recruitPeriod: "운영기관 공지 확인", startDate: "상담 시 최신 일정 안내",
     outcomes:[{title:"LLM 활용",description:"모델 API와 프롬프트를 사용해 입력에 맞는 응답을 생성합니다."},{title:"검색 증강 생성",description:"문서를 분할하고 임베딩·검색을 통해 근거 기반 응답을 구성합니다."},{title:"AI 서비스 연결",description:"질의응답 흐름을 사용자 화면과 연결해 시연합니다."}],
     modules:[{title:"Python과 API 기초",description:"HTTP 요청과 JSON 데이터 처리 방식을 익힙니다.",tools:"Python · REST API"},{title:"LLM과 프롬프트",description:"모델의 입력·출력 구조와 프롬프트 설계를 학습합니다.",tools:"LLM API · Prompt Engineering"},{title:"임베딩과 벡터 검색",description:"텍스트 임베딩과 유사도 검색의 기본 원리를 익힙니다.",tools:"Embedding · Vector Search"},{title:"RAG 파이프라인",description:"문서 분할, 검색, 컨텍스트 구성, 응답 생성을 연결합니다.",tools:"RAG · Retrieval"},{title:"서비스 프로젝트",description:"문서 질의응답 서비스를 구현하고 품질을 점검합니다.",tools:"Python · API · Web UI"}],
     projectTitle:"내부 문서 검색·질의응답 AI 도우미",projectDescription:"샘플 문서를 등록하고 사용자의 질문과 관련된 내용을 검색해 출처 문맥과 함께 답변하는 데모 서비스를 만듭니다.",deliverables:["문서 전처리 모듈","검색 파이프라인","질의응답 API","시연 화면"],
@@ -85,7 +81,7 @@ const courseDetailData = {
   4: {
     intro: "웹 애플리케이션의 화면과 서버, 데이터베이스를 연결하고 AI API까지 연동하는 풀스택 개발 흐름을 경험합니다.",
     description: "Java와 Spring Boot로 서버 기능과 데이터 처리를 구현하고 React로 사용자 화면을 구성합니다. 데이터베이스 설계, API 연동, 로그인과 게시판 등 서비스의 기본 기능을 연결해 팀 프로젝트를 완성합니다.",
-    recruitPeriod: "2026.11.30 ~ 2026.12.18", startDate: "2027.01.04 (예정)",
+    recruitPeriod: "운영기관 공지 확인", startDate: "상담 시 최신 일정 안내",
     outcomes:[{title:"백엔드 개발",description:"Spring Boot로 API와 비즈니스 로직을 구현합니다."},{title:"프론트엔드 개발",description:"React로 화면과 사용자 상호작용을 구성합니다."},{title:"서비스 통합",description:"DB와 API를 연결하고 테스트 가능한 웹 서비스를 완성합니다."}],
     modules:[{title:"Java 프로그래밍",description:"객체지향 기초와 예외 처리, 컬렉션을 학습합니다.",tools:"Java"},{title:"Spring Boot와 DB",description:"REST API와 데이터베이스 연동을 구현합니다.",tools:"Spring Boot · MySQL · JPA"},{title:"React 화면 개발",description:"컴포넌트와 상태, 라우팅을 사용해 화면을 만듭니다.",tools:"React · JavaScript · CSS"},{title:"인증과 서비스 기능",description:"로그인과 게시판 등 기본 서비스 기능을 연결합니다.",tools:"Session · REST API"},{title:"팀 프로젝트",description:"기획부터 배포 가능한 형태의 결과물 정리까지 진행합니다.",tools:"Git · Testing · Documentation"}],
     projectTitle:"AI 기능을 연결한 교육·업무 웹 플랫폼",projectDescription:"사용자 인증, 데이터 등록·조회, 검색 기능을 갖춘 웹 서비스를 만들고 외부 AI API를 연결하는 프로젝트입니다.",deliverables:["화면 설계서","REST API","DB 스키마","통합 웹 서비스"],
@@ -97,29 +93,44 @@ const courseDetailData = {
 function Header() {
   const [menuOpen, setMenuOpen] = React.useState(false);
   const links = [
-    ["/about", "소개"],
+    ["/about", "교육 철학"],
     ["/courses", "교육과정"],
     ["/projects", "프로젝트"],
     ["/notices", "공지사항"]
   ];
 
-  return h("header", { className: "header" },
-    h("div", { className: "container nav" },
-      h(Link, { to: "/", className: "brand" }, "IT ", h("b", null, "ACADEMY")),
-      h("button", { className: "menu", onClick: function () { setMenuOpen(!menuOpen); } }, "☰"),
-      h("nav", { className: menuOpen ? "navlinks show" : "navlinks" },
-        links.map(function (item) {
-          return h(NavLink, {
-            to: item[0],
-            key: item[0],
+  return h(React.Fragment, null,
+    h("a", { href: "#main-content", className: "skip-link" }, "본문 바로가기"),
+    h("header", { className: "header academy-site-header" },
+      h("div", { className: "container nav" },
+        h(Link, { to: "/", className: "brand academy-brand", "aria-label": "IT ACADEMY 홈" },
+          h("span", { className: "academy-brand-symbol", "aria-hidden": "true" }, "IT"),
+          h("span", { className: "academy-brand-copy" },
+            h("b", null, "ACADEMY"),
+            h("small", null, "AI · DATA · ENGINEERING")
+          )
+        ),
+        h("button", {
+          type: "button",
+          className: "menu academy-menu-button",
+          "aria-label": menuOpen ? "메뉴 닫기" : "메뉴 열기",
+          "aria-expanded": menuOpen,
+          onClick: function () { setMenuOpen(!menuOpen); }
+        }, menuOpen ? "×" : "☰"),
+        h("nav", { className: menuOpen ? "navlinks show academy-navlinks" : "navlinks academy-navlinks", "aria-label": "주요 메뉴" },
+          links.map(function (item) {
+            return h(NavLink, {
+              to: item[0],
+              key: item[0],
+              onClick: function () { setMenuOpen(false); }
+            }, item[1]);
+          }),
+          h(Link, {
+            to: "/consultation",
+            className: "btn small academy-header-cta",
             onClick: function () { setMenuOpen(false); }
-          }, item[1]);
-        }),
-        h(Link, {
-          to: "/consultation",
-          className: "btn small",
-          onClick: function () { setMenuOpen(false); }
-        }, "상담 신청")
+          }, "교육 상담 ↗")
+        )
       )
     )
   );
@@ -128,21 +139,36 @@ function Header() {
 function Layout() {
   return h(React.Fragment, null,
     h(Header),
-    h("main", null, h(Outlet)),
-    h("footer", { className: "footer" },
-      h("div", { className: "container footerrow" },
+    h("main", { id: "main-content" }, h(Outlet)),
+    h("footer", { className: "footer academy-site-footer" },
+      h("div", { className: "container academy-footer-main" },
         h("div", null,
-          h("div", { className: "brand" }, "IT ", h("b", null, "ACADEMY")),
-          h("p", null, "AI · DATA · ENGINEERING EDUCATION")
+          h(Link, { to: "/", className: "brand academy-brand footer-brand" },
+            h("span", { className: "academy-brand-symbol", "aria-hidden": "true" }, "IT"),
+            h("span", { className: "academy-brand-copy" },
+              h("b", null, "ACADEMY"),
+              h("small", null, "AI · DATA · ENGINEERING")
+            )
+          ),
+          h("p", null, "기술을 이해하고, 문제를 해결하며, 결과를 검증하는 교육"),
+          h("small", null, "LEARN THE PRINCIPLE. BUILD THE PRODUCT. PROVE THE QUALITY.")
         ),
-        h("div", null,
+        h("div", { className: "academy-footer-links" },
+          h("b", null, "EXPLORE"),
+          h(Link, { to: "/about" }, "교육 철학"),
           h(Link, { to: "/courses" }, "교육과정"),
-          "　",
-          h(Link, { to: "/notices" }, "공지사항"),
-          "　",
-          h(Link, { to: "/consultation" }, "상담 신청")
+          h(Link, { to: "/projects" }, "프로젝트 심사 기준"),
+          h(Link, { to: "/notices" }, "공지사항")
         ),
-        h("small", null, "© 2026 IT ACADEMY · DEMO PROJECT")
+        h("div", { className: "academy-footer-links" },
+          h("b", null, "CONTACT"),
+          h(Link, { to: "/consultation" }, "교육 상담 신청"),
+          h("span", null, "운영 일정·정원·교육비는 최신 공지 기준")
+        )
+      ),
+      h("div", { className: "container academy-footer-bottom" },
+        h("span", null, "© " + new Date().getFullYear() + " IT ACADEMY"),
+        h("span", null, "교육기관의 실제 연락처·주소·운영 실적은 확인된 정보만 게시합니다.")
       )
     )
   );
@@ -156,6 +182,7 @@ function CourseCard(props) {
       h("span", { className: "status" }, course.recruitmentStatus)
     ),
     h("small", { className: "eyebrow" }, course.category),
+    h("span", { className: "course-info-disclosure" }, course.infoDisclosure || "교육과정 구성 예시"),
     h("h3", null, course.title),
     h("p", null, course.summary),
     h("div", { className: "coursefoot" },
@@ -165,150 +192,89 @@ function CourseCard(props) {
   );
 }
 
-function Home() {
-  const [homeCourses, setHomeCourses] = React.useState(courseSeed);
 
-  React.useEffect(function () {
-    api.get("/courses").then(function (response) {
-      if (Array.isArray(response.data)) setHomeCourses(response.data);
-    }).catch(function () {});
-  }, []);
+// 관리자에서 추가한 교육과정도 상세 페이지에서 일관된 구조로 설명할 수 있도록
+// 등록된 과정명·소개·커리큘럼·기술 정보를 기반으로 기본 상세 구성을 만듭니다.
+function buildCourseDetailData(course) {
+  const modules = String(course.curriculum || "")
+    .split(/→|\r?\n|;/)
+    .map(function (value) { return value.trim(); })
+    .filter(Boolean)
+    .map(function (title, index) {
+      return {
+        title: title,
+        description: "이 단계의 핵심 개념을 이해하고 작은 실습으로 동작을 확인한 뒤 다음 단계의 입력으로 연결합니다.",
+        tools: course.skills || "과정별 주요 기술"
+      };
+    });
 
-  const journey = [
-    ["01", "기초 학습", "핵심 개념과 개발 기초"],
-    ["02", "핵심 기술", "과정별 전문 기술 습득"],
-    ["03", "실무 프로젝트", "팀 기반 결과물 구현"],
-    ["04", "결과물 발표", "완성 결과와 학습 정리"]
-  ];
+  if (modules.length === 0) {
+    modules.push({
+      title: "핵심 개념과 기초 실습",
+      description: "과정의 기본 개념과 개발 환경을 익히고 작은 기능을 직접 구현합니다.",
+      tools: course.skills || "과정별 주요 기술"
+    });
+  }
 
-  return h(React.Fragment, null,
-    h("section", { className: "hero" },
-      h("div", { className: "orb orb1" }),
-      h("div", { className: "orb orb2" }),
-      h("div", { className: "container heroin" },
-        h("span", { className: "eyebrow light" }, "AI · DATA · ENGINEERING"),
-        h("h1", null, "AI 시대를 이끄는", h("br"), "실무형 IT 인재 양성"),
-        h("p", null, "기초부터 실무 프로젝트까지, AI와 데이터 기술을 직접 구현하며 미래 IT 역량을 완성합니다."),
-        h("div", { className: "actions" },
-          h(Link, { to: "/courses", className: "btn" }, "교육과정 살펴보기"),
-          h(Link, { to: "/consultation", className: "btn ghost" }, "상담 신청하기")
-        )
-      )
-    ),
-    h("section", { className: "section" },
-      h("div", { className: "container split" },
-        h("div", null,
-          h("span", { className: "eyebrow" }, "WHY IT ACADEMY"),
-          h("h2", null, "배우는 것을 넘어,", h("br"), "직접 만드는 개발 교육")
-        ),
-        h("p", { className: "lead" }, "기술의 원리를 이해하고 실제 문제를 해결하는 프로젝트 중심 학습을 지향합니다. 비전공자와 전공자 모두 기초부터 단계적으로 성장할 수 있도록 교육 흐름을 설계했습니다.")
-      )
-    ),
-    h("section", { className: "section soft" },
-      h("div", { className: "container" },
-        h("div", { className: "sectionhead" },
-          h("div", null,
-            h("span", { className: "eyebrow" }, "OUR PROGRAMS"),
-            h("h2", null, "목표에 맞는 AI·IT 교육과정")
-          ),
-          h(Link, { to: "/courses", className: "more" }, "전체 과정 보기 →")
-        ),
-        h("div", { className: "grid4" },
-          homeCourses.map(function (course) {
-            return h(CourseCard, { course: course, key: course.id });
-          })
-        )
-      )
-    ),
-    h("section", { className: "section recruitment-preview" },
-      h("div", { className: "container" },
-        h("div", { className: "sectionhead" },
-          h("div", null,
-            h("span", { className: "eyebrow" }, "NOW RECRUITING · DEMO"),
-            h("h2", null, "새로운 커리어를 위한 다음 기수 안내")
-          ),
-          h(Link, { to: "/notices", className: "more" }, "모집 공지 전체 보기 →")
-        ),
-        h("div", { className: "recruitment-cards" },
-          [
-            ["AI", "AI·머신러닝 실무 개발자", "2026.11.09 ~ 11.30", "2026.12.07 개강 예정", "1"],
-            ["DATA", "빅데이터 분석 전문가", "2026.11.16 ~ 12.04", "2026.12.14 개강 예정", "2"],
-            ["GEN AI", "생성형 AI 서비스 개발", "2026.11.23 ~ 12.11", "2026.12.21 개강 예정", "3"]
-          ].map(function (item) {
-            return h("article", { className: "recruitment-card", key: item[0] },
-              h("div", { className: "recruitment-card-top" },
-                h("span", null, item[0]),
-                h("b", null, "모집 안내")
-              ),
-              h("h3", null, item[1]),
-              h("p", null, "모집 기간 " + item[2]),
-              h("small", null, item[3]),
-              h(Link, { to: "/courses/" + item[4] }, "과정 자세히 보기 →")
-            );
-          })
-        ),
-        h("p", { className: "demo-disclaimer" }, "※ 모집 일정과 개강일은 화면 구성을 위한 데모 데이터이며 실제 운영 일정이 아닙니다.")
-      )
-    ),
-    h("section", { className: "section" },
-      h("div", { className: "container" },
-        h("span", { className: "eyebrow" }, "LEARNING JOURNEY"),
-        h("h2", null, "기초에서 실무까지 이어지는 학습 흐름"),
-        h("div", { className: "grid4 journey" },
-          journey.map(function (item) {
-            return h("article", { className: "journeycard", key: item[0] },
-              h("b", null, item[0]),
-              h("h3", null, item[1]),
-              h("p", null, item[2])
-            );
-          })
-        )
-      )
-    ),
-    h("section", { className: "projectband" },
-      h("div", { className: "container" },
-        h("span", { className: "eyebrow light" }, "PROJECT SHOWCASE"),
-        h("h2", null, "배운 기술을 결과물로 증명합니다"),
-        h("p", null, "기획부터 구현까지 경험하는 교육과정 프로젝트 예시입니다."),
-        h("div", { className: "grid4" },
-          projectSeed.map(function (project) {
-            return h("article", { className: "projectcard", key: project.title },
-              h("small", null, project.category),
-              h("h3", null, project.title),
-              h("p", null, project.description)
-            );
-          })
-        ),
-        h("small", null, "※ 프로젝트 사례는 소개용 가상 데이터입니다.")
-      )
-    ),
-    h("section", { className: "cta" },
-      h("div", { className: "container ctarow" },
-        h("div", null,
-          h("span", { className: "eyebrow light" }, "START YOUR NEXT STEP"),
-          h("h2", null, "나에게 맞는 교육과정을 찾아보세요."),
-          h("p", null, "과정 선택부터 학습 방향까지 상담을 통해 안내합니다.")
-        ),
-        h(Link, { to: "/consultation", className: "btn white" }, "상담 신청하기 →")
-      )
-    )
-  );
+  modules.push({
+    title: "통합 프로젝트와 결과 검증",
+    description: "학습한 내용을 연결해 프로젝트를 구현하고 테스트·문서·발표 자료로 결과를 정리합니다.",
+    tools: "Git · Testing · Documentation"
+  });
+
+  return {
+    intro: course.description || course.summary || "등록된 교육과정의 목표와 학습 범위를 안내합니다.",
+    description: course.description || course.summary || "단계별 실습과 프로젝트를 통해 과정의 핵심 역량을 학습합니다.",
+    recruitPeriod: "운영기관 공지 확인",
+    startDate: "상담 시 최신 일정 안내",
+    outcomes: [
+      { title: "핵심 개념 이해", description: "과정의 주요 개념과 기술이 문제 해결에 어떻게 활용되는지 설명합니다." },
+      { title: "기능 단위 구현", description: "작은 기능부터 직접 구현하고 실행 결과와 오류 원인을 확인합니다." },
+      { title: "프로젝트 검증", description: "테스트와 문서화를 통해 프로젝트의 동작과 구현 근거를 제시합니다." }
+    ],
+    modules: modules,
+    projectTitle: (course.title || "교육과정") + " 통합 프로젝트",
+    projectDescription: "과정에서 학습한 기술을 연결해 실제 사용 흐름을 갖춘 결과물을 구현하고, 요구사항·설계·테스트·시연 자료를 함께 정리합니다.",
+    deliverables: ["요구사항 정의서", "핵심 기능 구현", "테스트 결과", "README 및 시연 자료"],
+    benefits: [
+      { title: "단계별 학습 산출물", description: "개념 노트와 실습 결과를 누적해 학습 진행 상황과 이해도를 확인합니다." },
+      { title: "코드 리뷰 기준", description: "이름·구조·오류 처리·보안·가독성 관점에서 구현 내용을 점검하도록 설계합니다." },
+      { title: "포트폴리오 문서", description: "문제 정의, 기술 선택, 주요 기능, 테스트 결과와 한계를 문서로 설명합니다." }
+    ],
+    faqs: [
+      { question: "프로그래밍 경험이 없어도 가능한가요?", answer: "과정별 선수 지식과 실습 난이도가 다릅니다. 상세 커리큘럼을 확인하고 현재 경험과 주당 학습 가능 시간을 상담에서 함께 점검해 주세요." },
+      { question: "프로젝트 결과물은 무엇인가요?", answer: "과정별 주제에 맞는 작동 결과물과 요구사항·설계·테스트·실행 안내 문서를 정리하는 것을 목표로 합니다." },
+      { question: "모집 일정과 교육비는 확정되어 있나요?", answer: "이 화면에는 확인되지 않은 일정이나 비용을 임의로 표시하지 않습니다. 운영기관의 최신 공지와 상담 안내를 기준으로 확인해 주세요." }
+    ]
+  };
 }
 
 function Courses() {
   const params = useParams();
-  const [items, setItems] = React.useState(courseSeed);
+  const [items, setItems] = React.useState(isStaticPreview ? courseSeed : []);
   const [keyword, setKeyword] = React.useState("");
   const [category, setCategory] = React.useState("전체");
+  const [coursesLoading, setCoursesLoading] = React.useState(true);
 
   React.useEffect(function () {
+    if (isStaticPreview) {
+      setCoursesLoading(false);
+      return undefined;
+    }
+
+    let active = true;
     api.get("/courses")
       .then(function (response) {
-        if (Array.isArray(response.data) && response.data.length > 0) {
-          setItems(response.data);
+        if (active) {
+          setItems(Array.isArray(response.data) ? response.data : []);
         }
       })
-      .catch(function () {});
+      .catch(function () {
+        if (active) setItems([]);
+      })
+      .finally(function () { if (active) setCoursesLoading(false); });
+
+    return function () { active = false; };
   }, []);
 
   if (params.id) {
@@ -316,28 +282,73 @@ function Courses() {
       return String(item.id) === params.id;
     });
 
+    if (!selected && coursesLoading) {
+      return h("section", { className: "page" }, h("div", { className: "container" }, h("p", null, "교육과정 정보를 불러오고 있습니다.")));
+    }
     if (!selected) {
       return h("section", { className: "page" },
-        h("div", { className: "container" }, h("h1", null, "과정을 찾을 수 없습니다."))
+        h("div", { className: "container" },
+          h("span", { className: "eyebrow" }, "PROGRAM NOT FOUND"),
+          h("h1", null, "과정을 찾을 수 없습니다."),
+          h("p", { className: "lead" }, "과정이 삭제되었거나 공개되지 않았을 수 있습니다."),
+          h(Link, { to: "/courses", className: "btn" }, "교육과정 목록으로 돌아가기")
+        )
       );
     }
 
-    const detailData = courseDetailData[selected.id] || courseDetailData[1];
-    const modules = detailData.modules;
+    const detailData = courseDetailData[selected.id] || buildCourseDetailData(selected);
+    const moduleEvidence = {
+      1: [
+        ["직접 작성한 함수·조건문·반복문으로 작은 문제를 해결하고 실행 결과를 비교합니다.", "실습 노트북, 문제 풀이 코드, 개념 설명"],
+        ["원천 데이터의 구조를 파악하고 결측·중복·이상치를 처리한 뒤 전처리 규칙을 기록합니다.", "데이터 사전, 전처리 코드, 품질 점검표"],
+        ["기준 모델을 먼저 만들고 학습·검증 데이터를 분리해 분류·회귀 지표를 비교합니다.", "베이스라인 모델, 평가 지표표, 오분류 사례"],
+        ["간단한 신경망을 학습시키고 학습 곡선과 과적합 징후를 비교합니다.", "학습 노트북, 손실 곡선, 모델 실험 기록"],
+        ["추천 결과를 서비스 화면과 연결하고 기준 모델과 개선 결과를 비교해 발표합니다.", "추천 모델, API 명세, 성능 보고서, 시연 자료"]
+      ],
+      2: [
+        ["테이블 관계를 파악하고 필터·조인·집계 쿼리로 분석용 데이터를 추출합니다.", "SQL 쿼리 모음, 데이터 추출 결과"],
+        ["자료형·결측·중복·이상치를 점검하고 재현 가능한 전처리 절차를 작성합니다.", "데이터 품질 보고서, 전처리 코드"],
+        ["분포·상관·그룹별 차이를 분석하고 지표가 의미하는 범위를 해석합니다.", "탐색적 분석 노트북, 지표 정의서"],
+        ["분석 목적에 맞는 차트를 선택하고 필터와 요약 지표가 있는 대시보드를 구성합니다.", "차트 설계 근거, 대시보드 화면"],
+        ["분석 질문·근거 데이터·핵심 인사이트·한계를 연결해 의사결정 보고서를 발표합니다.", "분석 보고서, 대시보드, 발표 자료"]
+      ],
+      3: [
+        ["HTTP 요청과 JSON 응답을 다루고 정상·오류 응답을 구분하는 API 호출 흐름을 구현합니다.", "API 호출 코드, 요청·응답 예시"],
+        ["역할과 출력 형식을 분명히 한 프롬프트를 작성하고 질문 유형별 결과를 비교합니다.", "프롬프트 버전, 평가 질문 세트, 결과 비교표"],
+        ["문서를 청크로 분리해 임베딩하고 검색 결과의 유사도와 누락 사례를 확인합니다.", "청킹 규칙, 검색 샘플, 임베딩 실험 기록"],
+        ["검색 문맥을 생성 모델에 전달하고 답변에 근거 출처를 연결하며 검색 실패를 점검합니다.", "RAG 파이프라인, 출처 연결 사례, 실패 분석"],
+        ["질문 데이터셋으로 응답 근거·정확성·지연·비용을 측정하고 서비스로 시연합니다.", "평가 데이터셋, 품질 리포트, API 문서, 시연 자료"]
+      ],
+      4: [
+        ["객체·메서드·컬렉션·예외 처리의 역할을 이해하고 작은 콘솔 프로그램을 작성합니다.", "Java 실습 코드, 단위 실행 결과"],
+        ["도메인과 테이블을 설계하고 Spring API와 JPA로 조회·등록·수정 흐름을 연결합니다.", "ERD, 엔티티·리포지토리, API 명세"],
+        ["컴포넌트와 상태를 나누고 폼·목록·상세 화면을 라우팅으로 연결합니다.", "화면 구성도, React 화면, 사용자 흐름"],
+        ["로그인·권한·입력 검증·CSRF를 적용하고 정상·비정상 접근을 테스트합니다.", "권한표, 보안 테스트 케이스, 오류 응답"],
+        ["프론트·백엔드·DB를 통합하고 설치·실행·테스트·발표 자료까지 정리합니다.", "통합 웹 서비스, 테스트 결과, README, 발표 자료"]
+      ]
+    };
+    const modules = (detailData.modules || []).map(function (item, index) {
+      const evidence = moduleEvidence[selected.id] && moduleEvidence[selected.id][index];
+      return Object.assign({}, item, {
+        practice: evidence ? evidence[0] : "핵심 개념을 직접 적용해 작은 기능을 구현하고 정상·오류 조건을 확인합니다.",
+        evidence: evidence ? evidence[1] : "실습 코드, 실행 결과, 개선 기록"
+      });
+    });
     const benefits = detailData.benefits;
     const faqs = detailData.faqs;
 
     return h("section", { className: "course-detail-page" },
       h("div", { className: "course-detail-hero" },
         h("div", { className: "container course-detail-hero-inner" },
-          h("span", { className: "eyebrow light" }, selected.category + " PROGRAM · DEMO RECRUITMENT"),
+          h("span", { className: "eyebrow light" }, selected.category + " PROGRAM · LEARNING PATH"),
           h("span", { className: "course-status-pill" }, selected.recruitmentStatus || "모집 안내"),
           h("h1", null, selected.title),
+          h("p", { className: "course-info-disclosure hero-disclosure" }, selected.infoDisclosure || "교육과정 구성 예시"),
           h("p", null, detailData.intro),
           h("div", { className: "course-detail-tags" },
             h("span", null, "교육 기간 " + selected.duration),
             h("span", null, "프로젝트 중심 실습"),
-            h("span", null, "전공 무관 지원 가능")
+            h("span", null, selected.target || "지원 대상은 상담 시 확인")
           ),
           h("div", { className: "actions" },
             h(Link, { to: "/consultation", className: "btn" }, "과정 상담 신청하기"),
@@ -350,12 +361,12 @@ function Courses() {
           h("div", null,
             h("span", { className: "eyebrow" }, "RECRUITMENT GUIDE"),
             h("h2", null, "모집 안내"),
-            h("p", null, "아래 일정과 정원은 화면 구성을 위한 데모 데이터입니다. 실제 운영 일정과 지원 자격은 상담을 통해 확인해 주세요.")
+            h("p", null, "모집 일정과 정원은 운영기관이 확정한 최신 공지를 기준으로 안내합니다. 확인되지 않은 날짜나 인원은 임의로 표시하지 않습니다.")
           ),
           h("div", { className: "recruit-facts" },
             h("article", null, h("small", null, "모집 기간"), h("b", null, detailData.recruitPeriod)),
             h("article", null, h("small", null, "개강 예정"), h("b", null, detailData.startDate)),
-            h("article", null, h("small", null, "교육 방식"), h("b", null, "오프라인 · 프로젝트 실습")),
+            h("article", null, h("small", null, "교육 방식"), h("b", null, "운영기관 확인 필요")),
             h("article", null, h("small", null, "교육 대상"), h("b", null, selected.target))
           )
         ),
@@ -388,7 +399,17 @@ function Courses() {
                 h("div", null,
                   h("h3", null, item.title),
                   h("p", null, item.description),
-                  h("small", null, item.tools)
+                  h("small", null, item.tools),
+                  h("div", { className: "academy-module-evidence" },
+                    h("div", null,
+                      h("b", null, "PRACTICE"),
+                      h("p", null, item.practice)
+                    ),
+                    h("div", null,
+                      h("b", null, "EVIDENCE"),
+                      h("p", null, item.evidence)
+                    )
+                  )
                 )
               );
             })
@@ -413,10 +434,35 @@ function Courses() {
             )
           )
         ),
+        h("section", { className: "course-detail-section academy-course-quality" },
+          h("div", { className: "course-section-heading" },
+            h("span", { className: "eyebrow" }, "LEARNING QUALITY & AI COLLABORATION"),
+            h("h2", null, "수업과 프로젝트의 완성도를 확인하는 기준"),
+            h("p", null, "코드를 많이 작성하는 것보다 요구사항을 이해하고, 선택한 기술을 설명하고, 핵심 기능을 검증하는 능력을 중요하게 다룹니다.")
+          ),
+          h("div", { className: "academy-course-quality-grid" },
+            [
+              ["01", "개념 이해", "주요 개념과 데이터 흐름을 자신의 언어로 설명하고 작은 실습으로 확인합니다."],
+              ["02", "직접 구현", "AI 도구를 보조적으로 활용하되 핵심 로직과 코드 변경 이유를 직접 이해합니다."],
+              ["03", "품질 검증", "정상·오류·경계 조건을 테스트하고 보안과 접근성의 기본 요구를 점검합니다."],
+              ["04", "결과 설명", "README, API 명세, 테스트 결과, 발표 자료로 구현 과정과 한계를 전달합니다."]
+            ].map(function (item) {
+              return h("article", { key: item[0] },
+                h("b", null, item[0]),
+                h("h3", null, item[1]),
+                h("p", null, item[2])
+              );
+            })
+          ),
+          h("div", { className: "academy-course-ai-note" },
+            h("b", null, "AI 활용 원칙"),
+            " AI가 생성한 코드도 제출 전 검토 대상입니다. 요구사항 추적, 직접 설명, 코드 리뷰, 테스트 결과를 확인하는 방식으로 학습하도록 설계합니다."
+          )
+        ),
         h("section", { className: "course-detail-section" },
           h("div", { className: "course-section-heading" },
             h("span", { className: "eyebrow" }, "STUDENT SUPPORT"),
-            h("h2", null, "학습 지원 및 제공 항목")
+            h("h2", null, "학습 지원 설계 기준")
           ),
           h("div", { className: "course-benefits" },
             benefits.map(function (item) {
@@ -462,7 +508,7 @@ function Courses() {
             h("h2", null, "나에게 맞는 과정인지 먼저 상담해 보세요."),
             h("p", null, "커리큘럼, 학습 난이도, 준비 사항을 차근차근 안내합니다.")
           ),
-          h(Link, { to: "/consultation", className: "btn white" }, "무료 상담 신청하기")
+          h(Link, { to: "/consultation", className: "btn white" }, "교육과정 상담 신청하기")
         )
       )
     );
@@ -478,7 +524,7 @@ function Courses() {
     h("div", { className: "container" },
       h("span", { className: "eyebrow" }, "OUR PROGRAMS"),
       h("h1", null, "교육과정"),
-      h("p", { className: "lead" }, "관심 분야와 목표에 맞는 전문 교육과정을 선택하세요."),
+      h("p", { className: "lead" }, "과정별 학습 목표와 기술 범위, 실습 단계, 프로젝트 결과물을 비교해 보세요."),
       h("div", { className: "filters" },
         h("input", {
           placeholder: "과정명 검색",
@@ -494,17 +540,26 @@ function Courses() {
           })
         )
       ),
-      h("div", { className: "grid4" },
-        filtered.map(function (course) {
-          return h(CourseCard, { course: course, key: course.id });
-        })
-      )
+      filtered.length
+        ? h("div", { className: "grid4" },
+            filtered.map(function (course) {
+              return h(CourseCard, { course: course, key: course.id });
+            })
+          )
+        : h("div", { className: "empty-state" },
+            h("h3", null, "등록된 교육과정이 없습니다."),
+            h("p", null, "운영기관에서 공개할 교육과정을 등록하면 이곳에 표시됩니다.")
+          ),
+      h("p", { className: "course-data-disclosure" }, "※ 서버에 등록된 운영정보가 확인되기 전까지 기본 과정은 교육 설계 예시로 표시됩니다. 모집 여부·교육 기간·지원 대상은 관리자 확인 완료 후 공개됩니다.")
     )
   );
 }
 
 function Consultation() {
   const navigate = useNavigate();
+  const [availableCourses, setAvailableCourses] = React.useState(isStaticPreview ? courseSeed : []);
+  const [courseLoading, setCourseLoading] = React.useState(!isStaticPreview);
+  const [courseError, setCourseError] = React.useState("");
   const [form, setForm] = React.useState({
     name: "", phone: "", email: "", courseTitle: "",
     preferredDate: "", preferredPeriod: "오전", message: "",
@@ -513,6 +568,29 @@ function Consultation() {
   const [error, setError] = React.useState("");
   const [receipt, setReceipt] = React.useState("");
   const [submitting, setSubmitting] = React.useState(false);
+
+  React.useEffect(function () {
+    if (isStaticPreview) return undefined;
+
+    let active = true;
+    api.get("/courses")
+      .then(function (response) {
+        if (!active) return;
+        const courseList = Array.isArray(response.data) ? response.data : [];
+        setAvailableCourses(courseList);
+        setCourseError(courseList.length ? "" : "현재 신청 가능한 교육과정이 등록되지 않았습니다.");
+      })
+      .catch(function () {
+        if (!active) return;
+        setAvailableCourses([]);
+        setCourseError("교육과정 정보를 불러오지 못했습니다. 백엔드 연결을 확인해 주세요.");
+      })
+      .finally(function () {
+        if (active) setCourseLoading(false);
+      });
+
+    return function () { active = false; };
+  }, []);
 
   function updateField(name, value) {
     setForm(function (previous) {
@@ -523,10 +601,23 @@ function Consultation() {
   async function submitForm(event) {
     event.preventDefault();
     setError("");
+    if (isStaticPreview) {
+      setError("정적 미리보기에서는 상담 신청이 실제로 전송되지 않습니다. 백엔드가 연결된 서비스 환경에서 이용해 주세요.");
+      return;
+    }
+    if (!availableCourses.some(function (course) { return course.title === form.courseTitle; })) {
+      setError("서버에서 제공하는 교육과정을 선택해 주세요.");
+      return;
+    }
     setSubmitting(true);
 
     try {
-      const response = await api.post("/inquiries", form);
+      const payload = Object.assign({}, form, {
+        email: form.email.trim() || null,
+        preferredDate: form.preferredDate || null,
+        preferredPeriod: form.preferredPeriod || null
+      });
+      const response = await api.post("/inquiries", payload);
       setReceipt(response.data.receiptNo);
     } catch (requestError) {
       const message = requestError.response && requestError.response.data
@@ -556,25 +647,27 @@ function Consultation() {
       h("div", null,
         h("span", { className: "eyebrow" }, "CONSULTATION"),
         h("h1", null, "교육과정 상담 신청"),
-        h("p", { className: "lead" }, "희망 과정과 문의 내용을 남겨주시면 안내해 드립니다.")
+        h("p", { className: "lead" }, "희망 과정과 현재 경험, 학습 목표를 남겨주시면 적합한 학습 방향을 안내합니다."),
+        isStaticPreview ? h("p", { className: "static-preview-notice" }, "현재 페이지는 정적 미리보기이며 상담 신청이 실제 접수되지 않습니다.") : null
       ),
       h("form", { className: "form", onSubmit: submitForm },
         h("label", null, "이름 *",
-          h("input", { required: true, value: form.name, onChange: function (e) { updateField("name", e.target.value); } })
+          h("input", { required: true, maxLength: 40, value: form.name, onChange: function (e) { updateField("name", e.target.value); } })
         ),
         h("label", null, "연락처 *",
-          h("input", { required: true, value: form.phone, placeholder: "010-0000-0000", onChange: function (e) { updateField("phone", e.target.value); } })
+          h("input", { required: true, maxLength: 20, pattern: "[0-9+() -]{9,20}", value: form.phone, placeholder: "010-0000-0000", onChange: function (e) { updateField("phone", e.target.value); } })
         ),
         h("label", null, "이메일",
-          h("input", { type: "email", value: form.email, onChange: function (e) { updateField("email", e.target.value); } })
+          h("input", { type: "email", maxLength: 120, value: form.email, onChange: function (e) { updateField("email", e.target.value); } })
         ),
         h("label", null, "희망 교육과정 *",
-          h("select", { required: true, value: form.courseTitle, onChange: function (e) { updateField("courseTitle", e.target.value); } },
-            h("option", { value: "" }, "과정을 선택하세요"),
-            courseSeed.map(function (course) {
+          h("select", { required: true, disabled: courseLoading || availableCourses.length === 0, value: form.courseTitle, onChange: function (e) { updateField("courseTitle", e.target.value); } },
+            h("option", { value: "", disabled: true }, courseLoading ? "교육과정 불러오는 중..." : "과정을 선택하세요"),
+            availableCourses.map(function (course) {
               return h("option", { key: course.id, value: course.title }, course.title);
             })
-          )
+          ),
+          courseError ? h("small", { className: "form-help error-text" }, courseError) : null
         ),
         h("div", { className: "two" },
           h("label", null, "상담 희망 날짜",
@@ -589,7 +682,7 @@ function Consultation() {
           )
         ),
         h("label", null, "문의 내용 *",
-          h("textarea", { required: true, rows: 5, value: form.message, onChange: function (e) { updateField("message", e.target.value); } })
+          h("textarea", { required: true, minLength: 10, maxLength: 2000, rows: 5, value: form.message, onChange: function (e) { updateField("message", e.target.value); } })
         ),
         h("label", { className: "checkrow" },
           h("input", { type: "checkbox", checked: form.privacyConsent, onChange: function (e) { updateField("privacyConsent", e.target.checked); } }),
@@ -600,7 +693,7 @@ function Consultation() {
           " 마케팅 수신 동의 (선택)"
         ),
         error ? h("p", { className: "error" }, error) : null,
-        h("button", { className: "btn full", disabled: submitting || !form.privacyConsent },
+        h("button", { className: "btn full", disabled: submitting || !form.privacyConsent || isStaticPreview || courseLoading || availableCourses.length === 0 },
           submitting ? "신청 처리 중..." : "상담 신청하기"
         )
       )
@@ -618,34 +711,28 @@ const isStaticPreview = import.meta.env.VITE_STATIC_PREVIEW === "true";
 // GitHub Pages는 백엔드 없이 화면을 공개하므로 미리보기 전용 안내를 사용합니다.
 const previewNotices = [
   {
-    id: "demo-1", title: "2026 겨울학기 AI·IT 교육과정 모집 안내", category: "모집 안내",
-    content: "AI·머신러닝, 빅데이터 분석, 생성형 AI 서비스, 웹 서비스 개발 과정의 데모 모집 안내입니다. 과정별 일정과 지원 조건은 과정 상세 페이지에서 확인할 수 있으며, 실제 운영 정보는 상담을 통해 확인해 주세요.",
-    createdAt: "2026-11-06T09:00:00", pinned: true
+    id: "preview-1",
+    title: "정적 미리보기 콘텐츠 안내",
+    category: "운영 안내",
+    content: "GitHub Pages 미리보기에는 기능 확인을 위한 안내 예시가 표시됩니다. 실제 교육 일정, 교육비, 정원, 지원 제도는 운영기관이 확정해 게시한 최신 공지와 상담을 통해 확인해 주세요.",
+    createdAt: null,
+    pinned: true
   },
   {
-    id: "demo-2", title: "AI·머신러닝 실무 개발 과정 커리큘럼 공개", category: "교육과정",
-    content: "Python 기초부터 데이터 전처리, 머신러닝, 딥러닝, 팀 프로젝트까지 이어지는 학습 로드맵을 공개합니다. 프로젝트 예시는 학습 결과물의 형태를 설명하기 위한 데모 콘텐츠입니다.",
-    createdAt: "2026-11-05T10:00:00", pinned: false
+    id: "preview-2",
+    title: "프로젝트 사례와 평가 기준 안내",
+    category: "교육과정",
+    content: "프로젝트 페이지에 소개된 사례는 교육 목표와 산출물 구성을 설명하기 위한 설계 예시입니다. 실제 수강생 작품, 수상 이력, 취업률 또는 운영 실적을 의미하지 않습니다.",
+    createdAt: null,
+    pinned: false
   },
   {
-    id: "demo-3", title: "교육과정 선택을 위한 온라인 설명회 안내", category: "모집 안내",
-    content: "관심 분야별 교육과정 구성과 프로젝트 진행 방식을 소개하는 설명회 예시 안내입니다. 일정과 참여 링크는 실제 운영 시 별도 공지됩니다.",
-    createdAt: "2026-11-04T14:00:00", pinned: false
-  },
-  {
-    id: "demo-4", title: "수강 신청 전 확인해야 할 준비 사항", category: "공지",
-    content: "관심 과정의 교육 목표와 주차별 커리큘럼을 확인하고, 본인의 학습 가능 시간과 노트북 사용 환경을 점검해 주세요. 선수 지식이 필요한 과정은 상담 단계에서 안내합니다.",
-    createdAt: "2026-11-03T09:30:00", pinned: false
-  },
-  {
-    id: "demo-5", title: "팀 프로젝트 결과물 및 포트폴리오 구성 소개", category: "교육 소식",
-    content: "팀 프로젝트는 문제 정의, 역할 분담, 기능 구현, 테스트, 결과 발표 순서로 진행하는 것을 기본 방향으로 합니다. 결과물 예시는 프로젝트 페이지에서 확인할 수 있습니다.",
-    createdAt: "2026-11-02T11:00:00", pinned: false
-  },
-  {
-    id: "demo-6", title: "IT ACADEMY 홈페이지 이용 안내", category: "운영 안내",
-    content: "교육과정에서 과정별 정보를 확인하고, 프로젝트에서 결과물 예시를 살펴볼 수 있습니다. 궁금한 점은 상담 신청 페이지를 통해 문의하는 데모 흐름으로 구성되어 있습니다.",
-    createdAt: "2026-11-01T09:00:00", pinned: false
+    id: "preview-3",
+    title: "상담 신청 기능 안내",
+    category: "운영 안내",
+    content: "정적 미리보기에서는 백엔드 서버가 연결되지 않으므로 상담 신청이 실제로 접수되지 않습니다. 실제 신청 기능은 운영 서버가 연결된 환경에서 이용해 주세요.",
+    createdAt: null,
+    pinned: false
   }
 ];
 
@@ -664,10 +751,19 @@ function Notices() {
     setLoading(true);
     setError("");
     try {
+      if (isStaticPreview) {
+        setItems(previewNotices);
+        return;
+      }
       const response = await api.get("/notices");
-      setItems(Array.isArray(response.data) && response.data.length > 0 ? response.data : previewNotices);
+      setItems(Array.isArray(response.data) ? response.data : []);
     } catch (requestError) {
-      setItems(previewNotices);
+      setItems([]);
+      setError(
+        requestError.response && requestError.response.data && requestError.response.data.message
+          ? requestError.response.data.message
+          : "공지사항 서버에 연결할 수 없습니다. 잠시 후 다시 시도해 주세요."
+      );
     } finally {
       setLoading(false);
     }
@@ -819,12 +915,22 @@ function NoticeDetail() {
     setLoading(true);
     setError("");
     try {
+      if (isStaticPreview) {
+        const preview = previewNotices.find(function (item) {
+          return String(item.id) === String(params.id);
+        });
+        if (preview) setNotice(preview);
+        else setError("해당 미리보기 안내를 찾을 수 없습니다.");
+        return;
+      }
       const response = await api.get("/notices/" + params.id);
       setNotice(response.data);
     } catch (requestError) {
-      const preview = previewNotices.find(function (item) { return String(item.id) === String(params.id); });
-      if (preview) setNotice(preview);
-      else setError("해당 공지사항을 찾을 수 없거나 현재 공개되지 않은 게시글입니다.");
+      setError(
+        requestError.response && requestError.response.status === 404
+          ? "해당 공지사항을 찾을 수 없거나 현재 공개되지 않은 게시글입니다."
+          : "공지사항 상세 정보를 불러오지 못했습니다. 다시 시도해 주세요."
+      );
     } finally {
       setLoading(false);
     }
@@ -860,100 +966,15 @@ function NoticeDetail() {
   );
 }
 
-function Projects() {
-  const [category, setCategory] = React.useState("전체");
-  const [selected, setSelected] = React.useState(null);
-  const categories = ["전체", "AI · WEB", "DATA", "GEN AI", "AI · DATA", "WEB"];
-  const projects = [
-    { id: 1, title: "AI 영화 추천 플랫폼", category: "AI · WEB", period: "6주", team: "4명", description: "사용자 취향과 영화 메타데이터를 결합해 개인화 추천을 제공하는 웹 서비스", stack: ["Python", "Scikit-learn", "Spring Boot", "React", "MySQL"], problem: "사용자가 수많은 작품 중 취향에 맞는 영화를 찾기 어렵습니다.", solution: "장르·평점·선호 이력을 정리하고 유사도 기반 추천 로직과 검색 화면을 연결합니다.", features: ["회원별 선호 장르 설정", "영화 검색 및 상세 정보", "추천 결과와 찜 목록", "관리자 데이터 관리"], result: "추천 결과 화면과 데이터 흐름을 포함한 서비스형 포트폴리오를 완성합니다." },
-    { id: 2, title: "소비 데이터 인사이트 대시보드", category: "DATA", period: "4주", team: "3명", description: "거래 데이터를 정제하고 소비 패턴을 분석해 시각화하는 데이터 분석 프로젝트", stack: ["Python", "Pandas", "SQL", "Plotly"], problem: "원시 거래 데이터만으로는 소비 패턴과 주요 변화 요인을 파악하기 어렵습니다.", solution: "결측치와 이상치를 처리하고 기간·지역·카테고리별 지표를 구성합니다.", features: ["데이터 정제 파이프라인", "월별·카테고리별 추이", "고객 세그먼트 비교", "분석 결과 리포트"], result: "분석 과정과 의사결정 근거를 설명할 수 있는 대시보드를 구성합니다." },
-    { id: 3, title: "사내 문서 AI 검색 도우미", category: "GEN AI", period: "5주", team: "4명", description: "업로드한 문서를 검색하고 근거 문단을 바탕으로 답변하는 RAG 서비스", stack: ["Python", "LLM API", "Embedding", "Vector DB"], problem: "여러 문서에 흩어진 정보를 사람이 직접 찾아야 해 응답 시간이 길어집니다.", solution: "문서를 분할·임베딩하고 검색된 문맥을 LLM에 전달하는 RAG 흐름을 구현합니다.", features: ["문서 업로드와 텍스트 추출", "질문 기반 유사 문단 검색", "출처 문서 표시", "대화 기록 관리"], result: "검색 근거를 확인할 수 있는 문서 질의응답 프로토타입을 제작합니다." },
-    { id: 4, title: "지역 상권 데이터 분석", category: "DATA", period: "4주", team: "3명", description: "상권별 유동 인구와 업종 데이터를 분석해 입지 판단 자료를 제공합니다.", stack: ["Python", "Pandas", "SQL", "지도 시각화"], problem: "상권 선택 시 여러 지표를 따로 확인해야 하므로 비교가 번거롭습니다.", solution: "상권·업종·기간 기준으로 데이터를 통합하고 핵심 지표를 시각화합니다.", features: ["상권별 지표 비교", "업종 분포 분석", "기간별 변화 확인", "요약 리포트"], result: "데이터에 근거한 상권 비교 화면을 완성합니다." },
-    { id: 5, title: "스마트 학습 관리 서비스", category: "WEB", period: "6주", team: "4명", description: "학습 일정과 진도, 과제 제출 현황을 통합 관리하는 웹 애플리케이션", stack: ["Java", "Spring Boot", "React", "MySQL"], problem: "학습 일정과 과제 상태가 분산되어 진행 상황을 한눈에 보기 어렵습니다.", solution: "사용자·과정·과제 데이터를 설계하고 역할별 화면과 API를 구현합니다.", features: ["회원 및 권한 관리", "과정별 학습 일정", "과제 제출과 상태 관리", "진도 현황 대시보드"], result: "실제 운영 흐름을 갖춘 풀스택 웹 프로젝트를 구성합니다." },
-    { id: 6, title: "고객 문의 자동 분류 시스템", category: "AI · DATA", period: "5주", team: "3명", description: "문의 텍스트를 유형별로 분류하고 담당 업무를 추천하는 NLP 프로젝트", stack: ["Python", "Scikit-learn", "FastAPI", "React"], problem: "반복 문의가 누적되면 유형 확인과 분배에 시간이 소요됩니다.", solution: "문의 텍스트를 전처리하고 분류 모델을 학습해 결과를 업무 화면에 표시합니다.", features: ["문의 텍스트 입력", "유형별 자동 분류", "분류 신뢰도 표시", "분류 결과 통계"], result: "텍스트 분류 모델과 웹 화면을 연결한 AI 응용 사례를 완성합니다." }
-  ];
-  const visible = projects.filter(function (project) { return category === "전체" || project.category === category; });
-  const current = projects.find(function (project) { return project.id === selected; });
-  return h("section", { className: "page projects-page" },
-    h("div", { className: "container" },
-      h("div", { className: "project-intro" },
-        h("span", { className: "eyebrow" }, "PROJECT SHOWCASE · DEMO PORTFOLIO"),
-        h("h1", null, "배운 기술을 실제 결과물로 연결합니다."),
-        h("p", { className: "lead" }, "문제 정의부터 데이터 설계, 개발, 테스트와 발표까지 팀 프로젝트의 전체 과정을 경험합니다."),
-        h("div", { className: "project-metrics" },
-          [["06", "프로젝트 사례"], ["03–06", "프로젝트 기간(주)"], ["03–04", "팀 구성 예시(명)"]].map(function (item) {
-            return h("div", { key: item[1] }, h("strong", null, item[0]), h("span", null, item[1]));
-          })
-        )
-      ),
-      h("div", { className: "project-filter" }, categories.map(function (item) {
-        return h("button", { type: "button", key: item, className: category === item ? "active" : "", onClick: function () { setCategory(item); } }, item);
-      })),
-      h("div", { className: "project-showcase-grid" }, visible.map(function (project) {
-        return h("article", { className: "project-showcase-card", key: project.id },
-          h("div", { className: "project-visual project-visual-" + (project.id % 4) }, h("span", null, project.category), h("b", null, String(project.id).padStart(2, "0")), h("i", null, "BUILD · TEST · PRESENT")),
-          h("div", { className: "project-showcase-content" },
-            h("div", { className: "project-meta" }, h("span", null, project.period), h("span", null, "팀 " + project.team)),
-            h("h2", null, project.title), h("p", null, project.description),
-            h("div", { className: "project-stack" }, project.stack.map(function (item) { return h("span", { key: item }, item); })),
-            h("button", { type: "button", className: "project-more", onClick: function () { setSelected(project.id); } }, "프로젝트 상세 보기 →")
-          )
-        );
-      })),
-      h("p", { className: "project-note" }, "※ 위 프로젝트는 교육과정 소개를 위한 가상 포트폴리오 예시이며 실제 수강생 작품이나 취업 성과가 아닙니다."),
-      current ? h("div", { className: "project-detail-overlay", role: "dialog", "aria-modal": "true" },
-        h("article", { className: "project-detail-panel" },
-          h("button", { type: "button", className: "project-detail-close", onClick: function () { setSelected(null); } }, "×"),
-          h("span", { className: "eyebrow" }, current.category + " · " + current.period),
-          h("h2", null, current.title), h("p", { className: "lead" }, current.description),
-          h("div", { className: "project-detail-columns" },
-            h("section", null, h("h3", null, "문제 정의"), h("p", null, current.problem)),
-            h("section", null, h("h3", null, "해결 접근"), h("p", null, current.solution)),
-            h("section", null, h("h3", null, "주요 기능"), h("ul", null, current.features.map(function (item) { return h("li", { key: item }, item); }))),
-            h("section", null, h("h3", null, "기대 결과물"), h("p", null, current.result))
-          ),
-          h("div", { className: "project-stack" }, current.stack.map(function (item) { return h("span", { key: item }, item); })),
-          h(Link, { to: "/consultation", className: "btn", onClick: function () { setSelected(null); } }, "관련 교육과정 상담하기")
-        )
-      ) : null
-    )
-  );
-}
-function About() {
-  const items = [
-    ["01", "실전 중심", "직접 만들고 검증하는 학습"],
-    ["02", "기초부터", "단계적으로 쌓는 기술 역량"],
-    ["03", "협업 경험", "팀 프로젝트와 코드 리뷰"],
-    ["04", "결과물", "완성한 프로젝트 발표"]
-  ];
-
-  return h("section", { className: "page" },
-    h("div", { className: "container" },
-      h("span", { className: "eyebrow" }, "ABOUT IT ACADEMY"),
-      h("h1", null, "기술을 이해하고, 가능성을 구현합니다."),
-      h("p", { className: "lead" }, "IT ACADEMY는 AI와 데이터 기술을 중심으로 기초 학습부터 실무 프로젝트까지 연결하는 교육기관 콘셉트의 프로젝트 웹사이트입니다."),
-      h("div", { className: "grid4 journey" },
-        items.map(function (item) {
-          return h("article", { className: "journeycard", key: item[0] },
-            h("b", null, item[0]),
-            h("h3", null, item[1]),
-            h("p", null, item[2])
-          );
-        })
-      )
-    )
-  );
-}
-
 function App() {
   return h(BrowserRouter, { basename: import.meta.env.BASE_URL },
     h(Routes, null,
       h(Route, { element: h(Layout) },
-        h(Route, { path: "/", element: h(Home) }),
-        h(Route, { path: "/about", element: h(About) }),
+        h(Route, { path: "/", element: h(AcademyHome) }),
+        h(Route, { path: "/about", element: h(AcademyAbout) }),
         h(Route, { path: "/courses", element: h(Courses) }),
         h(Route, { path: "/courses/:id", element: h(Courses) }),
-        h(Route, { path: "/projects", element: h(Projects) }),
+        h(Route, { path: "/projects", element: h(AcademyProjects) }),
         h(Route, { path: "/consultation", element: h(Consultation) }),
         h(Route, { path: "/notices", element: h(Notices) }),
         h(Route, { path: "/notices/:id", element: h(NoticeDetail) })
