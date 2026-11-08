@@ -19,6 +19,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -116,6 +117,27 @@ class AdminApiIntegrationTest {
 
         mvc.perform(get("/api/notices"))
                 .andExpect(status().isOk());
+    }
+
+
+    @Test
+    void publicProjectApiReturnsStructuredReviewReadyExamples() throws Exception {
+        mvc.perform(get("/api/projects"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()").value(6))
+                .andExpect(jsonPath("$[0].problem").isNotEmpty())
+                .andExpect(jsonPath("$[0].evaluationPoints").isArray())
+                .andExpect(jsonPath("$[0].disclosure").value("교육 설계 예시"));
+    }
+
+    @Test
+    void inquiryValidationReturnsFieldLevelErrorDetails() throws Exception {
+        mvc.perform(post("/api/inquiries")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"name\":\"\",\"phone\":\"123\",\"email\":\"invalid\",\"courseTitle\":\"\",\"message\":\"짧음\",\"privacyConsent\":true}"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").isNotEmpty())
+                .andExpect(jsonPath("$.fieldErrors").isMap());
     }
 
     private String csrfToken(MockHttpSession session) throws Exception {
