@@ -296,7 +296,43 @@ function Courses() {
     }
 
     const detailData = courseDetailData[selected.id] || buildCourseDetailData(selected);
-    const modules = detailData.modules;
+    const moduleEvidence = {
+      1: [
+        ["직접 작성한 함수·조건문·반복문으로 작은 문제를 해결하고 실행 결과를 비교합니다.", "실습 노트북, 문제 풀이 코드, 개념 설명"],
+        ["원천 데이터의 구조를 파악하고 결측·중복·이상치를 처리한 뒤 전처리 규칙을 기록합니다.", "데이터 사전, 전처리 코드, 품질 점검표"],
+        ["기준 모델을 먼저 만들고 학습·검증 데이터를 분리해 분류·회귀 지표를 비교합니다.", "베이스라인 모델, 평가 지표표, 오분류 사례"],
+        ["간단한 신경망을 학습시키고 학습 곡선과 과적합 징후를 비교합니다.", "학습 노트북, 손실 곡선, 모델 실험 기록"],
+        ["추천 결과를 서비스 화면과 연결하고 기준 모델과 개선 결과를 비교해 발표합니다.", "추천 모델, API 명세, 성능 보고서, 시연 자료"]
+      ],
+      2: [
+        ["테이블 관계를 파악하고 필터·조인·집계 쿼리로 분석용 데이터를 추출합니다.", "SQL 쿼리 모음, 데이터 추출 결과"],
+        ["자료형·결측·중복·이상치를 점검하고 재현 가능한 전처리 절차를 작성합니다.", "데이터 품질 보고서, 전처리 코드"],
+        ["분포·상관·그룹별 차이를 분석하고 지표가 의미하는 범위를 해석합니다.", "탐색적 분석 노트북, 지표 정의서"],
+        ["분석 목적에 맞는 차트를 선택하고 필터와 요약 지표가 있는 대시보드를 구성합니다.", "차트 설계 근거, 대시보드 화면"],
+        ["분석 질문·근거 데이터·핵심 인사이트·한계를 연결해 의사결정 보고서를 발표합니다.", "분석 보고서, 대시보드, 발표 자료"]
+      ],
+      3: [
+        ["HTTP 요청과 JSON 응답을 다루고 정상·오류 응답을 구분하는 API 호출 흐름을 구현합니다.", "API 호출 코드, 요청·응답 예시"],
+        ["역할과 출력 형식을 분명히 한 프롬프트를 작성하고 질문 유형별 결과를 비교합니다.", "프롬프트 버전, 평가 질문 세트, 결과 비교표"],
+        ["문서를 청크로 분리해 임베딩하고 검색 결과의 유사도와 누락 사례를 확인합니다.", "청킹 규칙, 검색 샘플, 임베딩 실험 기록"],
+        ["검색 문맥을 생성 모델에 전달하고 답변에 근거 출처를 연결하며 검색 실패를 점검합니다.", "RAG 파이프라인, 출처 연결 사례, 실패 분석"],
+        ["질문 데이터셋으로 응답 근거·정확성·지연·비용을 측정하고 서비스로 시연합니다.", "평가 데이터셋, 품질 리포트, API 문서, 시연 자료"]
+      ],
+      4: [
+        ["객체·메서드·컬렉션·예외 처리의 역할을 이해하고 작은 콘솔 프로그램을 작성합니다.", "Java 실습 코드, 단위 실행 결과"],
+        ["도메인과 테이블을 설계하고 Spring API와 JPA로 조회·등록·수정 흐름을 연결합니다.", "ERD, 엔티티·리포지토리, API 명세"],
+        ["컴포넌트와 상태를 나누고 폼·목록·상세 화면을 라우팅으로 연결합니다.", "화면 구성도, React 화면, 사용자 흐름"],
+        ["로그인·권한·입력 검증·CSRF를 적용하고 정상·비정상 접근을 테스트합니다.", "권한표, 보안 테스트 케이스, 오류 응답"],
+        ["프론트·백엔드·DB를 통합하고 설치·실행·테스트·발표 자료까지 정리합니다.", "통합 웹 서비스, 테스트 결과, README, 발표 자료"]
+      ]
+    };
+    const modules = (detailData.modules || []).map(function (item, index) {
+      const evidence = moduleEvidence[selected.id] && moduleEvidence[selected.id][index];
+      return Object.assign({}, item, {
+        practice: evidence ? evidence[0] : "핵심 개념을 직접 적용해 작은 기능을 구현하고 정상·오류 조건을 확인합니다.",
+        evidence: evidence ? evidence[1] : "실습 코드, 실행 결과, 개선 기록"
+      });
+    });
     const benefits = detailData.benefits;
     const faqs = detailData.faqs;
 
@@ -361,7 +397,17 @@ function Courses() {
                 h("div", null,
                   h("h3", null, item.title),
                   h("p", null, item.description),
-                  h("small", null, item.tools)
+                  h("small", null, item.tools),
+                  h("div", { className: "academy-module-evidence" },
+                    h("div", null,
+                      h("b", null, "PRACTICE"),
+                      h("p", null, item.practice)
+                    ),
+                    h("div", null,
+                      h("b", null, "EVIDENCE"),
+                      h("p", null, item.evidence)
+                    )
+                  )
                 )
               );
             })
