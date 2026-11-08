@@ -208,22 +208,25 @@ class AdminApiIntegrationTest {
         MockHttpSession session = login(SUPER_LOGIN);
         String token = csrfToken(session);
 
-        mvc.perform(post("/api/admin/courses")
+        MvcResult created = mvc.perform(post("/api/admin/courses")
                         .session(session)
                         .header("X-CSRF-TOKEN", token)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"title\":\"검증된 AI 과정\",\"category\":\"AI\",\"summary\":\"검증 테스트 과정\",\"target\":\"지원 대상 확인 완료\",\"duration\":\"5개월\",\"recruitmentStatus\":\"모집 중\",\"operatingInfoVerified\":true}"))
-                .andExpect(status().isCreated());
+                .andExpect(status().isCreated())
+                .andReturn();
 
-        mvc.perform(get("/api/courses"))
+        long courseId = objectMapper.readTree(created.getResponse().getContentAsString())
+                .get("id").asLong();
+
+        mvc.perform(get("/api/courses/{id}", courseId))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].title").value("검증된 AI 과정"))
-                .andExpect(jsonPath("$[0].recruitmentStatus").value("모집 중"))
-                .andExpect(jsonPath("$[0].duration").value("5개월"))
-                .andExpect(jsonPath("$[0].target").value("지원 대상 확인 완료"))
-                .andExpect(jsonPath("$[0].infoDisclosure").value("운영 정보 확인 완료"));
+                .andExpect(jsonPath("$.title").value("검증된 AI 과정"))
+                .andExpect(jsonPath("$.recruitmentStatus").value("모집 중"))
+                .andExpect(jsonPath("$.duration").value("5개월"))
+                .andExpect(jsonPath("$.target").value("지원 대상 확인 완료"))
+                .andExpect(jsonPath("$.infoDisclosure").value("운영 정보 확인 완료"));
     }
-
 
     @Test
     void courseCannotBeMarkedVerifiedWithoutRequiredOperationDetails() throws Exception {
