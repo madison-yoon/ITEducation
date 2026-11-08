@@ -16,5 +16,6 @@ public class Course {
     @Column(columnDefinition="TEXT") private String curriculum;
     @Column(columnDefinition="TEXT") private String skills;
     private boolean featured;
+    private boolean operatingInfoVerified;
     private LocalDateTime createdAt=LocalDateTime.now();
 }
