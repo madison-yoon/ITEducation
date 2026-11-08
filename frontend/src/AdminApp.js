@@ -7,8 +7,8 @@ const h = React.createElement;
 
 const emptyCourse = {
   title: "", category: "AI", summary: "", description: "", target: "",
-  duration: "", recruitmentStatus: "모집 예정", imageUrl: "",
-  curriculum: "", skills: "", featured: false
+  duration: "", recruitmentStatus: "모집 정보 확인", imageUrl: "",
+  curriculum: "", skills: "", featured: false, operatingInfoVerified: false
 };
 
 const emptyNotice = { title: "", category: "공지", content: "", status: "게시 중", pinned: false };
@@ -335,7 +335,12 @@ function AdminApp() {
           field("과정명 *", courseForm.title, function (v) { changeCourse("title", v); }),
           selectField("분야", courseForm.category, ["AI", "DATA", "GEN AI", "WEB"], function (v) { changeCourse("category", v); }),
           field("교육 기간", courseForm.duration, function (v) { changeCourse("duration", v); }, "text", "예: 6개월"),
-          selectField("모집 상태", courseForm.recruitmentStatus, ["모집 중", "모집 예정", "모집 마감"], function (v) { changeCourse("recruitmentStatus", v); }),
+          selectField("모집 상태", courseForm.recruitmentStatus, ["모집 정보 확인", "모집 중", "모집 예정", "모집 마감"], function (v) { changeCourse("recruitmentStatus", v); }),
+          h("label", { className: "admin-check" },
+            h("input", { type: "checkbox", checked: !!courseForm.operatingInfoVerified, onChange: function (e) { changeCourse("operatingInfoVerified", e.target.checked); } }),
+            " 모집·지원 정보 확인 완료"
+          ),
+          h("p", { className: "admin-form-hint" }, "개강 일정, 지원 대상, 모집 상태 등 공개할 운영 정보가 확인된 뒤에만 체크하세요."),
           field("대상", courseForm.target, function (v) { changeCourse("target", v); }),
           field("이미지 경로", courseForm.imageUrl, function (v) { changeCourse("imageUrl", v); }, "text", "/images/course-ai.png"),
           area("한 줄 소개", courseForm.summary, function (v) { changeCourse("summary", v); }, 2),
