@@ -195,12 +195,12 @@ class AdminApiIntegrationTest {
 
     @Test
     void publicCourseApiHidesUnverifiedRecruitmentAndEligibilityData() throws Exception {
-        mvc.perform(get("/api/courses"))
+        mvc.perform(get("/api/courses/{id}", 1L))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].recruitmentStatus").value("모집 정보 확인"))
-                .andExpect(jsonPath("$[0].duration").value("운영 정보 확인"))
-                .andExpect(jsonPath("$[0].target").value("지원 대상은 운영기관 확인 필요"))
-                .andExpect(jsonPath("$[0].infoDisclosure").value("교육과정 구성 예시"));
+                .andExpect(jsonPath("$.recruitmentStatus").value("모집 정보 확인"))
+                .andExpect(jsonPath("$.duration").value("운영 정보 확인"))
+                .andExpect(jsonPath("$.target").value("지원 대상은 운영기관 확인 필요"))
+                .andExpect(jsonPath("$.infoDisclosure").value("교육과정 구성 예시"));
     }
 
     @Test
