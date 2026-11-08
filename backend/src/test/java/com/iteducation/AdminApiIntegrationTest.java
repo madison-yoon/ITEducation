@@ -173,7 +173,7 @@ class AdminApiIntegrationTest {
                 .andReturn();
         MockHttpSession session = (MockHttpSession) tokenResult.getRequest().getSession(false);
         String token = csrfToken(session);
-        String requestBody = "{\"name\":\"테스트 사용자\",\"phone\":\"010-1234-5678\",\"courseTitle\":\"AI 교육과정\",\"message\":\"교육과정과 프로젝트 운영 방식이 궁금합니다.\",\"privacyConsent\":true,\"marketingConsent\":false}";
+        String requestBody = "{\"name\":\"테스트 사용자\",\"phone\":\"010-1234-5678\",\"courseTitle\":\"AI·머신러닝 실무 개발자 과정\",\"message\":\"교육과정과 프로젝트 운영 방식이 궁금합니다.\",\"privacyConsent\":true,\"marketingConsent\":false}";
 
         mvc.perform(post("/api/inquiries")
                         .session(session)
