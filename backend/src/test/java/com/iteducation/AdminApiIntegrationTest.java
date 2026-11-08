@@ -132,7 +132,15 @@ class AdminApiIntegrationTest {
 
     @Test
     void inquiryValidationReturnsFieldLevelErrorDetails() throws Exception {
+        MvcResult tokenResult = mvc.perform(get("/api/csrf"))
+                .andExpect(status().isOk())
+                .andReturn();
+        MockHttpSession session = (MockHttpSession) tokenResult.getRequest().getSession(false);
+        String token = csrfToken(session);
+
         mvc.perform(post("/api/inquiries")
+                        .session(session)
+                        .header("X-CSRF-TOKEN", token)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"name\":\"\",\"phone\":\"123\",\"email\":\"invalid\",\"courseTitle\":\"\",\"message\":\"짧음\",\"privacyConsent\":true}"))
                 .andExpect(status().isBadRequest())
