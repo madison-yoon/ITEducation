@@ -1,25 +1,32 @@
 package com.iteducation.controller;
 
+import com.iteducation.dto.ProjectShowcaseResponse;
 import com.iteducation.entity.Course;
 import com.iteducation.entity.Notice;
 import com.iteducation.repository.CourseRepository;
 import com.iteducation.repository.NoticeRepository;
+import com.iteducation.service.ProjectCatalogService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api")
 public class PublicController {
     private final CourseRepository courses;
     private final NoticeRepository notices;
+    private final ProjectCatalogService projects;
 
-    public PublicController(CourseRepository courses, NoticeRepository notices) {
+    public PublicController(
+            CourseRepository courses,
+            NoticeRepository notices,
+            ProjectCatalogService projects
+    ) {
         this.courses = courses;
         this.notices = notices;
+        this.projects = projects;
     }
 
     @GetMapping("/courses")
@@ -48,13 +55,12 @@ public class PublicController {
         return notice;
     }
 
+    /**
+     * 프로젝트 상세 정보는 프론트엔드와 같은 응답 구조로 제공합니다.
+     * 응답의 disclosure 필드로 교육 설계 예시임을 명시합니다.
+     */
     @GetMapping("/projects")
-    public List<Map<String, String>> projects() {
-        return List.of(
-                Map.of("title", "AI 영화 추천 시스템", "category", "AI·머신러닝", "description", "사용자 선호 데이터 기반 추천 모델"),
-                Map.of("title", "소비 데이터 분석 대시보드", "category", "빅데이터", "description", "대규모 소비 패턴 분석과 시각화"),
-                Map.of("title", "문서 질의응답 AI 서비스", "category", "생성형 AI", "description", "문서 검색과 LLM 응답을 결합한 서비스"),
-                Map.of("title", "AI 통합 웹 플랫폼", "category", "AI 웹서비스", "description", "AI 기능을 연결한 웹 서비스 예시")
-        );
+    public List<ProjectShowcaseResponse> projects() {
+        return projects.findAll();
     }
 }
