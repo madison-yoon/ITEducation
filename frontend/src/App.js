@@ -191,20 +191,81 @@ function CourseCard(props) {
   );
 }
 
+
+// 관리자에서 추가한 교육과정도 상세 페이지에서 일관된 구조로 설명할 수 있도록
+// 등록된 과정명·소개·커리큘럼·기술 정보를 기반으로 기본 상세 구성을 만듭니다.
+function buildCourseDetailData(course) {
+  const modules = String(course.curriculum || "")
+    .split(/→|\\n|;/)
+    .map(function (value) { return value.trim(); })
+    .filter(Boolean)
+    .map(function (title, index) {
+      return {
+        title: title,
+        description: "이 단계의 핵심 개념을 이해하고 작은 실습으로 동작을 확인한 뒤 다음 단계의 입력으로 연결합니다.",
+        tools: course.skills || "과정별 주요 기술"
+      };
+    });
+
+  if (modules.length === 0) {
+    modules.push({
+      title: "핵심 개념과 기초 실습",
+      description: "과정의 기본 개념과 개발 환경을 익히고 작은 기능을 직접 구현합니다.",
+      tools: course.skills || "과정별 주요 기술"
+    });
+  }
+
+  modules.push({
+    title: "통합 프로젝트와 결과 검증",
+    description: "학습한 내용을 연결해 프로젝트를 구현하고 테스트·문서·발표 자료로 결과를 정리합니다.",
+    tools: "Git · Testing · Documentation"
+  });
+
+  return {
+    intro: course.description || course.summary || "등록된 교육과정의 목표와 학습 범위를 안내합니다.",
+    description: course.description || course.summary || "단계별 실습과 프로젝트를 통해 과정의 핵심 역량을 학습합니다.",
+    recruitPeriod: "운영기관 공지 확인",
+    startDate: "상담 시 최신 일정 안내",
+    outcomes: [
+      { title: "핵심 개념 이해", description: "과정의 주요 개념과 기술이 문제 해결에 어떻게 활용되는지 설명합니다." },
+      { title: "기능 단위 구현", description: "작은 기능부터 직접 구현하고 실행 결과와 오류 원인을 확인합니다." },
+      { title: "프로젝트 검증", description: "테스트와 문서화를 통해 프로젝트의 동작과 구현 근거를 제시합니다." }
+    ],
+    modules: modules,
+    projectTitle: (course.title || "교육과정") + " 통합 프로젝트",
+    projectDescription: "과정에서 학습한 기술을 연결해 실제 사용 흐름을 갖춘 결과물을 구현하고, 요구사항·설계·테스트·시연 자료를 함께 정리합니다.",
+    deliverables: ["요구사항 정의서", "핵심 기능 구현", "테스트 결과", "README 및 시연 자료"],
+    benefits: [
+      { title: "단계별 학습 산출물", description: "개념 노트와 실습 결과를 누적해 학습 진행 상황과 이해도를 확인합니다." },
+      { title: "코드 리뷰 기준", description: "이름·구조·오류 처리·보안·가독성 관점에서 구현 내용을 점검하도록 설계합니다." },
+      { title: "포트폴리오 문서", description: "문제 정의, 기술 선택, 주요 기능, 테스트 결과와 한계를 문서로 설명합니다." }
+    ],
+    faqs: [
+      { question: "프로그래밍 경험이 없어도 가능한가요?", answer: "과정별 선수 지식과 실습 난이도가 다릅니다. 상세 커리큘럼을 확인하고 현재 경험과 주당 학습 가능 시간을 상담에서 함께 점검해 주세요." },
+      { question: "프로젝트 결과물은 무엇인가요?", answer: "과정별 주제에 맞는 작동 결과물과 요구사항·설계·테스트·실행 안내 문서를 정리하는 것을 목표로 합니다." },
+      { question: "모집 일정과 교육비는 확정되어 있나요?", answer: "이 화면에는 확인되지 않은 일정이나 비용을 임의로 표시하지 않습니다. 운영기관의 최신 공지와 상담 안내를 기준으로 확인해 주세요." }
+    ]
+  };
+}
+
 function Courses() {
   const params = useParams();
   const [items, setItems] = React.useState(courseSeed);
   const [keyword, setKeyword] = React.useState("");
   const [category, setCategory] = React.useState("전체");
+  const [coursesLoading, setCoursesLoading] = React.useState(true);
 
   React.useEffect(function () {
+    let active = true;
     api.get("/courses")
       .then(function (response) {
         if (Array.isArray(response.data) && response.data.length > 0) {
-          setItems(response.data);
+          if (active) setItems(response.data);
         }
       })
-      .catch(function () {});
+      .catch(function () {})
+      .finally(function () { if (active) setCoursesLoading(false); });
+    return function () { active = false; };
   }, []);
 
   if (params.id) {
@@ -212,13 +273,21 @@ function Courses() {
       return String(item.id) === params.id;
     });
 
+    if (!selected && coursesLoading) {
+      return h("section", { className: "page" }, h("div", { className: "container" }, h("p", null, "교육과정 정보를 불러오고 있습니다.")));
+    }
     if (!selected) {
       return h("section", { className: "page" },
-        h("div", { className: "container" }, h("h1", null, "과정을 찾을 수 없습니다."))
+        h("div", { className: "container" },
+          h("span", { className: "eyebrow" }, "PROGRAM NOT FOUND"),
+          h("h1", null, "과정을 찾을 수 없습니다."),
+          h("p", { className: "lead" }, "과정이 삭제되었거나 공개되지 않았을 수 있습니다."),
+          h(Link, { to: "/courses", className: "btn" }, "교육과정 목록으로 돌아가기")
+        )
       );
     }
 
-    const detailData = courseDetailData[selected.id] || courseDetailData[1];
+    const detailData = courseDetailData[selected.id] || buildCourseDetailData(selected);
     const modules = detailData.modules;
     const benefits = detailData.benefits;
     const faqs = detailData.faqs;
@@ -233,7 +302,7 @@ function Courses() {
           h("div", { className: "course-detail-tags" },
             h("span", null, "교육 기간 " + selected.duration),
             h("span", null, "프로젝트 중심 실습"),
-            h("span", null, "전공 무관 지원 가능")
+            h("span", null, selected.target || "지원 대상은 상담 시 확인")
           ),
           h("div", { className: "actions" },
             h(Link, { to: "/consultation", className: "btn" }, "과정 상담 신청하기"),
@@ -337,7 +406,7 @@ function Courses() {
         h("section", { className: "course-detail-section" },
           h("div", { className: "course-section-heading" },
             h("span", { className: "eyebrow" }, "STUDENT SUPPORT"),
-            h("h2", null, "학습 지원 및 제공 항목")
+            h("h2", null, "학습 지원 설계 기준")
           ),
           h("div", { className: "course-benefits" },
             benefits.map(function (item) {
@@ -383,7 +452,7 @@ function Courses() {
             h("h2", null, "나에게 맞는 과정인지 먼저 상담해 보세요."),
             h("p", null, "커리큘럼, 학습 난이도, 준비 사항을 차근차근 안내합니다.")
           ),
-          h(Link, { to: "/consultation", className: "btn white" }, "무료 상담 신청하기")
+          h(Link, { to: "/consultation", className: "btn white" }, "교육과정 상담 신청하기")
         )
       )
     );
@@ -399,7 +468,7 @@ function Courses() {
     h("div", { className: "container" },
       h("span", { className: "eyebrow" }, "OUR PROGRAMS"),
       h("h1", null, "교육과정"),
-      h("p", { className: "lead" }, "관심 분야와 목표에 맞는 전문 교육과정을 선택하세요."),
+      h("p", { className: "lead" }, "과정별 학습 목표와 기술 범위, 실습 단계, 프로젝트 결과물을 비교해 보세요."),
       h("div", { className: "filters" },
         h("input", {
           placeholder: "과정명 검색",
@@ -426,6 +495,7 @@ function Courses() {
 
 function Consultation() {
   const navigate = useNavigate();
+  const [availableCourses, setAvailableCourses] = React.useState(courseSeed);
   const [form, setForm] = React.useState({
     name: "", phone: "", email: "", courseTitle: "",
     preferredDate: "", preferredPeriod: "오전", message: "",
@@ -434,6 +504,18 @@ function Consultation() {
   const [error, setError] = React.useState("");
   const [receipt, setReceipt] = React.useState("");
   const [submitting, setSubmitting] = React.useState(false);
+
+  React.useEffect(function () {
+    let active = true;
+    api.get("/courses")
+      .then(function (response) {
+        if (active && Array.isArray(response.data) && response.data.length) {
+          setAvailableCourses(response.data);
+        }
+      })
+      .catch(function () {})
+    return function () { active = false; };
+  }, []);
 
   function updateField(name, value) {
     setForm(function (previous) {
@@ -497,7 +579,7 @@ function Consultation() {
         h("label", null, "희망 교육과정 *",
           h("select", { required: true, value: form.courseTitle, onChange: function (e) { updateField("courseTitle", e.target.value); } },
             h("option", { value: "" }, "과정을 선택하세요"),
-            courseSeed.map(function (course) {
+            availableCourses.map(function (course) {
               return h("option", { key: course.id, value: course.title }, course.title);
             })
           )
