@@ -224,6 +224,21 @@ class AdminApiIntegrationTest {
                 .andExpect(jsonPath("$[0].infoDisclosure").value("운영 정보 확인 완료"));
     }
 
+
+    @Test
+    void courseCannotBeMarkedVerifiedWithoutRequiredOperationDetails() throws Exception {
+        MockHttpSession session = login(SUPER_LOGIN);
+        String token = csrfToken(session);
+
+        mvc.perform(post("/api/admin/courses")
+                        .session(session)
+                        .header("X-CSRF-TOKEN", token)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"title\":\"확인되지 않은 과정\",\"recruitmentStatus\":\"모집 정보 확인\",\"operatingInfoVerified\":true}"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value("운영정보 확인 완료로 공개하려면 모집 상태, 교육 기간, 지원 대상을 입력해 주세요."));
+    }
+
     private String csrfToken(MockHttpSession session) throws Exception {
         MvcResult result = mvc.perform(get("/api/csrf").session(session))
                 .andExpect(status().isOk())
