@@ -496,7 +496,9 @@ function Courses() {
 
 function Consultation() {
   const navigate = useNavigate();
-  const [availableCourses, setAvailableCourses] = React.useState(isStaticPreview ? courseSeed : []);\n  const [courseLoading, setCourseLoading] = React.useState(!isStaticPreview);\n  const [courseError, setCourseError] = React.useState("");
+  const [availableCourses, setAvailableCourses] = React.useState(isStaticPreview ? courseSeed : []);
+  const [courseLoading, setCourseLoading] = React.useState(!isStaticPreview);
+  const [courseError, setCourseError] = React.useState("");
   const [form, setForm] = React.useState({
     name: "", phone: "", email: "", courseTitle: "",
     preferredDate: "", preferredPeriod: "오전", message: "",
@@ -538,10 +540,23 @@ function Consultation() {
   async function submitForm(event) {
     event.preventDefault();
     setError("");
-    if (isStaticPreview) {\n      setError("정적 미리보기에서는 상담 신청이 실제로 전송되지 않습니다. 백엔드가 연결된 서비스 환경에서 이용해 주세요.");\n      return;\n    }\n    if (!availableCourses.some(function (course) { return course.title === form.courseTitle; })) {\n      setError("서버에서 제공하는 교육과정을 선택해 주세요.");\n      return;\n    }\n    setSubmitting(true);
+    if (isStaticPreview) {
+      setError("정적 미리보기에서는 상담 신청이 실제로 전송되지 않습니다. 백엔드가 연결된 서비스 환경에서 이용해 주세요.");
+      return;
+    }
+    if (!availableCourses.some(function (course) { return course.title === form.courseTitle; })) {
+      setError("서버에서 제공하는 교육과정을 선택해 주세요.");
+      return;
+    }
+    setSubmitting(true);
 
     try {
-      const payload = Object.assign({}, form, {\n        email: form.email.trim() || null,\n        preferredDate: form.preferredDate || null,\n        preferredPeriod: form.preferredPeriod || null\n      });\n      const response = await api.post("/inquiries", payload);
+      const payload = Object.assign({}, form, {
+        email: form.email.trim() || null,
+        preferredDate: form.preferredDate || null,
+        preferredPeriod: form.preferredPeriod || null
+      });
+      const response = await api.post("/inquiries", payload);
       setReceipt(response.data.receiptNo);
     } catch (requestError) {
       const message = requestError.response && requestError.response.data
@@ -590,7 +605,10 @@ function Consultation() {
             availableCourses.map(function (course) {
               return h("option", { key: course.id, value: course.title }, course.title);
             })
-          ),\n          courseError ? h("small", { className: "form-help error-text" }, courseError) : null\n        ),\n        h("div", { className: "two" },
+          ),
+          courseError ? h("small", { className: "form-help error-text" }, courseError) : null
+        ),
+        h("div", { className: "two" },
           h("label", null, "상담 희망 날짜",
             h("input", { type: "date", value: form.preferredDate, onChange: function (e) { updateField("preferredDate", e.target.value); } })
           ),
