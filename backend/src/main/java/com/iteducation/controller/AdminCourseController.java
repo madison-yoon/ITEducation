@@ -4,6 +4,7 @@ import com.iteducation.entity.Course;
 import com.iteducation.repository.CourseRepository;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -19,11 +20,20 @@ public class AdminCourseController {
         this.courses = courses;
     }
 
-    public record CourseRequest(@NotBlank String title, String category, String summary,
-                                String description, String target, String duration,
-                                String recruitmentStatus, String imageUrl,
-                                String curriculum, String skills, boolean featured,
-                                boolean operatingInfoVerified) {}
+    public record CourseRequest(
+            @NotBlank @Size(max = 120) String title,
+            @Size(max = 50) String category,
+            @Size(max = 500) String summary,
+            @Size(max = 5000) String description,
+            @Size(max = 200) String target,
+            @Size(max = 40) String duration,
+            @Size(max = 30) String recruitmentStatus,
+            @Size(max = 500) String imageUrl,
+            @Size(max = 10000) String curriculum,
+            @Size(max = 2000) String skills,
+            boolean featured,
+            boolean operatingInfoVerified
+    ) {}
 
     @GetMapping
     public List<Course> list() {
@@ -56,10 +66,10 @@ public class AdminCourseController {
     }
 
     private void apply(Course course, CourseRequest request) {
-        if (!List.of("모집 정보 확인", "모집 중", "모집 예정", "모집 마감").contains(request.recruitmentStatus())) {
+        if (request.recruitmentStatus() == null\n                || !List.of("모집 정보 확인", "모집 중", "모집 예정", "모집 마감").contains(request.recruitmentStatus())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "모집 상태를 확인해 주세요.");
         }
-        course.setTitle(request.title().trim());
+        if (request.operatingInfoVerified()\n                && ("모집 정보 확인".equals(request.recruitmentStatus())\n                    || request.target() == null || request.target().isBlank()\n                    || request.duration() == null || request.duration().isBlank())) {\n            throw new ResponseStatusException(\n                    HttpStatus.BAD_REQUEST,\n                    "운영정보 확인 완료로 공개하려면 모집 상태, 교육 기간, 지원 대상을 입력해 주세요."\n            );\n        }\n        course.setTitle(request.title().trim());
         course.setCategory(request.category());
         course.setSummary(request.summary());
         course.setDescription(request.description());
