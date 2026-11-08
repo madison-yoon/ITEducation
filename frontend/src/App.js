@@ -17,10 +17,10 @@ const h = React.createElement;
 
 // API 연결에 실패해도 화면을 확인할 수 있도록 준비한 교육과정 기본 데이터입니다.
 const courseSeed = [
-  { id: 1, title: "AI·머신러닝 실무 개발자 과정", category: "AI", duration: "6개월", recruitmentStatus: "모집 중", summary: "Python과 머신러닝으로 데이터를 분석하고 예측 모델을 구현합니다.", target: "비전공자 및 전공자 모두 수강 가능", curriculum: "Python 기초 → 데이터 처리 → 머신러닝 → 딥러닝 → 영화 추천 프로젝트", skills: "Python · NumPy · Pandas · Scikit-learn · PyTorch" },
-  { id: 2, title: "빅데이터 분석 전문가 과정", category: "DATA", duration: "5개월", recruitmentStatus: "모집 예정", summary: "대규모 데이터를 분석하고 의미 있는 인사이트를 시각화합니다.", target: "데이터 분석과 시각화에 관심 있는 사람", curriculum: "Python·SQL → 전처리 → 통계 분석 → 시각화 → 분석 대시보드", skills: "Python · SQL · Pandas · Spark" },
-  { id: 3, title: "생성형 AI 서비스 개발 과정", category: "GEN AI", duration: "4개월", recruitmentStatus: "모집 중", summary: "LLM과 RAG를 활용해 실제 문제를 해결하는 AI 서비스를 만듭니다.", target: "생성형 AI를 실제 서비스에 적용하고 싶은 사람", curriculum: "API → LLM → 프롬프트 → 임베딩·RAG → 문서 질의응답", skills: "Python · LLM API · Embedding · RAG" },
-  { id: 4, title: "AI 기반 웹 서비스 개발 과정", category: "WEB", duration: "6개월", recruitmentStatus: "모집 마감", summary: "웹 기술과 AI를 연결해 사용 가능한 서비스를 구현합니다.", target: "웹 개발과 AI 연동을 함께 학습하고 싶은 사람", curriculum: "Java → Spring Boot → React → MySQL → AI API 연동", skills: "Java · Spring Boot · React · MySQL" }
+  { id: 1, title: "AI·머신러닝 실무 개발자 과정", category: "AI", duration: "6개월", recruitmentStatus: "모집 정보 확인", summary: "Python과 머신러닝으로 데이터를 분석하고 예측 모델을 구현합니다.", target: "지원 대상은 운영기관 확인 필요", curriculum: "Python 기초 → 데이터 처리 → 머신러닝 → 딥러닝 → 영화 추천 프로젝트", skills: "Python · NumPy · Pandas · Scikit-learn · PyTorch" },
+  { id: 2, title: "빅데이터 분석 전문가 과정", category: "DATA", duration: "5개월", recruitmentStatus: "모집 정보 확인", summary: "대규모 데이터를 분석하고 의미 있는 인사이트를 시각화합니다.", target: "지원 대상은 운영기관 확인 필요", curriculum: "Python·SQL → 전처리 → 통계 분석 → 시각화 → 분석 대시보드", skills: "Python · SQL · Pandas · Spark" },
+  { id: 3, title: "생성형 AI 서비스 개발 과정", category: "GEN AI", duration: "4개월", recruitmentStatus: "모집 중", summary: "LLM과 RAG를 활용해 실제 문제를 해결하는 AI 서비스를 만듭니다.", target: "지원 대상은 운영기관 확인 필요", curriculum: "API → LLM → 프롬프트 → 임베딩·RAG → 문서 질의응답", skills: "Python · LLM API · Embedding · RAG" },
+  { id: 4, title: "AI 기반 웹 서비스 개발 과정", category: "WEB", duration: "6개월", recruitmentStatus: "모집 정보 확인", summary: "웹 기술과 AI를 연결해 사용 가능한 서비스를 구현합니다.", target: "지원 대상은 운영기관 확인 필요", curriculum: "Java → Spring Boot → React → MySQL → AI API 연동", skills: "Java · Spring Boot · React · MySQL" }
 ];
 
 
@@ -55,7 +55,7 @@ const courseDetailData = {
     faqs: [
       { question: "프로그래밍을 처음 배우는 사람도 신청할 수 있나요?", answer: "과정은 Python 기초부터 시작하도록 설계했습니다. 다만 학습 시간과 실습 과제가 필요하므로 상담에서 현재 수준과 학습 가능 시간을 함께 확인하는 것을 권장합니다." },
       { question: "수료 후 어떤 결과물을 만들 수 있나요?", answer: "데이터 분석 노트북, 머신러닝 모델, 평가 보고서, 추천 서비스 시연 화면을 포트폴리오 형태로 정리하는 것을 목표로 합니다." },
-      { question: "교육 일정과 비용은 확정되어 있나요?", answer: "이 페이지의 일정은 데모 데이터입니다. 실제 개강일, 교육비, 지원 제도 및 모집 인원은 운영기관 확인이 필요합니다." }
+      { question: "교육 일정과 비용은 확정되어 있나요?", answer: "확인되지 않은 일정이나 비용은 이 화면에 임의로 표시하지 않습니다. 실제 개강일, 교육비, 지원 제도 및 모집 인원은 운영기관의 최신 공지로 확인해 주세요." }
     ]
   },
   2: {
@@ -66,7 +66,7 @@ const courseDetailData = {
     modules: [{title:"Python과 SQL",description:"분석 환경과 데이터베이스 기초를 익힙니다.",tools:"Python · SQL"},{title:"데이터 전처리",description:"결측치와 이상치를 처리하고 분석용 데이터를 구성합니다.",tools:"Pandas · NumPy"},{title:"통계 분석",description:"기술통계와 상관관계 등 분석 기초를 학습합니다.",tools:"Statistics"},{title:"데이터 시각화",description:"분석 결과를 목적에 맞는 차트와 대시보드로 표현합니다.",tools:"Matplotlib · Seaborn · BI"},{title:"분석 프로젝트",description:"주제를 정해 데이터 분석 보고서와 대시보드를 완성합니다.",tools:"SQL · Dashboard · Git"}],
     projectTitle:"소비 패턴 분석 대시보드",projectDescription:"가상의 소비 데이터를 바탕으로 기간·지역·카테고리별 추세를 분석하고 주요 지표를 시각화합니다.",deliverables:["SQL 분석 쿼리","전처리 노트북","대시보드","분석 보고서"],
     benefits:[{title:"분석 실습 데이터",description:"학습 단계에 맞춘 예제 데이터를 사용해 반복 실습합니다."},{title:"시각화 피드백",description:"차트 선택과 정보 전달 방식에 대한 피드백을 제공합니다."},{title:"결과 보고서 구성",description:"분석 목적과 근거, 결론을 연결해 보고서로 정리합니다."}],
-    faqs:[{question:"통계 전공 지식이 필요한가요?",answer:"기초 통계 개념부터 다루도록 구성했습니다. 수학적 배경과 학습 난이도는 상담에서 확인할 수 있습니다."},{question:"프로젝트 결과물은 무엇인가요?",answer:"분석용 SQL, 전처리 코드, 대시보드와 분석 보고서를 결과물로 정리합니다."},{question:"모집 일정은 확정인가요?",answer:"화면 구성용 데모 일정입니다. 실제 일정과 비용은 운영기관 확인이 필요합니다."}]
+    faqs:[{question:"통계 전공 지식이 필요한가요?",answer:"기초 통계 개념부터 다루도록 구성했습니다. 수학적 배경과 학습 난이도는 상담에서 확인할 수 있습니다."},{question:"프로젝트 결과물은 무엇인가요?",answer:"분석용 SQL, 전처리 코드, 대시보드와 분석 보고서를 결과물로 정리합니다."},{question:"모집 일정은 확정인가요?",answer:"확인되지 않은 일정이나 비용은 이 화면에 임의로 표시하지 않습니다. 실제 일정과 비용은 운영기관의 최신 공지로 확인해 주세요."}]
   },
   3: {
     intro: "대규모 언어 모델의 기본 개념을 이해하고 API와 검색 기술을 결합해 실용적인 생성형 AI 서비스를 구현합니다.",
