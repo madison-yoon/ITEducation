@@ -33,7 +33,8 @@ public class AdminCourseController {
             @Size(max = 2000) String skills,
             boolean featured,
             boolean operatingInfoVerified
-    ) {}
+    ) {
+    }
 
     @GetMapping
     public List<Course> list() {
@@ -66,10 +67,23 @@ public class AdminCourseController {
     }
 
     private void apply(Course course, CourseRequest request) {
-        if (request.recruitmentStatus() == null\n                || !List.of("모집 정보 확인", "모집 중", "모집 예정", "모집 마감").contains(request.recruitmentStatus())) {
+        if (request.recruitmentStatus() == null
+                || !List.of("모집 정보 확인", "모집 중", "모집 예정", "모집 마감")
+                .contains(request.recruitmentStatus())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "모집 상태를 확인해 주세요.");
         }
-        if (request.operatingInfoVerified()\n                && ("모집 정보 확인".equals(request.recruitmentStatus())\n                    || request.target() == null || request.target().isBlank()\n                    || request.duration() == null || request.duration().isBlank())) {\n            throw new ResponseStatusException(\n                    HttpStatus.BAD_REQUEST,\n                    "운영정보 확인 완료로 공개하려면 모집 상태, 교육 기간, 지원 대상을 입력해 주세요."\n            );\n        }\n        course.setTitle(request.title().trim());
+
+        if (request.operatingInfoVerified()
+                && ("모집 정보 확인".equals(request.recruitmentStatus())
+                || request.target() == null || request.target().isBlank()
+                || request.duration() == null || request.duration().isBlank())) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "운영정보 확인 완료로 공개하려면 모집 상태, 교육 기간, 지원 대상을 입력해 주세요."
+            );
+        }
+
+        course.setTitle(request.title().trim());
         course.setCategory(request.category());
         course.setSummary(request.summary());
         course.setDescription(request.description());
