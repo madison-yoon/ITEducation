@@ -5,10 +5,10 @@ import api from "./api.js";
 const h = React.createElement;
 
 const courseFallback = [
-  { id: 1, title: "AI·머신러닝 실무 개발자 과정", category: "AI", duration: "6개월", recruitmentStatus: "모집 중", summary: "데이터 분석부터 모델 평가와 서비스 적용까지 학습합니다." },
-  { id: 2, title: "빅데이터 분석 전문가 과정", category: "DATA", duration: "5개월", recruitmentStatus: "모집 예정", summary: "데이터 수집·정제·분석·시각화를 하나의 흐름으로 연결합니다." },
-  { id: 3, title: "생성형 AI 서비스 개발 과정", category: "GEN AI", duration: "4개월", recruitmentStatus: "모집 중", summary: "LLM, 임베딩, 검색 증강 생성으로 AI 서비스를 설계합니다." },
-  { id: 4, title: "AI 기반 웹 서비스 개발 과정", category: "WEB", duration: "6개월", recruitmentStatus: "모집 마감", summary: "프론트엔드·백엔드·데이터베이스를 연결해 서비스를 구현합니다." }
+  { id: 1, title: "AI·머신러닝 실무 개발자 과정", category: "AI", duration: "운영 정보 확인", recruitmentStatus: "모집 정보 확인", summary: "데이터 분석부터 모델 평가와 서비스 적용까지 학습합니다." },
+  { id: 2, title: "빅데이터 분석 전문가 과정", category: "DATA", duration: "운영 정보 확인", recruitmentStatus: "모집 정보 확인", summary: "데이터 수집·정제·분석·시각화를 하나의 흐름으로 연결합니다." },
+  { id: 3, title: "생성형 AI 서비스 개발 과정", category: "GEN AI", duration: "운영 정보 확인", recruitmentStatus: "모집 정보 확인", summary: "LLM, 임베딩, 검색 증강 생성으로 AI 서비스를 설계합니다." },
+  { id: 4, title: "AI 기반 웹 서비스 개발 과정", category: "WEB", duration: "운영 정보 확인", recruitmentStatus: "모집 정보 확인", summary: "프론트엔드·백엔드·데이터베이스를 연결해 서비스를 구현합니다." }
 ];
 
 const projectFallback = [
@@ -255,7 +255,7 @@ export function AcademyHome() {
             return h(CoursePreview, { course: course, key: course.id });
           })
         ),
-        h("p", { className: "academy-data-note" }, "※ 실제 개강일·정원·교육비·지원 자격은 운영기관이 확정한 최신 공지와 상담 안내를 기준으로 확인합니다.")
+        h("p", { className: "academy-data-note" }, "※ 표시된 커리큘럼은 교육 설계 예시입니다. 개강일·기간·정원·교육비·지원 자격은 운영기관 확인 후 공개됩니다.")
       )
     ),
 
