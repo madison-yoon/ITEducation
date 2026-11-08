@@ -140,6 +140,50 @@ class AdminApiIntegrationTest {
                 .andExpect(jsonPath("$.fieldErrors").isMap());
     }
 
+
+    @Test
+    void publicInquiryRequiresPrivacyConsent() throws Exception {
+        MvcResult tokenResult = mvc.perform(get("/api/csrf"))
+                .andExpect(status().isOk())
+                .andReturn();
+        MockHttpSession session = (MockHttpSession) tokenResult.getRequest().getSession(false);
+        String token = csrfToken(session);
+
+        mvc.perform(post("/api/inquiries")
+                        .session(session)
+                        .header("X-CSRF-TOKEN", token)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"name\":\"테스트 사용자\",\"phone\":\"010-1234-5678\",\"courseTitle\":\"AI 교육과정\",\"message\":\"교육과정과 프로젝트 운영 방식이 궁금합니다.\",\"privacyConsent\":false,\"marketingConsent\":false}"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value("개인정보 수집 및 이용 동의가 필요합니다."));
+    }
+
+    @Test
+    void duplicateActiveInquiryIsRejected() throws Exception {
+        MvcResult tokenResult = mvc.perform(get("/api/csrf"))
+                .andExpect(status().isOk())
+                .andReturn();
+        MockHttpSession session = (MockHttpSession) tokenResult.getRequest().getSession(false);
+        String token = csrfToken(session);
+        String requestBody = "{\"name\":\"테스트 사용자\",\"phone\":\"010-1234-5678\",\"courseTitle\":\"AI 교육과정\",\"message\":\"교육과정과 프로젝트 운영 방식이 궁금합니다.\",\"privacyConsent\":true,\"marketingConsent\":false}";
+
+        mvc.perform(post("/api/inquiries")
+                        .session(session)
+                        .header("X-CSRF-TOKEN", token)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestBody))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.receiptNo").isNotEmpty());
+
+        mvc.perform(post("/api/inquiries")
+                        .session(session)
+                        .header("X-CSRF-TOKEN", token)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestBody))
+                .andExpect(status().isConflict())
+                .andExpect(jsonPath("$.message").value("진행 중인 상담이 있습니다. 기존 접수 건의 안내를 확인해 주세요."));
+    }
+
     private String csrfToken(MockHttpSession session) throws Exception {
         MvcResult result = mvc.perform(get("/api/csrf").session(session))
                 .andExpect(status().isOk())
