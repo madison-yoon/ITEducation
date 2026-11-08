@@ -1,7 +1,8 @@
 package com.iteducation.service;
 
 import com.iteducation.entity.Inquiry;
-import com.iteducation.repository.InquiryRepository;\nimport com.iteducation.repository.CourseRepository;
+import com.iteducation.repository.CourseRepository;
+import com.iteducation.repository.InquiryRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,9 +17,11 @@ public class InquiryService {
     private static final List<String> ACTIVE_STATUSES = List.of("접수", "상담 진행");
 
     private final InquiryRepository repository;
+    private final CourseRepository courses;
 
-    public InquiryService(InquiryRepository repository) {
+    public InquiryService(InquiryRepository repository, CourseRepository courses) {
         this.repository = repository;
+        this.courses = courses;
     }
 
     @Transactional
@@ -30,7 +33,14 @@ public class InquiryService {
             );
         }
 
-        if (!courses.existsByTitle(item.getCourseTitle())) {\n            throw new ResponseStatusException(\n                    HttpStatus.BAD_REQUEST,\n                    "선택한 교육과정을 찾을 수 없습니다."\n            );\n        }\n\n        String normalizedPhone = item.getPhone() == null
+        if (!courses.existsByTitle(item.getCourseTitle())) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "선택한 교육과정을 찾을 수 없습니다."
+            );
+        }
+
+        String normalizedPhone = item.getPhone() == null
                 ? ""
                 : item.getPhone().replaceAll("\\D", "");
 
