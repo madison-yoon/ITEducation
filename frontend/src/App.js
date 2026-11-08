@@ -649,7 +649,6 @@ const previewNotices = [
     createdAt: null,
     pinned: false
   }
-]
 ];
 
 function Notices() {
