@@ -444,6 +444,10 @@ function Consultation() {
   async function submitForm(event) {
     event.preventDefault();
     setError("");
+    if (isStaticPreview) {
+      setError("정적 미리보기에서는 상담 신청이 실제로 전송되지 않습니다. 백엔드가 연결된 서비스 환경에서 이용해 주세요.");
+      return;
+    }
     setSubmitting(true);
 
     try {
@@ -477,17 +481,18 @@ function Consultation() {
       h("div", null,
         h("span", { className: "eyebrow" }, "CONSULTATION"),
         h("h1", null, "교육과정 상담 신청"),
-        h("p", { className: "lead" }, "희망 과정과 문의 내용을 남겨주시면 안내해 드립니다.")
+        h("p", { className: "lead" }, "희망 과정과 현재 경험, 학습 목표를 남겨주시면 적합한 학습 방향을 안내합니다."),
+        isStaticPreview ? h("p", { className: "static-preview-notice" }, "현재 페이지는 정적 미리보기이며 상담 신청이 실제 접수되지 않습니다.") : null
       ),
       h("form", { className: "form", onSubmit: submitForm },
         h("label", null, "이름 *",
-          h("input", { required: true, value: form.name, onChange: function (e) { updateField("name", e.target.value); } })
+          h("input", { required: true, maxLength: 40, value: form.name, onChange: function (e) { updateField("name", e.target.value); } })
         ),
         h("label", null, "연락처 *",
-          h("input", { required: true, value: form.phone, placeholder: "010-0000-0000", onChange: function (e) { updateField("phone", e.target.value); } })
+          h("input", { required: true, maxLength: 20, pattern: "[0-9+() -]{9,20}", value: form.phone, placeholder: "010-0000-0000", onChange: function (e) { updateField("phone", e.target.value); } })
         ),
         h("label", null, "이메일",
-          h("input", { type: "email", value: form.email, onChange: function (e) { updateField("email", e.target.value); } })
+          h("input", { type: "email", maxLength: 120, value: form.email, onChange: function (e) { updateField("email", e.target.value); } })
         ),
         h("label", null, "희망 교육과정 *",
           h("select", { required: true, value: form.courseTitle, onChange: function (e) { updateField("courseTitle", e.target.value); } },
@@ -510,7 +515,7 @@ function Consultation() {
           )
         ),
         h("label", null, "문의 내용 *",
-          h("textarea", { required: true, rows: 5, value: form.message, onChange: function (e) { updateField("message", e.target.value); } })
+          h("textarea", { required: true, minLength: 10, maxLength: 2000, rows: 5, value: form.message, onChange: function (e) { updateField("message", e.target.value); } })
         ),
         h("label", { className: "checkrow" },
           h("input", { type: "checkbox", checked: form.privacyConsent, onChange: function (e) { updateField("privacyConsent", e.target.checked); } }),
@@ -539,35 +544,30 @@ const isStaticPreview = import.meta.env.VITE_STATIC_PREVIEW === "true";
 // GitHub Pages는 백엔드 없이 화면을 공개하므로 미리보기 전용 안내를 사용합니다.
 const previewNotices = [
   {
-    id: "demo-1", title: "2026 겨울학기 AI·IT 교육과정 모집 안내", category: "모집 안내",
-    content: "AI·머신러닝, 빅데이터 분석, 생성형 AI 서비스, 웹 서비스 개발 과정의 데모 모집 안내입니다. 과정별 일정과 지원 조건은 과정 상세 페이지에서 확인할 수 있으며, 실제 운영 정보는 상담을 통해 확인해 주세요.",
-    createdAt: "2026-11-06T09:00:00", pinned: true
+    id: "preview-1",
+    title: "정적 미리보기 콘텐츠 안내",
+    category: "운영 안내",
+    content: "GitHub Pages 미리보기에는 기능 확인을 위한 안내 예시가 표시됩니다. 실제 교육 일정, 교육비, 정원, 지원 제도는 운영기관이 확정해 게시한 최신 공지와 상담을 통해 확인해 주세요.",
+    createdAt: null,
+    pinned: true
   },
   {
-    id: "demo-2", title: "AI·머신러닝 실무 개발 과정 커리큘럼 공개", category: "교육과정",
-    content: "Python 기초부터 데이터 전처리, 머신러닝, 딥러닝, 팀 프로젝트까지 이어지는 학습 로드맵을 공개합니다. 프로젝트 예시는 학습 결과물의 형태를 설명하기 위한 데모 콘텐츠입니다.",
-    createdAt: "2026-11-05T10:00:00", pinned: false
+    id: "preview-2",
+    title: "프로젝트 사례와 평가 기준 안내",
+    category: "교육과정",
+    content: "프로젝트 페이지에 소개된 사례는 교육 목표와 산출물 구성을 설명하기 위한 설계 예시입니다. 실제 수강생 작품, 수상 이력, 취업률 또는 운영 실적을 의미하지 않습니다.",
+    createdAt: null,
+    pinned: false
   },
   {
-    id: "demo-3", title: "교육과정 선택을 위한 온라인 설명회 안내", category: "모집 안내",
-    content: "관심 분야별 교육과정 구성과 프로젝트 진행 방식을 소개하는 설명회 예시 안내입니다. 일정과 참여 링크는 실제 운영 시 별도 공지됩니다.",
-    createdAt: "2026-11-04T14:00:00", pinned: false
-  },
-  {
-    id: "demo-4", title: "수강 신청 전 확인해야 할 준비 사항", category: "공지",
-    content: "관심 과정의 교육 목표와 주차별 커리큘럼을 확인하고, 본인의 학습 가능 시간과 노트북 사용 환경을 점검해 주세요. 선수 지식이 필요한 과정은 상담 단계에서 안내합니다.",
-    createdAt: "2026-11-03T09:30:00", pinned: false
-  },
-  {
-    id: "demo-5", title: "팀 프로젝트 결과물 및 포트폴리오 구성 소개", category: "교육 소식",
-    content: "팀 프로젝트는 문제 정의, 역할 분담, 기능 구현, 테스트, 결과 발표 순서로 진행하는 것을 기본 방향으로 합니다. 결과물 예시는 프로젝트 페이지에서 확인할 수 있습니다.",
-    createdAt: "2026-11-02T11:00:00", pinned: false
-  },
-  {
-    id: "demo-6", title: "IT ACADEMY 홈페이지 이용 안내", category: "운영 안내",
-    content: "교육과정에서 과정별 정보를 확인하고, 프로젝트에서 결과물 예시를 살펴볼 수 있습니다. 궁금한 점은 상담 신청 페이지를 통해 문의하는 데모 흐름으로 구성되어 있습니다.",
-    createdAt: "2026-11-01T09:00:00", pinned: false
+    id: "preview-3",
+    title: "상담 신청 기능 안내",
+    category: "운영 안내",
+    content: "정적 미리보기에서는 백엔드 서버가 연결되지 않으므로 상담 신청이 실제로 접수되지 않습니다. 실제 신청 기능은 운영 서버가 연결된 환경에서 이용해 주세요.",
+    createdAt: null,
+    pinned: false
   }
+]
 ];
 
 function Notices() {
@@ -585,10 +585,19 @@ function Notices() {
     setLoading(true);
     setError("");
     try {
+      if (isStaticPreview) {
+        setItems(previewNotices);
+        return;
+      }
       const response = await api.get("/notices");
-      setItems(Array.isArray(response.data) && response.data.length > 0 ? response.data : previewNotices);
+      setItems(Array.isArray(response.data) ? response.data : []);
     } catch (requestError) {
-      setItems(previewNotices);
+      setItems([]);
+      setError(
+        requestError.response && requestError.response.data && requestError.response.data.message
+          ? requestError.response.data.message
+          : "공지사항 서버에 연결할 수 없습니다. 잠시 후 다시 시도해 주세요."
+      );
     } finally {
       setLoading(false);
     }
@@ -740,12 +749,22 @@ function NoticeDetail() {
     setLoading(true);
     setError("");
     try {
+      if (isStaticPreview) {
+        const preview = previewNotices.find(function (item) {
+          return String(item.id) === String(params.id);
+        });
+        if (preview) setNotice(preview);
+        else setError("해당 미리보기 안내를 찾을 수 없습니다.");
+        return;
+      }
       const response = await api.get("/notices/" + params.id);
       setNotice(response.data);
     } catch (requestError) {
-      const preview = previewNotices.find(function (item) { return String(item.id) === String(params.id); });
-      if (preview) setNotice(preview);
-      else setError("해당 공지사항을 찾을 수 없거나 현재 공개되지 않은 게시글입니다.");
+      setError(
+        requestError.response && requestError.response.status === 404
+          ? "해당 공지사항을 찾을 수 없거나 현재 공개되지 않은 게시글입니다."
+          : "공지사항 상세 정보를 불러오지 못했습니다. 다시 시도해 주세요."
+      );
     } finally {
       setLoading(false);
     }
