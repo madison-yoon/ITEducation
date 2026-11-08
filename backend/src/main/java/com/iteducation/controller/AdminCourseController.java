@@ -22,7 +22,8 @@ public class AdminCourseController {
     public record CourseRequest(@NotBlank String title, String category, String summary,
                                 String description, String target, String duration,
                                 String recruitmentStatus, String imageUrl,
-                                String curriculum, String skills, boolean featured) {}
+                                String curriculum, String skills, boolean featured,
+                                boolean operatingInfoVerified) {}
 
     @GetMapping
     public List<Course> list() {
@@ -55,7 +56,7 @@ public class AdminCourseController {
     }
 
     private void apply(Course course, CourseRequest request) {
-        if (!List.of("모집 중", "모집 예정", "모집 마감").contains(request.recruitmentStatus())) {
+        if (!List.of("모집 정보 확인", "모집 중", "모집 예정", "모집 마감").contains(request.recruitmentStatus())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "모집 상태를 확인해 주세요.");
         }
         course.setTitle(request.title().trim());
@@ -69,5 +70,6 @@ public class AdminCourseController {
         course.setCurriculum(request.curriculum());
         course.setSkills(request.skills());
         course.setFeatured(request.featured());
+        course.setOperatingInfoVerified(request.operatingInfoVerified());
     }
 }
