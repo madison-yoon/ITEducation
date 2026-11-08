@@ -129,10 +129,10 @@ Vite 개발 서버는 /api 요청을 백엔드 8080 포트로 프록시합니다
 | GET | /api/notices/{id} | 공개 | 게시 중 공지 상세 |
 | POST | /api/inquiries | 공개·CSRF | 상담 신청 |
 | GET | /api/csrf | 공개 | CSRF 토큰 발급 |
-| / | /api/admin/courses | 관리자 | 교육과정 관리 |
-| / | /api/admin/notices | 관리자 | 공지사항 관리 |
-| / | /api/admin/inquiries | 관리자 | 상담 신청 관리 |
-| / | /api/admin/accounts | 최고 관리자 | 관리자 계정 관리 |
+| GET, POST, PUT, DELETE | /api/admin/courses | 관리자 | 교육과정 관리 |
+| GET, POST, PUT, DELETE | /api/admin/notices | 관리자 | 공지사항 관리 |
+| GET, PATCH, DELETE | /api/admin/inquiries | 관리자 | 상담 신청 관리 |
+| GET, POST, PATCH, DELETE | /api/admin/accounts | 최고 관리자 | 관리자 계정 관리 |
 
 관리자 API 권한과 상담 입력값은 서버에서 다시 검증합니다. 교육과정의 모집 상태·기간·지원 대상은 관리자가 운영정보 확인을 완료하기 전까지 공개 API에서 확인 필요 상태로 표시합니다.
 
