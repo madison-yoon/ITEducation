@@ -398,3 +398,62 @@
  .academy-button,.academy-method-card,.academy-course-card,.academy-feature-project,.academy-project-card{transition:none}
  .academy-button:hover,.academy-method-card:hover,.academy-course-card:hover,.academy-feature-project:hover,.academy-project-card:hover{transform:none}
 }
+
+
+/* Navigation, footer and course learning-quality components */
+.skip-link{position:fixed;z-index:2000;top:8px;left:8px;padding:12px 16px;border-radius:8px;background:#111b35;color:#fff;transform:translateY(-160%);transition:transform .2s}
+.skip-link:focus{transform:translateY(0)}
+.academy-site-header{height:82px;border-bottom:1px solid #e7ebf2;background:#ffffffed;backdrop-filter:blur(18px);box-shadow:0 8px 26px #17264a08}
+.academy-brand{display:inline-flex;align-items:center;gap:10px;letter-spacing:0}
+.academy-brand-symbol{display:grid;place-items:center;width:38px;height:38px;border-radius:11px;background:linear-gradient(135deg,#6077ff,#8f67ed);color:#fff;font-size:13px;font-weight:950;letter-spacing:-.5px;box-shadow:0 7px 16px #6277ee42}
+.academy-brand-copy{display:grid;gap:3px}
+.academy-brand-copy>b{color:#16213c;font-size:17px;letter-spacing:1px}
+.academy-brand-copy>small{color:#8994aa;font-size:7px;font-weight:850;letter-spacing:1.1px}
+.academy-navlinks{gap:29px;color:#59657d;font-size:12px;font-weight:700}
+.academy-navlinks a{transition:color .2s}
+.academy-navlinks a:hover,.academy-navlinks a.active{color:#596ef0}
+.academy-navlinks .academy-header-cta{margin-left:2px;border-radius:8px;background:#1a2541;box-shadow:0 8px 18px #17264a18}
+.academy-navlinks .academy-header-cta:hover{background:#566be6}
+.academy-menu-button{color:#1e2b49}
+.academy-site-footer{padding:0;background:#0b1226}
+.academy-footer-main{display:grid;grid-template-columns:1.5fr .7fr .9fr;gap:50px;padding-top:48px;padding-bottom:40px}
+.academy-footer-main .footer-brand{margin-bottom:19px}
+.academy-footer-main .academy-brand-symbol{background:linear-gradient(135deg,#6077ff,#8f67ed)}
+.academy-footer-main .academy-brand-copy>b{color:#fff}
+.academy-footer-main .academy-brand-copy>small{color:#7f91bf}
+.academy-footer-main p{margin:0 0 12px;color:#c7d1e9;font-size:12px}
+.academy-footer-main>div:first-child>small{color:#66779f;font-size:8px;letter-spacing:1px}
+.academy-footer-links{display:grid;align-content:start;gap:12px}
+.academy-footer-links>b{margin-bottom:5px;color:#8798c4;font-size:9px;letter-spacing:1.5px}
+.academy-footer-links a,.academy-footer-links span{color:#c4cee5;font-size:11px}
+.academy-footer-links a:hover{color:#91a5ff}
+.academy-footer-bottom{display:flex;justify-content:space-between;gap:15px;padding-top:18px;padding-bottom:18px;border-top:1px solid #ffffff18;color:#7181a6;font-size:9px;line-height:1.6}
+.course-detail-hero{background:radial-gradient(circle at 82% 20%,#5269d8 0,transparent 32%),linear-gradient(118deg,#0b1020,#17234b 62%,#34245f)}
+.course-detail-hero:after{position:absolute;top:-120px;right:-80px;width:380px;height:380px;border:1px solid #b9c7ff33;border-radius:50%;content:"";pointer-events:none}
+.academy-course-quality{padding-top:70px}
+.academy-course-quality-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:13px}
+.academy-course-quality-grid article{padding:22px 19px;border:1px solid #e5eaf2;border-radius:12px;background:linear-gradient(150deg,#fff,#f8faff)}
+.academy-course-quality-grid b{color:#6478f1;font-size:11px}
+.academy-course-quality-grid h3{margin:13px 0 8px;color:#1d2842;font-size:15px}
+.academy-course-quality-grid p{margin:0;color:#748097;font-size:11px;line-height:1.85}
+.academy-course-ai-note{margin-top:14px;padding:16px 18px;border-left:3px solid #778af5;border-radius:0 8px 8px 0;background:#f4f6ff;color:#68748c;font-size:11px;line-height:1.8}
+.academy-course-ai-note b{color:#5267dc}
+@media(max-width:900px){
+ .academy-navlinks{gap:18px}
+ .academy-footer-main{gap:30px}
+ .academy-course-quality-grid{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:650px){
+ .academy-site-header{height:72px}
+ .academy-navlinks{display:none;position:absolute;top:72px;left:0;right:0;gap:12px;padding:18px 20px 22px;background:#fff;border-bottom:1px solid #e8edf5;box-shadow:0 16px 25px #17264a14}
+ .academy-navlinks.show{display:flex}
+ .academy-navlinks a{padding:9px 4px}
+ .academy-navlinks .academy-header-cta{margin:3px 0 0;text-align:center}
+ .academy-menu-button{display:block}
+ .academy-footer-main{grid-template-columns:1fr 1fr;gap:30px 20px;padding-top:37px}
+ .academy-footer-main>div:first-child{grid-column:span 2}
+ .academy-footer-bottom{flex-direction:column}
+ .academy-course-quality-grid{grid-template-columns:1fr 1fr;gap:9px}
+ .academy-course-quality-grid article{padding:17px 14px}
+ .academy-course-quality-grid h3{font-size:14px}
+}
