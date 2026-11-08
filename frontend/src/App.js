@@ -250,21 +250,29 @@ function buildCourseDetailData(course) {
 
 function Courses() {
   const params = useParams();
-  const [items, setItems] = React.useState(courseSeed);
+  const [items, setItems] = React.useState(isStaticPreview ? courseSeed : []);
   const [keyword, setKeyword] = React.useState("");
   const [category, setCategory] = React.useState("전체");
   const [coursesLoading, setCoursesLoading] = React.useState(true);
 
   React.useEffect(function () {
+    if (isStaticPreview) {
+      setCoursesLoading(false);
+      return undefined;
+    }
+
     let active = true;
     api.get("/courses")
       .then(function (response) {
-        if (Array.isArray(response.data) && response.data.length > 0) {
-          if (active) setItems(response.data);
+        if (active) {
+          setItems(Array.isArray(response.data) ? response.data : []);
         }
       })
-      .catch(function () {})
+      .catch(function () {
+        if (active) setItems([]);
+      })
       .finally(function () { if (active) setCoursesLoading(false); });
+
     return function () { active = false; };
   }, []);
 
@@ -484,11 +492,16 @@ function Courses() {
           })
         )
       ),
-      h("div", { className: "grid4" },
-        filtered.map(function (course) {
-          return h(CourseCard, { course: course, key: course.id });
-        })
-      ),
+      filtered.length
+        ? h("div", { className: "grid4" },
+            filtered.map(function (course) {
+              return h(CourseCard, { course: course, key: course.id });
+            })
+          )
+        : h("div", { className: "empty-state" },
+            h("h3", null, "등록된 교육과정이 없습니다."),
+            h("p", null, "운영기관에서 공개할 교육과정을 등록하면 이곳에 표시됩니다.")
+          ),
       h("p", { className: "course-data-disclosure" }, "※ 서버에 등록된 운영정보가 확인되기 전까지 기본 과정은 교육 설계 예시로 표시됩니다. 모집 여부·교육 기간·지원 대상은 관리자 확인 완료 후 공개됩니다.")
     )
   );
