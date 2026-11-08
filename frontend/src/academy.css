@@ -469,3 +469,6 @@
 @media(max-width:650px){
  .academy-module-evidence{grid-template-columns:1fr}
 }
+
+.course-info-disclosure{display:inline-flex;align-items:center;width:max-content;max-width:100%;margin:4px 0 8px;padding:6px 9px;border:1px solid #dfe5fb;border-radius:6px;background:#f3f5ff;color:#5d6fcf;font-size:9px;font-weight:800;letter-spacing:.2px}
+.course-info-disclosure.hero-disclosure{border-color:#9caef36e;background:#ffffff0d;color:#c5d3ff}
