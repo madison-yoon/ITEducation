@@ -267,6 +267,27 @@ class AdminApiIntegrationTest {
     }
 
     @Test
+    void noticeTitleLongerThanColumnLimitIsRejectedBeforePersistence() throws Exception {
+        MockHttpSession session = login(SUPER_LOGIN);
+        String token = csrfToken(session);
+        String longTitle = "가".repeat(181);
+        String body = objectMapper.writeValueAsString(java.util.Map.of(
+                "title", longTitle,
+                "content", "길이 검증을 위한 공지 내용입니다.",
+                "status", "게시 중",
+                "category", "공지",
+                "pinned", false
+        ));
+
+        mvc.perform(post("/api/admin/notices")
+                        .session(session)
+                        .header("X-CSRF-TOKEN", token)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(body))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
     void adminInquiryResponsesDoNotExposeInternalNormalizationOrConsentFields() throws Exception {
         Inquiry inquiry = new Inquiry();
         inquiry.setName("응답 최소화 테스트");
