@@ -37,62 +37,78 @@ function AdminApp() {
   const [accountForm, setAccountForm] = React.useState({ loginId: "", password: "", name: "", role: "ADMIN" });
 
   React.useEffect(function () {
-    api.get("/admin/me")
+    const controller = new AbortController();
+    api.get("/admin/me", { signal: controller.signal })
       .then(function (response) { setAdmin(response.data); })
-      .catch(function () { setAdmin(null); })
-      .finally(function () { setChecked(true); });
+      .catch(function (requestError) {
+        if (requestError.code !== "ERR_CANCELED") setAdmin(null);
+      })
+      .finally(function () {
+        if (!controller.signal.aborted) setChecked(true);
+      });
+    return function () { controller.abort(); };
   }, []);
 
+  React.useLayoutEffect(function () {
+    window.scrollTo(0, 0);
+    const main = document.querySelector(".admin-main");
+    if (main) main.focus({ preventScroll: true });
+  }, [tab]);
+
   React.useEffect(function () {
-    if (!admin) return;
+    if (!admin) return undefined;
+    const controller = new AbortController();
     setError("");
     setMessage("");
-    if (tab === "dashboard") loadDashboard();
-    if (tab === "courses") loadCourses();
-    if (tab === "notices") loadNotices();
-    if (tab === "inquiries") loadInquiries(0);
-    if (tab === "accounts" && admin.role === "SUPER_ADMIN") loadAccounts();
+    if (tab === "dashboard") loadDashboard(controller.signal);
+    if (tab === "courses") loadCourses(controller.signal);
+    if (tab === "notices") loadNotices(controller.signal);
+    if (tab === "inquiries") loadInquiries(0, controller.signal);
+    if (tab === "accounts" && admin.role === "SUPER_ADMIN") loadAccounts(controller.signal);
+    return function () { controller.abort(); };
   }, [admin, tab]);
 
-  async function loadDashboard() {
+  async function loadDashboard(signal) {
     try {
-      const response = await api.get("/admin/dashboard");
+      const response = await api.get("/admin/dashboard", signal ? { signal: signal } : undefined);
       setDashboard(response.data);
-    } catch (requestError) { showError(requestError); }
+    } catch (requestError) { if (requestError.code !== "ERR_CANCELED") showError(requestError); }
   }
 
-  async function loadCourses() {
+  async function loadCourses(signal) {
     try {
-      const response = await api.get("/admin/courses");
+      const response = await api.get("/admin/courses", signal ? { signal: signal } : undefined);
       setCourses(response.data);
-    } catch (requestError) { showError(requestError); }
+    } catch (requestError) { if (requestError.code !== "ERR_CANCELED") showError(requestError); }
   }
 
-  async function loadNotices() {
+  async function loadNotices(signal) {
     try {
-      const response = await api.get("/admin/notices");
+      const response = await api.get("/admin/notices", signal ? { signal: signal } : undefined);
       setNotices(response.data);
-    } catch (requestError) { showError(requestError); }
+    } catch (requestError) { if (requestError.code !== "ERR_CANCELED") showError(requestError); }
   }
 
-  async function loadInquiries(page) {
+  async function loadInquiries(page, signal) {
     try {
       const response = await api.get("/admin/inquiries", {
-        params: { keyword: keyword, status: inquiryStatus, page: page, size: 10 }
+        params: { keyword: keyword, status: inquiryStatus, page: page, size: 10 },
+        signal: signal
       });
       setInquiries(response.data);
-    } catch (requestError) { showError(requestError); }
+    } catch (requestError) { if (requestError.code !== "ERR_CANCELED") showError(requestError); }
   }
 
-  async function loadAccounts() {
+  async function loadAccounts(signal) {
     try {
-      const response = await api.get("/admin/accounts");
+      const response = await api.get("/admin/accounts", signal ? { signal: signal } : undefined);
       setAccounts(response.data);
-    } catch (requestError) { showError(requestError); }
+    } catch (requestError) { if (requestError.code !== "ERR_CANCELED") showError(requestError); }
   }
 
   function showError(requestError) {
-    const data = requestError.response && requestError.response.data;
+    if (requestError && requestError.code === "ERR_CANCELED") return;
+    const data = requestError && requestError.response && requestError.response.data;
     setError(data && data.message ? data.message : "요청을 처리하지 못했습니다. 서버 상태를 확인해 주세요.");
   }
 
@@ -562,7 +578,7 @@ function AdminApp() {
         h("button", { onClick: function () { navigate("/"); } }, "사이트 보기")
       )
     ),
-    h("main", { className: "admin-main" },
+    h("main", { className: "admin-main", tabIndex: -1 },
       h("header", { className: "admin-topbar" },
         h("div", null, h("small", null, "ADMINISTRATION"), h("h1", null, titles[tab] || "운영 현황")),
         h("span", null, "IT ACADEMY")
