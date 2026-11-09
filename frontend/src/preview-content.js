@@ -1,6 +1,5 @@
 // Static showcase data for the public, backend-free preview.
-export const previewNotices =
-const previewNotices = [
+export const previewNotices = [
   {
     id: "sample-notice-01",
     title: "2026년 11월 교육과정 운영 및 상담 안내",
