@@ -1,6 +1,7 @@
 package com.iteducation.controller;
 
 import com.iteducation.entity.Admin;
+import com.iteducation.dto.AdminInquiryResponse;
 import com.iteducation.repository.AdminRepository;
 import com.iteducation.repository.CourseRepository;
 import com.iteducation.repository.InquiryRepository;
@@ -57,7 +58,7 @@ public class AdminController {
                 "inProgressInquiryCount", inquiries.countByStatus("상담 진행"),
                 "completedInquiryCount", inquiries.countByStatus("상담 완료"),
                 "publishedNoticeCount", notices.countByStatus("게시 중"),
-                "recentInquiries", inquiries.findTop10ByOrderByCreatedAtDesc()
+                "recentInquiries", inquiries.findTop10ByOrderByCreatedAtDesc().stream().map(AdminInquiryResponse::from).toList()
         );
     }
 
