@@ -276,27 +276,38 @@ function Courses() {
   const [keyword, setKeyword] = React.useState("");
   const [category, setCategory] = React.useState("전체");
   const [coursesLoading, setCoursesLoading] = React.useState(true);
+  const [coursesError, setCoursesError] = React.useState("");
+  const [reloadCount, setReloadCount] = React.useState(0);
 
   React.useEffect(function () {
     if (isStaticPreview) {
       setCoursesLoading(false);
+      setCoursesError("");
       return undefined;
     }
 
     const controller = new AbortController();
+    setCoursesLoading(true);
+    setCoursesError("");
     api.get("/courses", { signal: controller.signal })
       .then(function (response) {
         setItems(Array.isArray(response.data) ? response.data : []);
       })
       .catch(function (requestError) {
-        if (requestError.code !== "ERR_CANCELED") setItems([]);
+        if (requestError.code === "ERR_CANCELED") return;
+        setItems([]);
+        setCoursesError("교육과정 정보를 불러오지 못했습니다. 서버 연결 상태를 확인한 뒤 다시 시도해 주세요.");
       })
       .finally(function () {
         if (!controller.signal.aborted) setCoursesLoading(false);
       });
 
     return function () { controller.abort(); };
-  }, []);
+  }, [reloadCount]);
+
+  function retryCourses() {
+    setReloadCount(function (count) { return count + 1; });
+  }
 
   if (params.id) {
     const selected = items.find(function (item) {
@@ -305,6 +316,19 @@ function Courses() {
 
     if (!selected && coursesLoading) {
       return h("section", { className: "page" }, h("div", { className: "container" }, h("p", null, "교육과정 정보를 불러오고 있습니다.")));
+    }
+    if (!selected && coursesError) {
+      return h("section", { className: "page" },
+        h("div", { className: "container" },
+          h("span", { className: "eyebrow" }, "PROGRAM CONNECTION ERROR"),
+          h("h1", null, "교육과정 정보를 불러오지 못했습니다."),
+          h("p", { className: "lead" }, coursesError),
+          h("div", { className: "not-found-actions" },
+            h("button", { type: "button", className: "btn", onClick: retryCourses }, "다시 시도"),
+            h(Link, { to: "/courses", className: "btn ghost" }, "교육과정 목록으로 이동")
+          )
+        )
+      );
     }
     if (!selected) {
       return h("section", { className: "page" },
@@ -577,7 +601,14 @@ function Courses() {
         h("span", null, "검색 결과"),
         h("strong", null, String(filtered.length) + "개 과정")
       ),
-      coursesLoading
+      coursesError
+        ? h("div", { className: "notice-state", role: "alert" },
+            h("div", { className: "notice-state-icon", "aria-hidden": "true" }, "!"),
+            h("h2", null, "교육과정 정보를 불러오지 못했습니다."),
+            h("p", null, coursesError),
+            h("button", { type: "button", className: "btn", onClick: retryCourses }, "다시 시도")
+          )
+        : coursesLoading
         ? h("div", { className: "notice-state", role: "status" },
             h("h2", null, "교육과정을 불러오고 있습니다."),
             h("p", null, "최신 과정 정보를 확인하고 있습니다.")
