@@ -768,7 +768,7 @@ function Notices() {
   const categories = ["전체", "공지", "모집 안내", "교육과정", "교육 소식", "운영 안내"];
   const pageSize = 8;
 
-  async function loadNotices() {
+  async function loadNotices(signal) {
     setLoading(true);
     setError("");
     try {
@@ -776,9 +776,12 @@ function Notices() {
         setItems(previewNotices);
         return;
       }
-      const response = await api.get("/notices");
-      setItems(Array.isArray(response.data) ? response.data : []);
+      const response = await api.get("/notices", signal ? { signal: signal } : undefined);
+      if (!signal || !signal.aborted) {
+        setItems(Array.isArray(response.data) ? response.data : []);
+      }
     } catch (requestError) {
+      if (signal && signal.aborted) return;
       setItems([]);
       setError(
         requestError.response && requestError.response.data && requestError.response.data.message
@@ -786,12 +789,14 @@ function Notices() {
           : "공지사항 서버에 연결할 수 없습니다. 잠시 후 다시 시도해 주세요."
       );
     } finally {
-      setLoading(false);
+      if (!signal || !signal.aborted) setLoading(false);
     }
   }
 
   React.useEffect(function () {
-    loadNotices();
+    const controller = new AbortController();
+    loadNotices(controller.signal);
+    return function () { controller.abort(); };
   }, []);
 
   const normalizedKeyword = keyword.trim().toLowerCase();
@@ -932,7 +937,7 @@ function NoticeDetail() {
   const [loading, setLoading] = React.useState(true);
   const [error, setError] = React.useState("");
 
-  async function loadNotice() {
+  async function loadNotice(signal) {
     setLoading(true);
     setError("");
     try {
@@ -944,31 +949,34 @@ function NoticeDetail() {
         else setError("해당 미리보기 안내를 찾을 수 없습니다.");
         return;
       }
-      const response = await api.get("/notices/" + params.id);
-      setNotice(response.data);
+      const response = await api.get("/notices/" + params.id, signal ? { signal: signal } : undefined);
+      if (!signal || !signal.aborted) setNotice(response.data);
     } catch (requestError) {
+      if (signal && signal.aborted) return;
       setError(
         requestError.response && requestError.response.status === 404
           ? "해당 공지사항을 찾을 수 없거나 현재 공개되지 않은 게시글입니다."
           : "공지사항 상세 정보를 불러오지 못했습니다. 다시 시도해 주세요."
       );
     } finally {
-      setLoading(false);
+      if (!signal || !signal.aborted) setLoading(false);
     }
   }
 
   React.useEffect(function () {
-    loadNotice();
+    const controller = new AbortController();
+    loadNotice(controller.signal);
+    return function () { controller.abort(); };
   }, [params.id]);
 
   return h("section", { className: "page notice-detail-page" },
     h("div", { className: "container" },
       h("button", { className: "notice-back", onClick: function () { navigate("/notices"); } }, "← 공지사항 목록"),
       loading ? h("div", { className: "notice-state" }, "공지사항을 불러오는 중입니다.") :
-      error ? h("div", { className: "notice-state error-state" },
+      error ? h("div", { className: "notice-state error-state", role: "alert", "aria-live": "assertive" },
         h("h2", null, "게시글을 확인할 수 없습니다."),
         h("p", null, error),
-        h("button", { className: "btn", onClick: loadNotice }, "다시 시도")
+        h("button", { className: "btn", onClick: function () { loadNotice(); } }, "다시 시도")
       ) : h("article", { className: "notice-detail" },
         h("div", { className: "notice-detail-meta" },
           h("span", { className: "notice-tag" }, notice.category || "공지"),
