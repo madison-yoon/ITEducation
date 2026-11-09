@@ -918,7 +918,7 @@ function Notices() {
         h("div", { className: "notice-state-icon" }, "!"),
         h("h2", null, "공지사항을 불러오지 못했습니다."),
         h("p", null, error),
-        h("button", { type: "button", className: "btn", onClick: loadNotices }, "다시 불러오기")
+        h("button", { type: "button", className: "btn", onClick: function () { loadNotices(); } }, "다시 불러오기")
       ) : filtered.length === 0 ? h("div", { className: "notice-state" },
         h("div", { className: "notice-state-icon" }, "⌕"),
         h("h2", null, items.length ? "검색 결과가 없습니다." : "등록된 공지사항이 없습니다."),
