@@ -7,8 +7,11 @@ import {
   NavLink,
   Outlet,
   useParams,
-  useNavigate
+  useNavigate,
+  useLocation,
+  useNavigationType
 } from "react-router-dom";
+import { getPageMetadata, getScrollAction } from "./navigation.js";
 import api from "./api.js";
 import AdminApp from "./AdminApp.js";
 import { AcademyHome, AcademyAbout, AcademyProjects } from "./academy-pages.js";
@@ -92,12 +95,25 @@ const courseDetailData = {
 
 function Header() {
   const [menuOpen, setMenuOpen] = React.useState(false);
+  const location = useLocation();
   const links = [
     ["/about", "교육 철학"],
     ["/courses", "교육과정"],
     ["/projects", "프로젝트"],
     ["/notices", "공지사항"]
   ];
+
+  React.useEffect(function () {
+    setMenuOpen(false);
+  }, [location.pathname]);
+
+  React.useEffect(function () {
+    function closeMenuOnEscape(event) {
+      if (event.key === "Escape") setMenuOpen(false);
+    }
+    window.addEventListener("keydown", closeMenuOnEscape);
+    return function () { window.removeEventListener("keydown", closeMenuOnEscape); };
+  }, []);
 
   return h(React.Fragment, null,
     h("a", { href: "#main-content", className: "skip-link" }, "본문 바로가기"),
@@ -115,9 +131,10 @@ function Header() {
           className: "menu academy-menu-button",
           "aria-label": menuOpen ? "메뉴 닫기" : "메뉴 열기",
           "aria-expanded": menuOpen,
-          onClick: function () { setMenuOpen(!menuOpen); }
+          "aria-controls": "academy-main-navigation",
+          onClick: function () { setMenuOpen(function (open) { return !open; }); }
         }, menuOpen ? "×" : "☰"),
-        h("nav", { className: menuOpen ? "navlinks show academy-navlinks" : "navlinks academy-navlinks", "aria-label": "주요 메뉴" },
+        h("nav", { id: "academy-main-navigation", className: menuOpen ? "navlinks show academy-navlinks" : "navlinks academy-navlinks", "aria-label": "주요 메뉴" },
           links.map(function (item) {
             return h(NavLink, {
               to: item[0],
@@ -138,8 +155,12 @@ function Header() {
 
 function Layout() {
   return h(React.Fragment, null,
+    isStaticPreview ? h("div", { className: "preview-environment-banner", role: "status" },
+      h("strong", null, "정적 미리보기"),
+      " 화면과 탐색 흐름을 확인하는 공개 버전입니다. 상담 접수와 관리자 데이터 변경은 실제 서버에 저장되지 않습니다."
+    ) : null,
     h(Header),
-    h("main", { id: "main-content" }, h(Outlet)),
+    h("main", { id: "main-content", tabIndex: -1 }, h(Outlet)),
     h("footer", { className: "footer academy-site-footer" },
       h("div", { className: "container academy-footer-main" },
         h("div", null,
@@ -966,8 +987,124 @@ function NoticeDetail() {
   );
 }
 
+
+function RouteEffects() {
+  const location = useLocation();
+  const navigationType = useNavigationType();
+  const scrollPositions = React.useRef({});
+  const [showBackToTop, setShowBackToTop] = React.useState(false);
+
+  React.useEffect(function () {
+    const previousMode = window.history.scrollRestoration;
+    if ("scrollRestoration" in window.history) {
+      window.history.scrollRestoration = "manual";
+    }
+    return function () {
+      if ("scrollRestoration" in window.history) {
+        window.history.scrollRestoration = previousMode || "auto";
+      }
+    };
+  }, []);
+
+  React.useEffect(function () {
+    function saveScrollPosition() {
+      const top = window.scrollY || window.pageYOffset || 0;
+      scrollPositions.current[location.key] = top;
+      setShowBackToTop(top > 520 && !location.pathname.startsWith("/admin"));
+    }
+
+    saveScrollPosition();
+    window.addEventListener("scroll", saveScrollPosition, { passive: true });
+    return function () {
+      window.removeEventListener("scroll", saveScrollPosition);
+    };
+  }, [location.key, location.pathname]);
+
+  React.useLayoutEffect(function () {
+    const metadata = getPageMetadata(location.pathname);
+    document.title = metadata.title + " | IT ACADEMY";
+
+    const description = document.querySelector('meta[name="description"]');
+    if (description) description.setAttribute("content", metadata.description);
+
+    const scrollAction = getScrollAction(
+      navigationType,
+      scrollPositions.current[location.key]
+    );
+
+    if (location.hash) {
+      let targetId = location.hash.slice(1);
+      try {
+        targetId = decodeURIComponent(targetId);
+      } catch (error) {
+        // 잘못된 해시 문자열은 원문 ID로 조회합니다.
+      }
+      window.requestAnimationFrame(function () {
+        const target = document.getElementById(targetId);
+        if (target) {
+          target.scrollIntoView({ block: "start" });
+          if (!target.hasAttribute("tabindex")) target.setAttribute("tabindex", "-1");
+          target.focus({ preventScroll: true });
+        } else {
+          window.scrollTo(0, 0);
+        }
+      });
+    } else {
+      window.scrollTo(0, scrollAction.top);
+      const main = document.getElementById("main-content");
+      if (main) main.focus({ preventScroll: true });
+    }
+
+    const announcer = document.getElementById("route-announcer");
+    if (announcer) announcer.textContent = metadata.title;
+  }, [location.key, location.pathname, location.hash, navigationType]);
+
+  function scrollToTop() {
+    const reducedMotion = window.matchMedia &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: reducedMotion ? "auto" : "smooth"
+    });
+  }
+
+  return h(React.Fragment, null,
+    h("div", {
+      id: "route-announcer",
+      className: "sr-only",
+      "aria-live": "polite",
+      "aria-atomic": "true"
+    }),
+    showBackToTop ? h("button", {
+      type: "button",
+      className: "back-to-top",
+      onClick: scrollToTop,
+      "aria-label": "페이지 맨 위로 이동"
+    },
+      h("span", { "aria-hidden": "true" }, "↑"),
+      h("span", null, "맨 위로")
+    ) : null
+  );
+}
+
+function NotFound() {
+  return h("section", { className: "page not-found-page" },
+    h("div", { className: "container not-found-content" },
+      h("span", { className: "eyebrow" }, "ERROR 404"),
+      h("h1", null, "페이지를 찾을 수 없습니다."),
+      h("p", { className: "lead" }, "주소가 변경되었거나 공개되지 않은 페이지일 수 있습니다."),
+      h("div", { className: "not-found-actions" },
+        h(Link, { to: "/", className: "btn" }, "메인 페이지로 이동"),
+        h(Link, { to: "/courses", className: "btn ghost" }, "교육과정 살펴보기")
+      )
+    )
+  );
+}
+
 function App() {
   return h(BrowserRouter, { basename: import.meta.env.BASE_URL },
+    h(RouteEffects),
     h(Routes, null,
       h(Route, { element: h(Layout) },
         h(Route, { path: "/", element: h(AcademyHome) }),
@@ -977,7 +1114,8 @@ function App() {
         h(Route, { path: "/projects", element: h(AcademyProjects) }),
         h(Route, { path: "/consultation", element: h(Consultation) }),
         h(Route, { path: "/notices", element: h(Notices) }),
-        h(Route, { path: "/notices/:id", element: h(NoticeDetail) })
+        h(Route, { path: "/notices/:id", element: h(NoticeDetail) }),
+        h(Route, { path: "*", element: h(NotFound) })
       ),
       h(Route, { path: "/admin/*", element: h(AdminApp) })
     )
