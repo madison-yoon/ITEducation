@@ -381,20 +381,23 @@ function Courses() {
     return h("section", { className: "course-detail-page" },
       h("div", { className: "course-detail-hero" },
         h("div", { className: "container course-detail-hero-inner" },
-          h("span", { className: "eyebrow light" }, selected.category + " PROGRAM · LEARNING PATH"),
-          h("span", { className: "course-status-pill" }, selected.recruitmentStatus || "모집 안내"),
-          h("h1", null, selected.title),
-          h("p", { className: "course-info-disclosure hero-disclosure" }, selected.infoDisclosure || "교육과정 구성 예시"),
-          h("p", null, detailData.intro),
-          h("div", { className: "course-detail-tags" },
-            h("span", null, "교육 기간 " + selected.duration),
-            h("span", null, "프로젝트 중심 실습"),
-            h("span", null, selected.target || "지원 대상은 상담 시 확인")
+          h("div", { className: "course-detail-hero-copy" },
+            h("span", { className: "eyebrow light" }, selected.category + " PROGRAM · LEARNING PATH"),
+            h("span", { className: "course-status-pill" }, selected.recruitmentStatus || "모집 안내"),
+            h("h1", null, selected.title),
+            h("p", { className: "course-info-disclosure hero-disclosure" }, selected.infoDisclosure || "교육과정 구성 예시"),
+            h("p", null, detailData.intro),
+            h("div", { className: "course-detail-tags" },
+              h("span", null, "교육 기간 " + selected.duration),
+              h("span", null, "프로젝트 중심 실습"),
+              h("span", null, selected.target || "지원 대상은 상담 시 확인")
+            ),
+            h("div", { className: "actions" },
+              h(Link, { to: "/consultation", className: "btn" }, "과정 상담 신청하기"),
+              h(Link, { to: "/courses", className: "btn ghost" }, "전체 과정 보기")
+            )
           ),
-          h("div", { className: "actions" },
-            h(Link, { to: "/consultation", className: "btn" }, "과정 상담 신청하기"),
-            h(Link, { to: "/courses", className: "btn ghost" }, "전체 과정 보기")
-          )
+          h(AcademyScene, { variant: "courses" })
         )
       ),
       h("div", { className: "container course-detail-content" },
