@@ -2072,3 +2072,128 @@
     height: 84px;
   }
 }
+
+
+/* High-contrast text for dark hero cards.
+   These selectors intentionally outrank the generic #main-content > .page h1/.lead rules. */
+#main-content > .page .course-page-intro {
+  background-color: #111d3e;
+}
+
+#main-content > .page .course-page-intro > .course-page-intro-copy {
+  position: relative;
+  z-index: 4;
+  max-width: 100%;
+  color: #ffffff;
+}
+
+#main-content > .page .course-page-intro-copy .eyebrow {
+  display: inline-block;
+  margin-bottom: 9px;
+  color: #f3f6ff !important;
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: .19em;
+  line-height: 1.6;
+  -webkit-text-stroke: .22px rgba(255, 255, 255, .95);
+  text-shadow: 0 2px 5px rgba(4, 10, 28, .85);
+}
+
+#main-content > .page .course-page-intro-copy h1 {
+  margin: 0 0 15px;
+  color: #ffffff !important;
+  font-size: clamp(40px, 4.6vw, 56px);
+  font-weight: 900;
+  letter-spacing: -.065em;
+  line-height: 1.12;
+  -webkit-text-stroke: .35px rgba(255, 255, 255, .92);
+  text-shadow: 0 2px 7px rgba(4, 10, 28, .82), 0 0 24px rgba(137, 165, 255, .22);
+}
+
+#main-content > .page .course-page-intro-copy .lead {
+  max-width: 650px;
+  margin: 0;
+  color: #f0f4ff !important;
+  font-size: 16px;
+  font-weight: 550;
+  line-height: 1.9;
+  -webkit-text-stroke: .12px rgba(255, 255, 255, .72);
+  text-shadow: 0 1px 4px rgba(4, 10, 28, .8);
+}
+
+#main-content > .page .course-page-intro > .academy-scene {
+  position: relative;
+  z-index: 2;
+}
+
+/* The same inherited heading rule was also darkening other dark course banners. */
+#main-content > .page .consultation-intro h1,
+#main-content > .page .course-detail-hero h1 {
+  color: #ffffff !important;
+  -webkit-text-stroke: .3px rgba(255, 255, 255, .88);
+  text-shadow: 0 2px 7px rgba(4, 10, 28, .8);
+}
+
+#main-content > .page .consultation-intro .lead,
+#main-content > .page .course-detail-hero .lead,
+#main-content > .page .course-detail-hero > .container p {
+  color: #edf3ff !important;
+  -webkit-text-stroke: .1px rgba(255, 255, 255, .7);
+  text-shadow: 0 1px 4px rgba(4, 10, 28, .72);
+}
+
+#main-content > .page .consultation-intro .eyebrow,
+#main-content > .page .course-detail-hero .eyebrow {
+  color: #e9efff !important;
+  -webkit-text-stroke: .2px rgba(255, 255, 255, .9);
+  text-shadow: 0 1px 4px rgba(4, 10, 28, .72);
+}
+
+/* Make the notice detail back action unmistakable on its colored button surface. */
+#main-content .notice-detail-page .notice-detail-footer button.notice-back-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 176px;
+  min-height: 48px;
+  padding: 0 22px;
+  border: 1px solid rgba(255, 255, 255, .88);
+  border-radius: 10px;
+  background: linear-gradient(112deg, #263f98 0%, #49358f 100%);
+  color: #ffffff !important;
+  font-size: 14px;
+  font-weight: 850;
+  letter-spacing: -.01em;
+  -webkit-text-stroke: .24px rgba(255, 255, 255, .96);
+  text-shadow: 0 1px 3px rgba(5, 10, 26, .72);
+  box-shadow: 0 9px 23px rgba(29, 43, 105, .23), inset 0 1px 0 rgba(255, 255, 255, .17);
+  cursor: pointer;
+  transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
+}
+
+#main-content .notice-detail-page .notice-detail-footer button.notice-back-action:hover {
+  transform: translateY(-2px);
+  background: linear-gradient(112deg, #1e377f 0%, #3d2b7f 100%);
+  box-shadow: 0 13px 28px rgba(29, 43, 105, .3), inset 0 1px 0 rgba(255, 255, 255, .22);
+}
+
+#main-content .notice-detail-page .notice-detail-footer button.notice-back-action:focus-visible {
+  outline: 3px solid #78dfe8;
+  outline-offset: 3px;
+}
+
+@media (max-width: 680px) {
+  #main-content > .page .course-page-intro-copy h1 {
+    font-size: 38px;
+  }
+
+  #main-content > .page .course-page-intro-copy .lead {
+    font-size: 14px;
+    line-height: 1.85;
+  }
+
+  #main-content .notice-detail-page .notice-detail-footer button.notice-back-action {
+    width: 100%;
+    min-width: 0;
+  }
+}
