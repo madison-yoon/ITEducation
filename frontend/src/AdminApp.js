@@ -35,6 +35,8 @@ function AdminApp() {
   const [selectedInquiry, setSelectedInquiry] = React.useState(null);
   const [accounts, setAccounts] = React.useState([]);
   const [accountForm, setAccountForm] = React.useState({ loginId: "", password: "", name: "", role: "ADMIN" });
+  const selectedInquiryTriggerRef = React.useRef(null);
+  const selectedInquiryDetailRef = React.useRef(null);
 
   React.useEffect(function () {
     const controller = new AbortController();
@@ -54,6 +56,26 @@ function AdminApp() {
     const main = document.querySelector(".admin-main");
     if (main) main.focus({ preventScroll: true });
   }, [tab]);
+
+  React.useEffect(function () {
+    if (selectedInquiry) {
+      window.requestAnimationFrame(function () {
+        const detail = selectedInquiryDetailRef.current;
+        if (detail) {
+          const reducedMotion = window.matchMedia &&
+            window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+          detail.scrollIntoView({ block: "start", behavior: reducedMotion ? "auto" : "smooth" });
+          detail.focus({ preventScroll: true });
+        }
+      });
+      return undefined;
+    }
+
+    if (selectedInquiryTriggerRef.current && selectedInquiryTriggerRef.current.isConnected) {
+      selectedInquiryTriggerRef.current.focus({ preventScroll: true });
+    }
+    return undefined;
+  }, [selectedInquiry && selectedInquiry.id]);
 
   React.useEffect(function () {
     if (!admin) return undefined;
@@ -325,7 +347,7 @@ function AdminApp() {
           h("table", null,
             h("thead", null, h("tr", null,
               ["접수일", "신청자", "연락처", "희망 과정", "상태"].map(function (name) {
-                return h("th", { key: name }, name);
+                return h("th", { key: name, scope: "col" }, name);
               })
             )),
             h("tbody", null, (dashboard.recentInquiries || []).map(function (item) {
@@ -433,8 +455,8 @@ function AdminApp() {
     return h(React.Fragment, null,
       h("section", { className: "admin-panel" },
         h("div", { className: "admin-toolbar" },
-          h("input", { value: keyword, placeholder: "이름·연락처·과정 검색", onChange: function (e) { setKeyword(e.target.value); } }),
-          h("select", { value: inquiryStatus, onChange: function (e) { setInquiryStatus(e.target.value); } },
+          h("input", { type: "search", value: keyword, placeholder: "이름·연락처·과정 검색", "aria-label": "상담 신청자 이름, 연락처 또는 과정 검색", onChange: function (e) { setKeyword(e.target.value); } }),
+          h("select", { value: inquiryStatus, "aria-label": "상담 신청 상태 필터", onChange: function (e) { setInquiryStatus(e.target.value); } },
             ["", "접수", "상담 진행", "상담 완료"].map(function (value) {
               return h("option", { key: value || "all", value: value }, value || "전체 상태");
             })
@@ -444,7 +466,7 @@ function AdminApp() {
         h("div", { className: "admin-table-wrap" },
           h("table", null,
             h("thead", null, h("tr", null, ["접수일", "신청자", "연락처", "이메일", "교육과정", "상태", "관리"].map(function (name) {
-              return h("th", { key: name }, name);
+              return h("th", { key: name, scope: "col" }, name);
             }))),
             h("tbody", null, (inquiries.content || []).map(function (item) {
               return h("tr", { key: item.id },
@@ -454,7 +476,7 @@ function AdminApp() {
                 h("td", null, item.email || "-"),
                 h("td", null, item.courseTitle),
                 h("td", null, item.status),
-                h("td", null, h("button", { className: "admin-secondary", onClick: function () { setSelectedInquiry(item); } }, "상세"))
+                h("td", null, h("button", { type: "button", className: "admin-secondary", "aria-controls": "admin-inquiry-detail", "aria-label": item.name + " 상담 상세 보기", onClick: function (event) { selectedInquiryTriggerRef.current = event.currentTarget; setSelectedInquiry(item); } }, "상세"))
               );
             }))
           )
@@ -465,7 +487,7 @@ function AdminApp() {
           h("button", { className: "admin-secondary", disabled: (inquiries.number || 0) + 1 >= (inquiries.totalPages || 1), onClick: function () { loadInquiries(inquiries.number + 1); } }, "다음")
         )
       ),
-      selectedInquiry ? h("section", { className: "admin-panel admin-detail" },
+      selectedInquiry ? h("section", { id: "admin-inquiry-detail", ref: selectedInquiryDetailRef, className: "admin-panel admin-detail", tabIndex: -1, role: "region", "aria-label": "선택한 상담 상세 정보" },
         h("div", { className: "admin-panel-head" },
           h("h2", null, "상담 상세"),
           h("button", { className: "admin-secondary", onClick: function () { setSelectedInquiry(null); } }, "닫기")
@@ -565,10 +587,12 @@ function AdminApp() {
   return h("div", { className: "admin-shell" },
     h("aside", { className: "admin-sidebar" },
       h("div", null, h("b", null, "IT ACADEMY"), h("small", null, "ADMIN CONSOLE")),
-      h("nav", null, tabs.map(function (item) {
+      h("nav", { "aria-label": "관리자 메뉴" }, tabs.map(function (item) {
         return h("button", {
+          type: "button",
           key: item[0],
           className: tab === item[0] ? "active" : "",
+          "aria-pressed": tab === item[0],
           onClick: function () { setTab(item[0]); setSelectedInquiry(null); }
         }, item[1]);
       })),
