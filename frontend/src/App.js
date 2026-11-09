@@ -283,19 +283,19 @@ function Courses() {
       return undefined;
     }
 
-    let active = true;
-    api.get("/courses")
+    const controller = new AbortController();
+    api.get("/courses", { signal: controller.signal })
       .then(function (response) {
-        if (active) {
-          setItems(Array.isArray(response.data) ? response.data : []);
-        }
+        setItems(Array.isArray(response.data) ? response.data : []);
       })
-      .catch(function () {
-        if (active) setItems([]);
+      .catch(function (requestError) {
+        if (requestError.code !== "ERR_CANCELED") setItems([]);
       })
-      .finally(function () { if (active) setCoursesLoading(false); });
+      .finally(function () {
+        if (!controller.signal.aborted) setCoursesLoading(false);
+      });
 
-    return function () { active = false; };
+    return function () { controller.abort(); };
   }, []);
 
   if (params.id) {
@@ -535,9 +535,17 @@ function Courses() {
     );
   }
 
+  const normalizedKeyword = keyword.trim().toLocaleLowerCase("ko-KR");
   const filtered = items.filter(function (course) {
     const categoryMatches = category === "전체" || course.category === category;
-    const keywordMatches = course.title.toLowerCase().includes(keyword.toLowerCase());
+    const searchableText = [
+      course.title,
+      course.category,
+      course.summary,
+      course.description,
+      course.skills
+    ].filter(Boolean).join(" ").toLocaleLowerCase("ko-KR");
+    const keywordMatches = !normalizedKeyword || searchableText.includes(normalizedKeyword);
     return categoryMatches && keywordMatches;
   });
 
@@ -548,11 +556,15 @@ function Courses() {
       h("p", { className: "lead" }, "과정별 학습 목표와 기술 범위, 실습 단계, 프로젝트 결과물을 비교해 보세요."),
       h("div", { className: "filters" },
         h("input", {
-          placeholder: "과정명 검색",
+          type: "search",
+          placeholder: "과정명·분야·기술 검색",
+          "aria-label": "교육과정 이름, 분야 또는 기술 검색",
+          autoComplete: "off",
           value: keyword,
           onChange: function (event) { setKeyword(event.target.value); }
         }),
         h("select", {
+          "aria-label": "교육과정 분야 필터",
           value: category,
           onChange: function (event) { setCategory(event.target.value); }
         },
@@ -561,15 +573,28 @@ function Courses() {
           })
         )
       ),
-      filtered.length
+      h("div", { className: "course-results-summary", "aria-live": "polite" },
+        h("span", null, "검색 결과"),
+        h("strong", null, String(filtered.length) + "개 과정")
+      ),
+      coursesLoading
+        ? h("div", { className: "notice-state", role: "status" },
+            h("h2", null, "교육과정을 불러오고 있습니다."),
+            h("p", null, "최신 과정 정보를 확인하고 있습니다.")
+          )
+        : filtered.length
         ? h("div", { className: "grid4" },
             filtered.map(function (course) {
               return h(CourseCard, { course: course, key: course.id });
             })
           )
-        : h("div", { className: "empty-state" },
-            h("h3", null, "등록된 교육과정이 없습니다."),
-            h("p", null, "운영기관에서 공개할 교육과정을 등록하면 이곳에 표시됩니다.")
+        : h("div", { className: "notice-state" },
+            h("div", { className: "notice-state-icon", "aria-hidden": "true" }, "⌕"),
+            h("h2", null, normalizedKeyword || category !== "전체" ? "조건에 맞는 과정이 없습니다." : "등록된 교육과정이 없습니다."),
+            h("p", null, normalizedKeyword || category !== "전체" ? "검색어를 바꾸거나 분야 필터를 전체로 변경해 주세요." : "운영기관에서 공개할 교육과정을 등록하면 이곳에 표시됩니다."),
+            normalizedKeyword || category !== "전체"
+              ? h("button", { type: "button", className: "btn ghost", onClick: function () { setKeyword(""); setCategory("전체"); } }, "검색 초기화")
+              : null
           ),
       h("p", { className: "course-data-disclosure" }, "※ 서버에 등록된 운영정보가 확인되기 전까지 기본 과정은 교육 설계 예시로 표시됩니다. 모집 여부·교육 기간·지원 대상은 관리자 확인 완료 후 공개됩니다.")
     )
