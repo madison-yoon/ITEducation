@@ -105,7 +105,7 @@ a {
 }
 
 .academy-brand-copy > small {
-  font-size: 9px;
+  font-size: 10px;
   letter-spacing: .13em;
 }
 
@@ -314,7 +314,7 @@ a {
 
 .academy-pipeline span {
   padding: 7px 8px;
-  font-size: 9px;
+  font-size: 10px;
 }
 
 .academy-quality-line {
@@ -324,11 +324,11 @@ a {
 
 .academy-quality-line b {
   width: 55px;
-  font-size: 9px;
+  font-size: 10px;
 }
 
 .academy-quality-line span {
-  font-size: 9px;
+  font-size: 10px;
 }
 
 .academy-visual-caption {
@@ -612,7 +612,7 @@ a {
 }
 
 .academy-console-checks b {
-  font-size: 9px;
+  font-size: 10px;
 }
 
 /* Portfolio cards */
@@ -2174,7 +2174,7 @@ a {
   }
 
   .academy-brand-copy > small {
-    font-size: 8px;
+    font-size: 10px;
   }
 
   .academy-navlinks {
@@ -2213,7 +2213,7 @@ a {
 
   .academy-hero-kicker {
     align-items: flex-start;
-    font-size: 9px;
+    font-size: 10px;
     letter-spacing: .1em;
     line-height: 1.6;
   }
@@ -2257,7 +2257,7 @@ a {
   }
 
   .academy-hero-proof span {
-    font-size: 8px;
+    font-size: 10px;
     letter-spacing: .06em;
   }
 
@@ -2292,26 +2292,26 @@ a {
 
   .academy-window-head {
     margin-bottom: 9px;
-    font-size: 7px;
+    font-size: 10px;
   }
 
   .academy-pipeline span {
     padding: 5px 6px;
-    font-size: 7px;
+    font-size: 10px;
   }
 
   .academy-quality-line {
     gap: 5px;
-    font-size: 8px;
+    font-size: 10px;
   }
 
   .academy-quality-line b {
     width: 37px;
-    font-size: 7px;
+    font-size: 10px;
   }
 
   .academy-quality-line span {
-    font-size: 7px;
+    font-size: 10px;
   }
 
   .float-top {
@@ -2327,7 +2327,7 @@ a {
   .academy-visual-caption {
     right: 4%;
     bottom: 0;
-    font-size: 7px;
+    font-size: 10px;
     letter-spacing: .12em;
   }
 
@@ -2335,7 +2335,7 @@ a {
     min-height: 56px;
     justify-content: space-between;
     gap: 8px;
-    font-size: 7px;
+    font-size: 10px;
     letter-spacing: .04em;
   }
 
@@ -2376,7 +2376,7 @@ a {
   }
 
   .academy-eyebrow {
-    font-size: 9px;
+    font-size: 10px;
     letter-spacing: .12em;
   }
 
@@ -2414,7 +2414,7 @@ a {
 
   .academy-method-marker {
     margin-top: 23px;
-    font-size: 8px;
+    font-size: 10px;
   }
 
   .academy-method-card h3 {
@@ -2432,7 +2432,7 @@ a {
   }
 
   .academy-method-output span {
-    font-size: 8px;
+    font-size: 10px;
   }
 
   .academy-method-output b {
@@ -2473,7 +2473,7 @@ a {
 
   .academy-course-code,
   .academy-status {
-    font-size: 9px;
+    font-size: 10px;
   }
 
   .academy-course-card h3 {
@@ -2534,7 +2534,7 @@ a {
 
   .academy-console-top {
     padding: 14px 15px;
-    font-size: 8px;
+    font-size: 10px;
   }
 
   .academy-console-code {
@@ -2550,11 +2550,11 @@ a {
 
   .academy-code-line > span {
     width: 15px;
-    font-size: 8px;
+    font-size: 10px;
   }
 
   .academy-code-line.muted {
-    font-size: 9px;
+    font-size: 10px;
   }
 
   .academy-console-checks {
@@ -2573,7 +2573,7 @@ a {
   }
 
   .academy-console-checks b {
-    font-size: 8px;
+    font-size: 10px;
   }
 
   .academy-feature-art {
@@ -2619,7 +2619,7 @@ a {
   }
 
   .academy-assessment-card-head {
-    font-size: 8px;
+    font-size: 10px;
   }
 
   .academy-score-row {
@@ -3129,7 +3129,7 @@ a {
   }
 
   .notice-featured-label {
-    font-size: 8px;
+    font-size: 10px;
     letter-spacing: 1px;
   }
 
@@ -3426,7 +3426,7 @@ a {
   }
 
   .academy-footer-links > b {
-    font-size: 9px;
+    font-size: 10px;
   }
 
   .academy-footer-links a,
