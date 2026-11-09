@@ -13,6 +13,7 @@ import {
 } from "react-router-dom";
 import { getPageMetadata, getScrollAction, formatNoticeDate } from "./navigation.js";
 import api from "./api.js";
+import { previewNotices } from "./preview-content.js";
 import AdminApp from "./AdminApp.js";
 import { AcademyHome, AcademyAbout, AcademyProjects, AcademyScene } from "./academy-pages.js";
 
@@ -795,9 +796,6 @@ function getTodayLocalDate() {
 }
 
 const isStaticPreview = import.meta.env.VITE_STATIC_PREVIEW === "true";
-
-// 정적 사이트에서는 운영 공지를 임의 데이터로 대체하지 않습니다.
-const previewNotices = [];
 
 function Notices() {
   const [items, setItems] = React.useState([]);

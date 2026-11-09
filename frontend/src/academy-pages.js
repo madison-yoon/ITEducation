@@ -80,6 +80,26 @@ const projectFallback = [
   }
 ];
 
+const projectArtwork = {
+  1: import.meta.env.BASE_URL + "images/projects/ai-movie-recommender.svg",
+  2: import.meta.env.BASE_URL + "images/projects/consumer-data-insights.svg",
+  3: import.meta.env.BASE_URL + "images/projects/rag-document-assistant.svg",
+  4: import.meta.env.BASE_URL + "images/projects/customer-voc-analytics.svg",
+  5: import.meta.env.BASE_URL + "images/projects/learning-operations-platform.svg",
+  6: import.meta.env.BASE_URL + "images/projects/vibe-coding-quality.svg"
+};
+
+function getProjectArtwork(project) {
+  const title = String(project && project.title || "").toLowerCase();
+  if (title.includes("영화") || title.includes("movie")) return projectArtwork[1];
+  if (title.includes("소비") || title.includes("insight") || title.includes("인사이트")) return projectArtwork[2];
+  if (title.includes("문서") || title.includes("rag") || title.includes("document")) return projectArtwork[3];
+  if (title.includes("voc") || title.includes("고객") || title.includes("의견")) return projectArtwork[4];
+  if (title.includes("학습 운영") || title.includes("운영 플랫폼") || title.includes("learning")) return projectArtwork[5];
+  if (title.includes("vibe") || title.includes("품질 검증") || title.includes("코딩 품질")) return projectArtwork[6];
+  return projectArtwork[Number(project && project.id)] || "";
+}
+
 const learningSteps = [
   ["01", "문제 정의", "사용자와 해결할 문제를 조사하고 요구사항을 문서로 고정합니다.", "요구사항 명세 · 사용자 흐름"],
   ["02", "기초 원리", "문법과 프레임워크를 암기하는 데서 멈추지 않고 작동 원리를 실습합니다.", "개념 노트 · 단계별 과제"],
@@ -338,8 +358,10 @@ export function AcademyHome() {
         ),
         h("div", { className: "academy-feature-projects" },
           projectFallback.slice(0, 3).map(function (project, index) {
+            const artwork = getProjectArtwork(project);
             return h(Link, { to: "/projects", className: "academy-feature-project", key: project.id },
-              h("div", { className: "academy-feature-art art-" + (index + 1), "aria-hidden": "true" },
+              h("div", { className: "academy-feature-art art-" + (index + 1) + (artwork ? " has-project-image" : ""), "aria-hidden": "true" },
+                artwork ? h("img", { className: "academy-feature-image", src: artwork, alt: "", loading: "lazy" }) : null,
                 h("div", { className: "feature-art-glass" }),
                 h("div", { className: "feature-art-orbit" }),
                 h("span", null, "0" + project.id)
@@ -541,11 +563,7 @@ export function AcademyProjects() {
           h("h1", null, "결과물보다 먼저,", h("br"), h("span", null, "문제 해결의 증거"), "를 만듭니다."),
           h("p", null, "프로젝트는 포트폴리오를 채우기 위한 과제가 아닙니다. 실제 사용자 문제를 정의하고, 기술적 선택을 설명하고, 테스트 결과로 완성도를 증명하는 종합 실습입니다.")
         ),
-        h("div", { className: "academy-project-orb", "aria-hidden": "true" },
-          h("div", { className: "project-orb-ring ring-one" }),
-          h("div", { className: "project-orb-ring ring-two" }),
-          h("div", { className: "project-orb-core" }, h("b", null, "BUILD"), h("span", null, "WITH EVIDENCE"))
-        )
+        h(AcademyScene, { variant: "projects" })
       )
     ),
     h("div", { className: "container academy-projects-content" },
@@ -571,9 +589,11 @@ export function AcademyProjects() {
       ),
       h("div", { className: "academy-project-grid" },
         visible.map(function (project, index) {
+          const artwork = getProjectArtwork(project);
           return h("article", { className: "academy-project-card", key: project.id || project.title },
             h("button", { type: "button", className: "academy-project-open", onClick: function (event) { triggerRef.current = event.currentTarget; setSelected(project); }, "aria-haspopup": "dialog", "aria-label": project.title + " 상세 보기" },
-              h("div", { className: "academy-project-art project-art-" + ((index % 6) + 1), "aria-hidden": "true" },
+              h("div", { className: "academy-project-art project-art-" + ((index % 6) + 1) + (artwork ? " has-project-image" : ""), "aria-hidden": "true" },
+                artwork ? h("img", { className: "academy-project-image", src: artwork, alt: "", loading: "lazy" }) : null,
                 h("div", { className: "project-art-grid" }),
                 h("div", { className: "project-art-object" }),
                 h("span", null, String(project.id || index + 1).padStart(2, "0")),
@@ -613,6 +633,9 @@ export function AcademyProjects() {
       h("article", { ref: dialogRef, className: "academy-project-modal", role: "dialog", "aria-modal": "true", "aria-labelledby": "academy-project-modal-title", "aria-describedby": "academy-project-modal-description", tabIndex: -1 },
         h("button", { type: "button", className: "academy-modal-close", onClick: function () { setSelected(null); }, "aria-label": "상세 창 닫기" }, "×"),
         h(Eyebrow, null, (selected.category || "PROJECT") + " · " + (selected.duration || "CAPSTONE")),
+        getProjectArtwork(selected) ? h("div", { className: "academy-modal-art" },
+          h("img", { src: getProjectArtwork(selected), alt: "", loading: "lazy" })
+        ) : null,
         h("h2", { id: "academy-project-modal-title" }, selected.title),
         h("p", { id: "academy-project-modal-description", className: "academy-modal-lead" }, selected.description),
         h("div", { className: "academy-modal-facts" },
