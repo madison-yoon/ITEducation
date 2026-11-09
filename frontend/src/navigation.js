@@ -15,7 +15,7 @@ const pageDefinitions = [
     description: "AI·데이터·생성형 AI·웹 서비스 교육과정의 학습 목표와 커리큘럼을 확인하세요."
   },
   {
-    matches: function (pathname) { return /^\\/courses\\/[^/]+$/.test(pathname); },
+    matches: function (pathname) { return /^\/courses\/[^/]+$/.test(pathname); },
     title: "교육과정 상세",
     description: "교육과정의 학습 단계, 실습 내용, 프로젝트 산출물과 안내 사항을 확인하세요."
   },
@@ -35,19 +35,19 @@ const pageDefinitions = [
     description: "IT ACADEMY의 공지와 운영 안내를 확인하세요."
   },
   {
-    matches: function (pathname) { return /^\\/notices\\/[^/]+$/.test(pathname); },
+    matches: function (pathname) { return /^\/notices\/[^/]+$/.test(pathname); },
     title: "공지사항 상세",
     description: "IT ACADEMY 공지사항의 상세 내용을 확인하세요."
   },
   {
-    matches: function (pathname) { return /^\\/admin(?:\\/|$)/.test(pathname); },
+    matches: function (pathname) { return /^\/admin(?:\/|$)/.test(pathname); },
     title: "관리자",
     description: "IT ACADEMY 관리자 전용 운영 화면입니다."
   }
 ];
 
 export function getPageMetadata(pathname) {
-  const normalizedPath = pathname === "/" ? "/" : String(pathname || "/").replace(/\\/+$/, "");
+  const normalizedPath = pathname === "/" ? "/" : String(pathname || "/").replace(/\/+$/, "");
   return pageDefinitions.find(function (page) { return page.matches(normalizedPath); }) || {
     title: "페이지를 찾을 수 없습니다",
     description: "요청한 페이지를 찾을 수 없습니다. 메인 페이지에서 원하는 정보를 다시 찾아보세요."
