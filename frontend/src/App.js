@@ -576,7 +576,7 @@ function Courses() {
   return h("section", { className: "page" },
     h("div", { className: "container" },
       h("div", { className: "course-page-intro" },
-        h("div", null,
+        h("div", { className: "course-page-intro-copy" },
           h("span", { className: "eyebrow" }, "OUR PROGRAMS"),
           h("h1", null, "교육과정"),
           h("p", { className: "lead" }, "과정별 학습 목표와 기술 범위, 실습 단계, 프로젝트 결과물을 비교해 보세요.")
@@ -1034,7 +1034,7 @@ function NoticeDetail() {
         h("div", { className: "notice-content" }, notice.content),
         h("div", { className: "notice-detail-footer" },
           h("span", null, "IT ACADEMY"),
-          h("button", { type: "button", className: "btn ghost", onClick: function () { navigate("/notices"); } }, "목록으로 돌아가기")
+          h("button", { type: "button", className: "btn notice-back-action", onClick: function () { navigate("/notices"); } }, "목록으로 돌아가기")
         )
       )
     )
