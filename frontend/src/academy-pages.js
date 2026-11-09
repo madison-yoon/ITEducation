@@ -140,11 +140,15 @@ export function AcademyHome() {
   const [courses, setCourses] = React.useState(courseFallback);
 
   React.useEffect(function () {
-    let active = true;
-    api.get("/courses").then(function (response) {
-      if (active && Array.isArray(response.data) && response.data.length) setCourses(response.data);
-    }).catch(function () {});
-    return function () { active = false; };
+    const controller = new AbortController();
+    api.get("/courses", { signal: controller.signal }).then(function (response) {
+      if (Array.isArray(response.data) && response.data.length) setCourses(response.data);
+    }).catch(function (requestError) {
+      if (requestError.code !== "ERR_CANCELED") {
+        // 홈 화면은 기본 과정 예시를 유지하고, 연결 오류로 화면을 막지 않습니다.
+      }
+    });
+    return function () { controller.abort(); };
   }, []);
 
   return h(React.Fragment, null,
@@ -441,15 +445,17 @@ export function AcademyProjects() {
   const triggerRef = React.useRef(null);
 
   React.useEffect(function () {
-    let active = true;
-    api.get("/projects").then(function (response) {
-      if (active && Array.isArray(response.data) && response.data.length) setProjects(response.data);
-    }).catch(function () {
-      // API가 준비되지 않은 로컬 환경에서는 동일한 교육 설계 예시를 표시합니다.
+    const controller = new AbortController();
+    api.get("/projects", { signal: controller.signal }).then(function (response) {
+      if (Array.isArray(response.data) && response.data.length) setProjects(response.data);
+    }).catch(function (requestError) {
+      if (requestError.code !== "ERR_CANCELED") {
+        // API가 준비되지 않은 환경에서는 교육 설계 예시를 유지합니다.
+      }
     }).finally(function () {
-      if (active) setLoading(false);
+      if (!controller.signal.aborted) setLoading(false);
     });
-    return function () { active = false; };
+    return function () { controller.abort(); };
   }, []);
 
   React.useEffect(function () {
