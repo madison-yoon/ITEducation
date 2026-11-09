@@ -11,7 +11,7 @@ import {
   useLocation,
   useNavigationType
 } from "react-router-dom";
-import { getPageMetadata, getScrollAction } from "./navigation.js";
+import { getPageMetadata, getScrollAction, formatNoticeDate } from "./navigation.js";
 import api from "./api.js";
 import AdminApp from "./AdminApp.js";
 import { AcademyHome, AcademyAbout, AcademyProjects, AcademyScene } from "./academy-pages.js";
@@ -789,11 +789,6 @@ function getTodayLocalDate() {
   const now = new Date();
   now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
   return now.toISOString().slice(0, 10);
-}
-
-function formatNoticeDate(value) {
-  if (!value) return "";
-  return String(value).replace("T", " ").slice(0, 10).replace(/-/g, ".");
 }
 
 const isStaticPreview = import.meta.env.VITE_STATIC_PREVIEW === "true";
