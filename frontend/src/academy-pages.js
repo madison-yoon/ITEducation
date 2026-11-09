@@ -245,9 +245,9 @@ export function AcademyHome() {
               h("span", null, "PLAN"), h("i", null, "→"), h("span", null, "BUILD"), h("i", null, "→"), h("span", null, "VERIFY")
             )
           ),
-          h(FloatingWindow, { className: "float-bottom", label: "QUALITY SIGNAL" },
-            h("div", { className: "academy-quality-line" }, h("b", null, "TEST"), h("span", null, "PASS"), h("i", null)),
-            h("div", { className: "academy-quality-line" }, h("b", null, "REVIEW"), h("span", null, "CHECKED"), h("i", null))
+          h(FloatingWindow, { className: "float-bottom", label: "QUALITY CHECKLIST" },
+            h("div", { className: "academy-quality-line" }, h("b", null, "TEST PLAN"), h("span", null, "REQUIRED"), h("i", null)),
+            h("div", { className: "academy-quality-line" }, h("b", null, "CODE REVIEW"), h("span", null, "REQUIRED"), h("i", null))
           ),
           h("span", { className: "academy-visual-caption" }, "LEARN · BUILD · VALIDATE")
         )
@@ -376,6 +376,33 @@ export function AcademyHome() {
           })
         ),
         h("p", { className: "academy-data-note" }, "※ 표시된 프로젝트는 교육 설계 예시입니다. 실제 수강생 작품·운영 실적·취업 성과로 오인되지 않도록 구분합니다.")
+      )
+    ),
+
+    h("section", { className: "academy-evidence-section" },
+      h("div", { className: "container" },
+        h(SectionHeading, {
+          label: "PORTFOLIO EVIDENCE",
+          title: "포트폴리오는 결과 화면만으로 완성되지 않습니다.",
+          description: "다른 사람이 문제와 구현 과정을 따라가고 결과를 검증할 수 있도록 다섯 종류의 근거를 함께 정리합니다."
+        }),
+        h("div", { className: "academy-evidence-grid" },
+          [
+            ["01", "문제와 요구사항", "누구의 어떤 문제를 해결하는지와 기능별 완료 조건을 남깁니다.", "문제 정의서 · 사용자 흐름 · 요구사항 목록"],
+            ["02", "설계와 데이터", "화면, API, 데이터 구조와 기술 선택의 이유를 연결합니다.", "화면 설계 · ERD · API 명세"],
+            ["03", "구현과 변경", "핵심 코드와 기능 단위 변경 내용을 추적할 수 있게 정리합니다.", "저장소 · 커밋 이력 · 코드 리뷰"],
+            ["04", "테스트와 품질", "정상·오류·경계 조건에서 동작을 확인하고 결과를 기록합니다.", "테스트 케이스 · 실행 결과 · 이슈 기록"],
+            ["05", "배포와 회고", "설치·실행 방법과 남은 한계, 개선 우선순위를 설명합니다.", "README · 시연 자료 · 회고 문서"]
+          ].map(function (item) {
+            return h("article", { className: "academy-evidence-card", key: item[0] },
+              h("span", null, item[0]),
+              h("h3", null, item[1]),
+              h("p", null, item[2]),
+              h("small", null, item[3])
+            );
+          })
+        ),
+        h("p", { className: "academy-evidence-note" }, "위 항목은 프로젝트 포트폴리오에 포함하도록 제안하는 증거 구조입니다. 실제 파일과 테스트 결과가 준비된 항목만 완료된 성과로 공개합니다.")
       )
     ),
 

@@ -632,7 +632,60 @@ function Courses() {
               ? h("button", { type: "button", className: "btn ghost", onClick: function () { setKeyword(""); setCategory("전체"); } }, "검색 초기화")
               : null
           ),
-      h("p", { className: "course-data-disclosure" }, "※ 서버에 등록된 운영정보가 확인되기 전까지 기본 과정은 교육 설계 예시로 표시됩니다. 모집 여부·교육 기간·지원 대상은 관리자 확인 완료 후 공개됩니다.")
+      h("section", { className: "course-path-selector", "aria-labelledby": "course-path-selector-title" },
+        h("div", { className: "course-path-heading" },
+          h("span", { className: "eyebrow" }, "FIND YOUR LEARNING PATH"),
+          h("h2", { id: "course-path-selector-title" }, "어떤 문제를 해결하고 싶은지부터 선택하세요."),
+          h("p", null, "분야 이름보다 관심 있는 작업과 만들고 싶은 결과를 기준으로 과정을 비교할 수 있습니다.")
+        ),
+        h("div", { className: "course-path-grid" },
+          [
+            {
+              code: "AI",
+              title: "데이터로 예측하고 추천하기",
+              focus: "데이터를 정리하고 패턴을 찾아 분류·예측·추천 모델의 결과를 비교합니다.",
+              output: "데이터 사전 · 모델 비교표 · 추천 서비스 시연",
+              guide: "Python, 통계, 모델 평가에 관심이 있다면"
+            },
+            {
+              code: "DATA",
+              title: "데이터에서 의사결정 근거 찾기",
+              focus: "SQL과 Python으로 데이터를 추출·정제하고 지표와 대시보드로 의미를 전달합니다.",
+              output: "품질 점검표 · SQL 분석 · 대시보드",
+              guide: "분석 질문, 지표 설계, 시각화에 관심이 있다면"
+            },
+            {
+              code: "GEN AI",
+              title: "문서와 지식을 AI 서비스로 연결하기",
+              focus: "LLM, 임베딩, 검색을 연결하고 답변의 근거와 한계를 검증합니다.",
+              output: "문서 처리 흐름 · 검색 평가 · RAG 시연",
+              guide: "생성형 AI와 근거 기반 검색에 관심이 있다면"
+            },
+            {
+              code: "WEB",
+              title: "화면부터 서버까지 서비스 구현하기",
+              focus: "프론트엔드, 백엔드, 데이터베이스와 인증을 연결해 사용자 흐름을 완성합니다.",
+              output: "화면 설계 · API 명세 · 통합 웹 서비스",
+              guide: "웹 애플리케이션과 풀스택 개발에 관심이 있다면"
+            }
+          ].map(function (item) {
+            return h("article", { className: "course-path-card", key: item.code },
+              h("div", { className: "course-path-card-top" },
+                h("span", null, item.code),
+                h("i", { "aria-hidden": "true" }, "↗")
+              ),
+              h("h3", null, item.title),
+              h("p", null, item.focus),
+              h("div", { className: "course-path-guide" }, item.guide),
+              h("div", { className: "course-path-output" },
+                h("b", null, "대표 학습 산출물"),
+                h("span", null, item.output)
+              )
+            );
+          })
+        ),
+        h("p", { className: "course-data-disclosure" }, "과정별 커리큘럼과 기술 구성은 교육 설계 예시입니다. 실제 개강일·교육 기간·정원·비용·지원 자격은 운영기관이 확인한 정보만 공개합니다.")
+      )
     )
   );
 }
@@ -729,14 +782,42 @@ function Consultation() {
 
   return h("section", { className: "page" },
     h("div", { className: "container formwrap" },
-      h("div", { className: "consultation-intro" },
-        h("div", null,
-          h("span", { className: "eyebrow" }, "CONSULTATION"),
-          h("h1", null, "교육과정 상담 신청"),
-          h("p", { className: "lead" }, "희망 과정과 현재 경험, 학습 목표를 남겨주시면 적합한 학습 방향을 안내합니다."),
-          h("div", { className: "consultation-visual-caption" }, "YOUR NEXT STEP STARTS HERE")
+      h("div", { className: "consultation-side" },
+        h("div", { className: "consultation-intro" },
+          h("div", null,
+            h("span", { className: "eyebrow" }, "CONSULTATION"),
+            h("h1", null, "교육과정 상담 신청"),
+            h("p", { className: "lead" }, "희망 과정과 현재 경험, 학습 목표를 남겨주시면 적합한 학습 방향을 안내합니다."),
+            h("div", { className: "consultation-visual-caption" }, "YOUR NEXT STEP STARTS HERE")
+          ),
+          h(AcademyScene, { variant: "consultation" })
         ),
-        h(AcademyScene, { variant: "consultation" })
+        h("section", { className: "consultation-preparation", "aria-labelledby": "consultation-preparation-title" },
+          h("span", { className: "eyebrow" }, "BEFORE YOU APPLY"),
+          h("h2", { id: "consultation-preparation-title" }, "상담 전에 정리하면 좋은 네 가지"),
+          h("div", { className: "consultation-prep-list" },
+            [
+              ["01", "관심 분야", "AI·데이터·생성형 AI·웹 중 관심 있는 주제와 해결하고 싶은 문제"],
+              ["02", "현재 경험", "사용해 본 언어와 도구, 완료한 실습이나 프로젝트"],
+              ["03", "학습 여건", "주당 학습 가능 시간과 참여 형태에 관한 조건"],
+              ["04", "목표 결과", "완성하고 싶은 프로젝트와 확보하고 싶은 기술 역량"]
+            ].map(function (item) {
+              return h("article", { key: item[0] },
+                h("b", null, item[0]),
+                h("div", null, h("strong", null, item[1]), h("p", null, item[2]))
+              );
+            })
+          )
+        ),
+        h("section", { className: "consultation-process", "aria-labelledby": "consultation-process-title" },
+          h("span", { className: "eyebrow" }, "HOW IT WORKS"),
+          h("h2", { id: "consultation-process-title" }, "상담 진행 흐름"),
+          h("ol", null,
+            h("li", null, h("b", null, "01"), h("span", null, "희망 과정과 문의 내용을 작성합니다.")),
+            h("li", null, h("b", null, "02"), h("span", null, "연락 가능한 정보와 상담 희망 조건을 확인합니다.")),
+            h("li", null, h("b", null, "03"), h("span", null, "실제 운영 서버에서 접수된 신청을 운영 담당자가 확인합니다."))
+          )
+        )
       ),
       h("form", { className: "form", onSubmit: submitForm },
         h("label", null, "이름 *",
@@ -771,6 +852,14 @@ function Consultation() {
         ),
         h("label", null, "문의 내용 *",
           h("textarea", { required: true, name: "message", minLength: 10, maxLength: 2000, rows: 6, value: form.message, onChange: function (e) { updateField("message", e.target.value); } })
+        ),
+        h("section", { className: "consultation-privacy-detail", "aria-labelledby": "consultation-privacy-title" },
+          h("h2", { id: "consultation-privacy-title" }, "입력 정보 안내"),
+          h("dl", null,
+            h("div", null, h("dt", null, "필수 입력"), h("dd", null, "이름, 연락처, 희망 교육과정, 문의 내용")),
+            h("div", null, h("dt", null, "선택 입력"), h("dd", null, "이메일, 희망 날짜와 시간대, 마케팅 수신 동의"))
+          ),
+          h("p", null, "실제 접수 운영 전에는 운영기관의 개인정보 처리 주체, 수집·이용 목적, 보유 기간, 파기 기준과 문의처를 확정해 별도 안내해야 합니다. 확인되지 않은 정책 정보는 임의로 기재하지 않습니다.")
         ),
         h("label", { className: "checkrow" },
           h("input", { type: "checkbox", name: "privacyConsent", required: true, checked: form.privacyConsent, onChange: function (e) { updateField("privacyConsent", e.target.checked); } }),
