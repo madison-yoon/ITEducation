@@ -136,6 +136,35 @@ function FloatingWindow(props) {
   );
 }
 
+export function AcademyScene(props) {
+  const variant = props.variant || "default";
+  return h("div", {
+    className: "academy-scene academy-scene-" + variant,
+    "aria-hidden": "true"
+  },
+    h("div", { className: "academy-scene-grid" }),
+    h("div", { className: "academy-scene-glow" }),
+    h("div", { className: "academy-scene-orbit orbit-one" }),
+    h("div", { className: "academy-scene-orbit orbit-two" }),
+    h("div", { className: "academy-scene-orbit orbit-three" }),
+    h("div", { className: "academy-scene-cube-stage" },
+      h("div", { className: "academy-scene-cube" },
+        h("div", { className: "academy-scene-face face-front" }, h("b", null, "IT"), h("span", null, "BUILD")),
+        h("div", { className: "academy-scene-face face-back" }, h("b", null, "DATA")),
+        h("div", { className: "academy-scene-face face-right" }, h("b", null, "AI")),
+        h("div", { className: "academy-scene-face face-left" }, h("b", null, "CODE")),
+        h("div", { className: "academy-scene-face face-top" }, h("b", null, "IDEA")),
+        h("div", { className: "academy-scene-face face-bottom" }, h("b", null, "SHIP"))
+      )
+    ),
+    h("div", { className: "academy-scene-chip chip-top" }, "SYSTEM / 01"),
+    h("div", { className: "academy-scene-chip chip-bottom" }, "DESIGN · BUILD · VERIFY"),
+    h("span", { className: "academy-scene-particle particle-one" }),
+    h("span", { className: "academy-scene-particle particle-two" }),
+    h("span", { className: "academy-scene-particle particle-three" })
+  );
+}
+
 export function AcademyHome() {
   const [courses, setCourses] = React.useState(courseFallback);
 

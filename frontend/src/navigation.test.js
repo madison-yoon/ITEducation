@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { getPageMetadata, getScrollAction } from "./navigation.js";
+import { getPageMetadata, getScrollAction, formatNoticeDate } from "./navigation.js";
 
 test("known public routes receive specific page titles", function () {
   assert.equal(getPageMetadata("/").title, "홈");
@@ -28,4 +28,16 @@ test("browser back and forward restore the saved position", function () {
   assert.deepEqual(getScrollAction("POP", 640), { mode: "restore", top: 640 });
   assert.deepEqual(getScrollAction("POP", -20), { mode: "restore", top: 0 });
   assert.deepEqual(getScrollAction("POP", "invalid"), { mode: "restore", top: 0 });
+});
+
+
+test("missing notice dates are omitted instead of shown as placeholder copy", function () {
+  assert.equal(formatNoticeDate(null), "");
+  assert.equal(formatNoticeDate(undefined), "");
+  assert.equal(formatNoticeDate(""), "");
+});
+
+test("notice dates use a compact Korean-friendly date format", function () {
+  assert.equal(formatNoticeDate("2026-11-09T09:30:00"), "2026.11.09");
+  assert.equal(formatNoticeDate("invalid"), "");
 });

@@ -11,10 +11,10 @@ import {
   useLocation,
   useNavigationType
 } from "react-router-dom";
-import { getPageMetadata, getScrollAction } from "./navigation.js";
+import { getPageMetadata, getScrollAction, formatNoticeDate } from "./navigation.js";
 import api from "./api.js";
 import AdminApp from "./AdminApp.js";
-import { AcademyHome, AcademyAbout, AcademyProjects } from "./academy-pages.js";
+import { AcademyHome, AcademyAbout, AcademyProjects, AcademyScene } from "./academy-pages.js";
 
 const h = React.createElement;
 
@@ -155,10 +155,6 @@ function Header() {
 
 function Layout() {
   return h(React.Fragment, null,
-    isStaticPreview ? h("div", { className: "preview-environment-banner", role: "status" },
-      h("strong", null, "정적 미리보기"),
-      " 화면과 탐색 흐름을 확인하는 공개 버전입니다. 상담 접수와 관리자 데이터 변경은 실제 서버에 저장되지 않습니다."
-    ) : null,
     h(Header),
     h("main", { id: "main-content", tabIndex: -1 }, h(Outlet)),
     h("footer", { className: "footer academy-site-footer" },
@@ -385,20 +381,23 @@ function Courses() {
     return h("section", { className: "course-detail-page" },
       h("div", { className: "course-detail-hero" },
         h("div", { className: "container course-detail-hero-inner" },
-          h("span", { className: "eyebrow light" }, selected.category + " PROGRAM · LEARNING PATH"),
-          h("span", { className: "course-status-pill" }, selected.recruitmentStatus || "모집 안내"),
-          h("h1", null, selected.title),
-          h("p", { className: "course-info-disclosure hero-disclosure" }, selected.infoDisclosure || "교육과정 구성 예시"),
-          h("p", null, detailData.intro),
-          h("div", { className: "course-detail-tags" },
-            h("span", null, "교육 기간 " + selected.duration),
-            h("span", null, "프로젝트 중심 실습"),
-            h("span", null, selected.target || "지원 대상은 상담 시 확인")
+          h("div", { className: "course-detail-hero-copy" },
+            h("span", { className: "eyebrow light" }, selected.category + " PROGRAM · LEARNING PATH"),
+            h("span", { className: "course-status-pill" }, selected.recruitmentStatus || "모집 안내"),
+            h("h1", null, selected.title),
+            h("p", { className: "course-info-disclosure hero-disclosure" }, selected.infoDisclosure || "교육과정 구성 예시"),
+            h("p", null, detailData.intro),
+            h("div", { className: "course-detail-tags" },
+              h("span", null, "교육 기간 " + selected.duration),
+              h("span", null, "프로젝트 중심 실습"),
+              h("span", null, selected.target || "지원 대상은 상담 시 확인")
+            ),
+            h("div", { className: "actions" },
+              h(Link, { to: "/consultation", className: "btn" }, "과정 상담 신청하기"),
+              h(Link, { to: "/courses", className: "btn ghost" }, "전체 과정 보기")
+            )
           ),
-          h("div", { className: "actions" },
-            h(Link, { to: "/consultation", className: "btn" }, "과정 상담 신청하기"),
-            h(Link, { to: "/courses", className: "btn ghost" }, "전체 과정 보기")
-          )
+          h(AcademyScene, { variant: "courses" })
         )
       ),
       h("div", { className: "container course-detail-content" },
@@ -575,9 +574,14 @@ function Courses() {
 
   return h("section", { className: "page" },
     h("div", { className: "container" },
-      h("span", { className: "eyebrow" }, "OUR PROGRAMS"),
-      h("h1", null, "교육과정"),
-      h("p", { className: "lead" }, "과정별 학습 목표와 기술 범위, 실습 단계, 프로젝트 결과물을 비교해 보세요."),
+      h("div", { className: "course-page-intro" },
+        h("div", null,
+          h("span", { className: "eyebrow" }, "OUR PROGRAMS"),
+          h("h1", null, "교육과정"),
+          h("p", { className: "lead" }, "과정별 학습 목표와 기술 범위, 실습 단계, 프로젝트 결과물을 비교해 보세요.")
+        ),
+        h(AcademyScene, { variant: "courses" })
+      ),
       h("div", { className: "filters" },
         h("input", {
           type: "search",
@@ -678,7 +682,7 @@ function Consultation() {
     event.preventDefault();
     setError("");
     if (isStaticPreview) {
-      setError("정적 미리보기에서는 상담 신청이 실제로 전송되지 않습니다. 백엔드가 연결된 서비스 환경에서 이용해 주세요.");
+      setError("온라인 접수 서버에 연결할 수 없습니다.");
       return;
     }
     if (!availableCourses.some(function (course) { return course.title === form.courseTitle; })) {
@@ -724,11 +728,14 @@ function Consultation() {
 
   return h("section", { className: "page" },
     h("div", { className: "container formwrap" },
-      h("div", null,
-        h("span", { className: "eyebrow" }, "CONSULTATION"),
-        h("h1", null, "교육과정 상담 신청"),
-        h("p", { className: "lead" }, "희망 과정과 현재 경험, 학습 목표를 남겨주시면 적합한 학습 방향을 안내합니다."),
-        isStaticPreview ? h("p", { className: "static-preview-notice" }, "현재 페이지는 정적 미리보기이며 상담 신청이 실제 접수되지 않습니다.") : null
+      h("div", { className: "consultation-intro" },
+        h("div", null,
+          h("span", { className: "eyebrow" }, "CONSULTATION"),
+          h("h1", null, "교육과정 상담 신청"),
+          h("p", { className: "lead" }, "희망 과정과 현재 경험, 학습 목표를 남겨주시면 적합한 학습 방향을 안내합니다."),
+          h("div", { className: "consultation-visual-caption" }, "YOUR NEXT STEP STARTS HERE")
+        ),
+        h(AcademyScene, { variant: "consultation" })
       ),
       h("form", { className: "form", onSubmit: submitForm },
         h("label", null, "이름 *",
@@ -773,7 +780,7 @@ function Consultation() {
           " 마케팅 수신 동의 (선택)"
         ),
         error ? h("p", { className: "error", role: "alert", "aria-live": "assertive" }, error) : null,
-        h("button", { className: "btn full", disabled: submitting || !form.privacyConsent || isStaticPreview || courseLoading || availableCourses.length === 0 },
+        h("button", { className: "btn full", disabled: submitting || !form.privacyConsent || courseLoading || availableCourses.length === 0 },
           submitting ? "신청 처리 중..." : "상담 신청하기"
         )
       )
@@ -787,40 +794,10 @@ function getTodayLocalDate() {
   return now.toISOString().slice(0, 10);
 }
 
-function formatNoticeDate(value) {
-  if (!value) return "날짜 정보 없음";
-  return String(value).replace("T", " ").slice(0, 10).replace(/-/g, ".");
-}
-
 const isStaticPreview = import.meta.env.VITE_STATIC_PREVIEW === "true";
 
-// GitHub Pages는 백엔드 없이 화면을 공개하므로 미리보기 전용 안내를 사용합니다.
-const previewNotices = [
-  {
-    id: "preview-1",
-    title: "정적 미리보기 콘텐츠 안내",
-    category: "운영 안내",
-    content: "GitHub Pages 미리보기에는 기능 확인을 위한 안내 예시가 표시됩니다. 실제 교육 일정, 교육비, 정원, 지원 제도는 운영기관이 확정해 게시한 최신 공지와 상담을 통해 확인해 주세요.",
-    createdAt: null,
-    pinned: true
-  },
-  {
-    id: "preview-2",
-    title: "프로젝트 사례와 평가 기준 안내",
-    category: "교육과정",
-    content: "프로젝트 페이지에 소개된 사례는 교육 목표와 산출물 구성을 설명하기 위한 설계 예시입니다. 실제 수강생 작품, 수상 이력, 취업률 또는 운영 실적을 의미하지 않습니다.",
-    createdAt: null,
-    pinned: false
-  },
-  {
-    id: "preview-3",
-    title: "상담 신청 기능 안내",
-    category: "운영 안내",
-    content: "정적 미리보기에서는 백엔드 서버가 연결되지 않으므로 상담 신청이 실제로 접수되지 않습니다. 실제 신청 기능은 운영 서버가 연결된 환경에서 이용해 주세요.",
-    createdAt: null,
-    pinned: false
-  }
-];
+// 정적 사이트에서는 운영 공지를 임의 데이터로 대체하지 않습니다.
+const previewNotices = [];
 
 function Notices() {
   const [items, setItems] = React.useState([]);
@@ -900,7 +877,10 @@ function Notices() {
           h("h1", null, "IT ACADEMY 소식"),
           h("p", { className: "lead" }, "교육과정 운영 소식부터 새로운 모집 안내까지, IT ACADEMY의 최신 소식을 확인하세요.")
         ),
-        h("div", { className: "notice-heading-mark" }, "NEWS", h("b", null, " & NOTICE"))
+        h("div", { className: "notice-heading-visual" },
+          h("div", { className: "notice-heading-mark" }, "NEWS", h("b", null, " & NOTICE")),
+          h(AcademyScene, { variant: "notices" })
+        )
       ),
       h("div", { className: "notice-toolbar" },
         h("div", { className: "notice-categories", role: "group", "aria-label": "공지사항 분류" },
@@ -938,7 +918,7 @@ function Notices() {
         h("div", { className: "notice-state-icon" }, "!"),
         h("h2", null, "공지사항을 불러오지 못했습니다."),
         h("p", null, error),
-        h("button", { type: "button", className: "btn", onClick: loadNotices }, "다시 불러오기")
+        h("button", { type: "button", className: "btn", onClick: function () { loadNotices(); } }, "다시 불러오기")
       ) : filtered.length === 0 ? h("div", { className: "notice-state" },
         h("div", { className: "notice-state-icon" }, "⌕"),
         h("h2", null, items.length ? "검색 결과가 없습니다." : "등록된 공지사항이 없습니다."),
@@ -955,7 +935,7 @@ function Notices() {
             ),
             h("span", { className: "notice-featured-arrow" }, "→")
           ),
-          h("small", null, formatNoticeDate(pinnedNotice.createdAt))
+          pinnedNotice.createdAt ? h("small", null, formatNoticeDate(pinnedNotice.createdAt)) : null
         ) : null,
         h("div", { className: "notice-list" },
           h("div", { className: "notice-list-head" },
@@ -971,7 +951,7 @@ function Notices() {
                 notice.pinned ? h("b", { className: "notice-pin" }, "중요") : null,
                 h("strong", null, notice.title)
               ),
-              h("time", null, formatNoticeDate(notice.createdAt)),
+              notice.createdAt ? h("time", null, formatNoticeDate(notice.createdAt)) : null,
               h("span", { className: "notice-row-arrow", "aria-hidden": "true" }, "→")
             );
           })
@@ -1011,7 +991,7 @@ function NoticeDetail() {
           return String(item.id) === String(params.id);
         });
         if (preview) setNotice(preview);
-        else setError("해당 미리보기 안내를 찾을 수 없습니다.");
+        else setError("공지사항을 찾을 수 없습니다.");
         return;
       }
       const response = await api.get("/notices/" + params.id, signal ? { signal: signal } : undefined);
@@ -1036,7 +1016,7 @@ function NoticeDetail() {
 
   return h("section", { className: "page notice-detail-page" },
     h("div", { className: "container" },
-      h("button", { className: "notice-back", onClick: function () { navigate("/notices"); } }, "← 공지사항 목록"),
+      h("button", { type: "button", className: "notice-back", onClick: function () { navigate("/notices"); } }, "← 공지사항 목록"),
       loading ? h("div", { className: "notice-state" }, "공지사항을 불러오는 중입니다.") :
       error ? h("div", { className: "notice-state error-state", role: "alert", "aria-live": "assertive" },
         h("h2", null, "게시글을 확인할 수 없습니다."),
@@ -1046,14 +1026,17 @@ function NoticeDetail() {
         h("div", { className: "notice-detail-meta" },
           h("span", { className: "notice-tag" }, notice.category || "공지"),
           notice.pinned ? h("b", { className: "notice-pin" }, "중요 공지") : null,
-          h("time", null, formatNoticeDate(notice.createdAt))
+          notice.createdAt ? h("time", null, formatNoticeDate(notice.createdAt)) : null
         ),
-        h("h1", null, notice.title),
+        h("div", { className: "notice-detail-title-row" },
+          h("h1", null, notice.title),
+          h(AcademyScene, { variant: "notice-detail" })
+        ),
         h("div", { className: "notice-detail-divider" }),
         h("div", { className: "notice-content" }, notice.content),
         h("div", { className: "notice-detail-footer" },
           h("span", null, "IT ACADEMY"),
-          h("button", { className: "btn ghost", onClick: function () { navigate("/notices"); } }, "목록으로 돌아가기")
+          h("button", { type: "button", className: "btn ghost", onClick: function () { navigate("/notices"); } }, "목록으로 돌아가기")
         )
       )
     )

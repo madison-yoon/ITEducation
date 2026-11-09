@@ -1313,8 +1313,7 @@ a {
   font-size: 11px;
 }
 
-.course-data-disclosure,
-.static-preview-notice {
+.course-data-disclosure {
   margin-top: 26px;
   padding: 17px 20px;
   border-radius: 0 11px 11px 0;
@@ -3472,27 +3471,6 @@ html {
   outline: none;
 }
 
-.preview-environment-banner {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  min-height: 42px;
-  padding: 8px 20px;
-  background: #17264a;
-  color: #dce6ff;
-  font-size: 12px;
-  line-height: 1.6;
-  text-align: center;
-}
-
-.preview-environment-banner strong {
-  flex: none;
-  color: #93e4e0;
-  font-size: 12px;
-  font-weight: 800;
-}
-
 .back-to-top {
   position: fixed;
   z-index: 1100;
@@ -3707,15 +3685,6 @@ html {
 }
 
 @media (max-width: 650px) {
-  .preview-environment-banner {
-    align-items: flex-start;
-    flex-direction: column;
-    gap: 3px;
-    padding: 9px 18px;
-    font-size: 12px;
-    text-align: left;
-  }
-
   .back-to-top {
     right: 16px;
     bottom: max(16px, env(safe-area-inset-bottom));
