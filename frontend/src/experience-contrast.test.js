@@ -30,9 +30,9 @@ test("course intro eyebrow, heading and description use explicit light text", fu
   const heading = rule("#main-content > .page .course-page-intro-copy h1");
   const description = rule("#main-content > .page .course-page-intro-copy .lead");
 
-  assert.match(eyebrow, /color:\\s*#f3f6ff\\s*!important/i);
-  assert.match(heading, /color:\\s*#ffffff\\s*!important/i);
-  assert.match(description, /color:\\s*#f0f4ff\\s*!important/i);
+  assert.match(eyebrow, /color:\s*#f3f6ff\s*!important/i);
+  assert.match(heading, /color:\s*#ffffff\s*!important/i);
+  assert.match(description, /color:\s*#f0f4ff\s*!important/i);
   assert.match(heading, /-webkit-text-stroke/);
   assert.match(description, /text-shadow/);
 });
@@ -54,10 +54,10 @@ test("white course copy meets WCAG AA against the darkest and lightest hero grad
 test("notice back action has white text, a dark gradient and a visible keyboard focus", function () {
   const button = rule("#main-content .notice-detail-page .notice-detail-footer button.notice-back-action");
   const focus = rule("#main-content .notice-detail-page .notice-detail-footer button.notice-back-action:focus-visible");
-  assert.match(button, /color:\\s*#ffffff\\s*!important/i);
-  assert.match(button, /background:\\s*linear-gradient/);
+  assert.match(button, /color:\s*#ffffff\s*!important/i);
+  assert.match(button, /background:\s*linear-gradient/);
   assert.match(button, /-webkit-text-stroke/);
-  assert.match(focus, /outline:\\s*3px\\s+solid/i);
+  assert.match(focus, /outline:\s*3px\s+solid/i);
 
   for (const background of ["#263f98", "#49358f"]) {
     assert.ok(contrastRatio("#ffffff", background) >= 4.5);
