@@ -83,7 +83,10 @@ const projectFallback = [
 const projectArtwork = {
   1: import.meta.env.BASE_URL + "images/projects/ai-movie-recommender.svg",
   2: import.meta.env.BASE_URL + "images/projects/consumer-data-insights.svg",
-  3: import.meta.env.BASE_URL + "images/projects/rag-document-assistant.svg"
+  3: import.meta.env.BASE_URL + "images/projects/rag-document-assistant.svg",
+  4: import.meta.env.BASE_URL + "images/projects/customer-voc-analytics.svg",
+  5: import.meta.env.BASE_URL + "images/projects/learning-operations-platform.svg",
+  6: import.meta.env.BASE_URL + "images/projects/vibe-coding-quality.svg"
 };
 
 function getProjectArtwork(project) {
@@ -91,6 +94,9 @@ function getProjectArtwork(project) {
   if (title.includes("영화") || title.includes("movie")) return projectArtwork[1];
   if (title.includes("소비") || title.includes("insight") || title.includes("인사이트")) return projectArtwork[2];
   if (title.includes("문서") || title.includes("rag") || title.includes("document")) return projectArtwork[3];
+  if (title.includes("voc") || title.includes("고객") || title.includes("의견")) return projectArtwork[4];
+  if (title.includes("학습 운영") || title.includes("운영 플랫폼") || title.includes("learning")) return projectArtwork[5];
+  if (title.includes("vibe") || title.includes("품질 검증") || title.includes("코딩 품질")) return projectArtwork[6];
   return projectArtwork[Number(project && project.id)] || "";
 }
 
