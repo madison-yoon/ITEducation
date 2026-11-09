@@ -3,6 +3,7 @@ import axios from "axios";
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL || "/api",
   withCredentials: true,
+  timeout: 15000,
   headers: {
     "Content-Type": "application/json"
   }
@@ -12,9 +13,13 @@ const api = axios.create({
 api.interceptors.request.use(async function (config) {
   const method = String(config.method || "get").toLowerCase();
   const needsToken = ["post", "put", "patch", "delete"].includes(method);
+  const requestUrl = String(config.url || "");
 
-  if (needsToken && !config.url.endsWith("/csrf")) {
-    const response = await api.get("/csrf");
+  if (needsToken && !requestUrl.endsWith("/csrf")) {
+    const response = await api.get("/csrf", {
+      timeout: 10000,
+      signal: config.signal
+    });
     config.headers = config.headers || {};
     config.headers["X-CSRF-TOKEN"] = response.data.token;
   }

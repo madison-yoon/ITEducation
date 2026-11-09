@@ -3,7 +3,9 @@ package com.iteducation;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.iteducation.entity.Admin;
+import com.iteducation.entity.Inquiry;
 import com.iteducation.repository.AdminRepository;
+import com.iteducation.repository.InquiryRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +38,9 @@ class AdminApiIntegrationTest {
     private AdminRepository admins;
 
     @Autowired
+    private InquiryRepository inquiries;
+
+    @Autowired
     private PasswordEncoder passwordEncoder;
 
     @Autowired
@@ -43,6 +48,7 @@ class AdminApiIntegrationTest {
 
     @BeforeEach
     void prepareAdmins() {
+        inquiries.deleteAll();
         admins.deleteAll();
         saveAdmin(SUPER_LOGIN, "SUPER_ADMIN");
         saveAdmin(NORMAL_LOGIN, "ADMIN");
@@ -258,6 +264,88 @@ class AdminApiIntegrationTest {
                         .content("{\"name\":\"테스트 사용자\",\"phone\":\"010-9999-8888\",\"courseTitle\":\"등록되지 않은 과정\",\"message\":\"상담 접수 테스트를 위한 충분한 문의 내용입니다.\",\"privacyConsent\":true}"))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.message").value("선택한 교육과정을 찾을 수 없습니다."));
+    }
+
+    @Test
+    void noticeTitleLongerThanColumnLimitIsRejectedBeforePersistence() throws Exception {
+        MockHttpSession session = login(SUPER_LOGIN);
+        String token = csrfToken(session);
+        String longTitle = "가".repeat(181);
+        String body = objectMapper.writeValueAsString(java.util.Map.of(
+                "title", longTitle,
+                "content", "길이 검증을 위한 공지 내용입니다.",
+                "status", "게시 중",
+                "category", "공지",
+                "pinned", false
+        ));
+
+        mvc.perform(post("/api/admin/notices")
+                        .session(session)
+                        .header("X-CSRF-TOKEN", token)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(body))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void adminInquiryResponsesDoNotExposeInternalNormalizationOrConsentFields() throws Exception {
+        Inquiry inquiry = new Inquiry();
+        inquiry.setName("응답 최소화 테스트");
+        inquiry.setPhone("010-9998-8888");
+        inquiry.setNormalizedPhone("01099988888");
+        inquiry.setCourseTitle("AI·머신러닝 실무 개발자 과정");
+        inquiry.setMessage("관리자 응답에서 내부 필드가 제외되는지 확인합니다.");
+        inquiry.setPrivacyConsent(true);
+        inquiry.setMarketingConsent(true);
+        inquiry.setStatus("접수");
+        inquiries.save(inquiry);
+
+        MockHttpSession session = login(SUPER_LOGIN);
+
+        MvcResult listResult = mvc.perform(get("/api/admin/inquiries").session(session))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        String listJson = listResult.getResponse().getContentAsString();
+        org.junit.jupiter.api.Assertions.assertTrue(listJson.contains("응답 최소화 테스트"));
+        org.junit.jupiter.api.Assertions.assertFalse(listJson.contains("normalizedPhone"));
+        org.junit.jupiter.api.Assertions.assertFalse(listJson.contains("privacyConsent"));
+        org.junit.jupiter.api.Assertions.assertFalse(listJson.contains("marketingConsent"));
+
+        MvcResult dashboardResult = mvc.perform(get("/api/admin/dashboard").session(session))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        String dashboardJson = dashboardResult.getResponse().getContentAsString();
+        org.junit.jupiter.api.Assertions.assertFalse(dashboardJson.contains("normalizedPhone"));
+        org.junit.jupiter.api.Assertions.assertFalse(dashboardJson.contains("privacyConsent"));
+        org.junit.jupiter.api.Assertions.assertFalse(dashboardJson.contains("marketingConsent"));
+    }
+
+    @Test
+    void inquiryRejectsPreferredDateInThePast() throws Exception {
+        MvcResult tokenResult = mvc.perform(get("/api/csrf"))
+                .andExpect(status().isOk())
+                .andReturn();
+        MockHttpSession session = (MockHttpSession) tokenResult.getRequest().getSession(false);
+        String token = csrfToken(session);
+        String yesterday = java.time.LocalDate.now().minusDays(1).toString();
+        String body = objectMapper.writeValueAsString(java.util.Map.of(
+                "name", "테스트 사용자",
+                "phone", "010-7777-6666",
+                "courseTitle", "AI·머신러닝 실무 개발자 과정",
+                "preferredDate", yesterday,
+                "message", "과거 상담 날짜 검증을 위한 충분한 문의 내용입니다.",
+                "privacyConsent", true
+        ));
+
+        mvc.perform(post("/api/inquiries")
+                        .session(session)
+                        .header("X-CSRF-TOKEN", token)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(body))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value("상담 희망 날짜는 오늘 이후로 선택해 주세요."));
     }
 
     private String csrfToken(MockHttpSession session) throws Exception {

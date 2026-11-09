@@ -1,6 +1,7 @@
 package com.iteducation.controller;
 
 import com.iteducation.entity.Inquiry;
+import com.iteducation.dto.AdminInquiryResponse;
 import com.iteducation.repository.InquiryRepository;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
@@ -26,7 +27,7 @@ public class AdminInquiryController {
     }
 
     @GetMapping
-    public Page<Inquiry> list(
+    public Page<AdminInquiryResponse> list(
             @RequestParam(defaultValue = "") String keyword,
             @RequestParam(defaultValue = "") String status,
             @RequestParam(defaultValue = "0") int page,
@@ -43,11 +44,11 @@ public class AdminInquiryController {
                         safeSize,
                         Sort.by(Sort.Direction.DESC, "createdAt")
                 )
-        );
+        ).map(AdminInquiryResponse::from);
     }
 
     @PatchMapping("/{id}")
-    public Inquiry update(@PathVariable Long id, @Valid @RequestBody InquiryUpdate request) {
+    public AdminInquiryResponse update(@PathVariable Long id, @Valid @RequestBody InquiryUpdate request) {
         if (!List.of("접수", "상담 진행", "상담 완료").contains(request.status())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "상담 상태를 확인해 주세요.");
         }
@@ -56,7 +57,7 @@ public class AdminInquiryController {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         inquiry.setStatus(request.status());
         inquiry.setAdminMemo(request.adminMemo());
-        return inquiries.save(inquiry);
+        return AdminInquiryResponse.from(inquiries.save(inquiry));
     }
 
     @DeleteMapping("/{id}")

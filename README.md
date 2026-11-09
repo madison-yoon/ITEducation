@@ -185,4 +185,5 @@ GitHub Pages는 프론트엔드 정적 호스팅입니다. 백엔드와 데이�
 
 - [교육 설계와 AI 협업 원칙](docs/EDUCATION_DESIGN.md)
 - [시스템 구조·품질·테스트 기준](docs/PROJECT_QUALITY.md)
+- [전체 사이트 UX·코드 품질 감사](docs/UX_AUDIT_2026-11.md)
 - [프로젝트 발표 및 시연 순서](docs/PRESENTATION_GUIDE.md)

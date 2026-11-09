@@ -4,6 +4,7 @@ import com.iteducation.entity.Notice;
 import com.iteducation.repository.NoticeRepository;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -24,10 +25,10 @@ public class AdminNoticeController {
     }
 
     public record NoticeRequest(
-            @NotBlank String title,
-            @NotBlank String content,
-            @NotBlank String status,
-            String category,
+            @NotBlank @Size(max = 180) String title,
+            @NotBlank @Size(max = 20000) String content,
+            @NotBlank @Size(max = 30) String status,
+            @Size(max = 30) String category,
             boolean pinned
     ) {}
 

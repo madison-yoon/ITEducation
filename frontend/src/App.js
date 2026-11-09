@@ -7,8 +7,11 @@ import {
   NavLink,
   Outlet,
   useParams,
-  useNavigate
+  useNavigate,
+  useLocation,
+  useNavigationType
 } from "react-router-dom";
+import { getPageMetadata, getScrollAction } from "./navigation.js";
 import api from "./api.js";
 import AdminApp from "./AdminApp.js";
 import { AcademyHome, AcademyAbout, AcademyProjects } from "./academy-pages.js";
@@ -92,12 +95,25 @@ const courseDetailData = {
 
 function Header() {
   const [menuOpen, setMenuOpen] = React.useState(false);
+  const location = useLocation();
   const links = [
     ["/about", "교육 철학"],
     ["/courses", "교육과정"],
     ["/projects", "프로젝트"],
     ["/notices", "공지사항"]
   ];
+
+  React.useEffect(function () {
+    setMenuOpen(false);
+  }, [location.pathname]);
+
+  React.useEffect(function () {
+    function closeMenuOnEscape(event) {
+      if (event.key === "Escape") setMenuOpen(false);
+    }
+    window.addEventListener("keydown", closeMenuOnEscape);
+    return function () { window.removeEventListener("keydown", closeMenuOnEscape); };
+  }, []);
 
   return h(React.Fragment, null,
     h("a", { href: "#main-content", className: "skip-link" }, "본문 바로가기"),
@@ -115,9 +131,10 @@ function Header() {
           className: "menu academy-menu-button",
           "aria-label": menuOpen ? "메뉴 닫기" : "메뉴 열기",
           "aria-expanded": menuOpen,
-          onClick: function () { setMenuOpen(!menuOpen); }
+          "aria-controls": "academy-main-navigation",
+          onClick: function () { setMenuOpen(function (open) { return !open; }); }
         }, menuOpen ? "×" : "☰"),
-        h("nav", { className: menuOpen ? "navlinks show academy-navlinks" : "navlinks academy-navlinks", "aria-label": "주요 메뉴" },
+        h("nav", { id: "academy-main-navigation", className: menuOpen ? "navlinks show academy-navlinks" : "navlinks academy-navlinks", "aria-label": "주요 메뉴" },
           links.map(function (item) {
             return h(NavLink, {
               to: item[0],
@@ -138,8 +155,12 @@ function Header() {
 
 function Layout() {
   return h(React.Fragment, null,
+    isStaticPreview ? h("div", { className: "preview-environment-banner", role: "status" },
+      h("strong", null, "정적 미리보기"),
+      " 화면과 탐색 흐름을 확인하는 공개 버전입니다. 상담 접수와 관리자 데이터 변경은 실제 서버에 저장되지 않습니다."
+    ) : null,
     h(Header),
-    h("main", { id: "main-content" }, h(Outlet)),
+    h("main", { id: "main-content", tabIndex: -1 }, h(Outlet)),
     h("footer", { className: "footer academy-site-footer" },
       h("div", { className: "container academy-footer-main" },
         h("div", null,
@@ -255,27 +276,38 @@ function Courses() {
   const [keyword, setKeyword] = React.useState("");
   const [category, setCategory] = React.useState("전체");
   const [coursesLoading, setCoursesLoading] = React.useState(true);
+  const [coursesError, setCoursesError] = React.useState("");
+  const [reloadCount, setReloadCount] = React.useState(0);
 
   React.useEffect(function () {
     if (isStaticPreview) {
       setCoursesLoading(false);
+      setCoursesError("");
       return undefined;
     }
 
-    let active = true;
-    api.get("/courses")
+    const controller = new AbortController();
+    setCoursesLoading(true);
+    setCoursesError("");
+    api.get("/courses", { signal: controller.signal })
       .then(function (response) {
-        if (active) {
-          setItems(Array.isArray(response.data) ? response.data : []);
-        }
+        setItems(Array.isArray(response.data) ? response.data : []);
       })
-      .catch(function () {
-        if (active) setItems([]);
+      .catch(function (requestError) {
+        if (requestError.code === "ERR_CANCELED") return;
+        setItems([]);
+        setCoursesError("교육과정 정보를 불러오지 못했습니다. 서버 연결 상태를 확인한 뒤 다시 시도해 주세요.");
       })
-      .finally(function () { if (active) setCoursesLoading(false); });
+      .finally(function () {
+        if (!controller.signal.aborted) setCoursesLoading(false);
+      });
 
-    return function () { active = false; };
-  }, []);
+    return function () { controller.abort(); };
+  }, [reloadCount]);
+
+  function retryCourses() {
+    setReloadCount(function (count) { return count + 1; });
+  }
 
   if (params.id) {
     const selected = items.find(function (item) {
@@ -284,6 +316,19 @@ function Courses() {
 
     if (!selected && coursesLoading) {
       return h("section", { className: "page" }, h("div", { className: "container" }, h("p", null, "교육과정 정보를 불러오고 있습니다.")));
+    }
+    if (!selected && coursesError) {
+      return h("section", { className: "page" },
+        h("div", { className: "container" },
+          h("span", { className: "eyebrow" }, "PROGRAM CONNECTION ERROR"),
+          h("h1", null, "교육과정 정보를 불러오지 못했습니다."),
+          h("p", { className: "lead" }, coursesError),
+          h("div", { className: "not-found-actions" },
+            h("button", { type: "button", className: "btn", onClick: retryCourses }, "다시 시도"),
+            h(Link, { to: "/courses", className: "btn ghost" }, "교육과정 목록으로 이동")
+          )
+        )
+      );
     }
     if (!selected) {
       return h("section", { className: "page" },
@@ -514,9 +559,17 @@ function Courses() {
     );
   }
 
+  const normalizedKeyword = keyword.trim().toLocaleLowerCase("ko-KR");
   const filtered = items.filter(function (course) {
     const categoryMatches = category === "전체" || course.category === category;
-    const keywordMatches = course.title.toLowerCase().includes(keyword.toLowerCase());
+    const searchableText = [
+      course.title,
+      course.category,
+      course.summary,
+      course.description,
+      course.skills
+    ].filter(Boolean).join(" ").toLocaleLowerCase("ko-KR");
+    const keywordMatches = !normalizedKeyword || searchableText.includes(normalizedKeyword);
     return categoryMatches && keywordMatches;
   });
 
@@ -527,11 +580,15 @@ function Courses() {
       h("p", { className: "lead" }, "과정별 학습 목표와 기술 범위, 실습 단계, 프로젝트 결과물을 비교해 보세요."),
       h("div", { className: "filters" },
         h("input", {
-          placeholder: "과정명 검색",
+          type: "search",
+          placeholder: "과정명·분야·기술 검색",
+          "aria-label": "교육과정 이름, 분야 또는 기술 검색",
+          autoComplete: "off",
           value: keyword,
           onChange: function (event) { setKeyword(event.target.value); }
         }),
         h("select", {
+          "aria-label": "교육과정 분야 필터",
           value: category,
           onChange: function (event) { setCategory(event.target.value); }
         },
@@ -540,15 +597,35 @@ function Courses() {
           })
         )
       ),
-      filtered.length
+      h("div", { className: "course-results-summary", "aria-live": "polite" },
+        h("span", null, "검색 결과"),
+        h("strong", null, String(filtered.length) + "개 과정")
+      ),
+      coursesError
+        ? h("div", { className: "notice-state", role: "alert" },
+            h("div", { className: "notice-state-icon", "aria-hidden": "true" }, "!"),
+            h("h2", null, "교육과정 정보를 불러오지 못했습니다."),
+            h("p", null, coursesError),
+            h("button", { type: "button", className: "btn", onClick: retryCourses }, "다시 시도")
+          )
+        : coursesLoading
+        ? h("div", { className: "notice-state", role: "status" },
+            h("h2", null, "교육과정을 불러오고 있습니다."),
+            h("p", null, "최신 과정 정보를 확인하고 있습니다.")
+          )
+        : filtered.length
         ? h("div", { className: "grid4" },
             filtered.map(function (course) {
               return h(CourseCard, { course: course, key: course.id });
             })
           )
-        : h("div", { className: "empty-state" },
-            h("h3", null, "등록된 교육과정이 없습니다."),
-            h("p", null, "운영기관에서 공개할 교육과정을 등록하면 이곳에 표시됩니다.")
+        : h("div", { className: "notice-state" },
+            h("div", { className: "notice-state-icon", "aria-hidden": "true" }, "⌕"),
+            h("h2", null, normalizedKeyword || category !== "전체" ? "조건에 맞는 과정이 없습니다." : "등록된 교육과정이 없습니다."),
+            h("p", null, normalizedKeyword || category !== "전체" ? "검색어를 바꾸거나 분야 필터를 전체로 변경해 주세요." : "운영기관에서 공개할 교육과정을 등록하면 이곳에 표시됩니다."),
+            normalizedKeyword || category !== "전체"
+              ? h("button", { type: "button", className: "btn ghost", onClick: function () { setKeyword(""); setCategory("전체"); } }, "검색 초기화")
+              : null
           ),
       h("p", { className: "course-data-disclosure" }, "※ 서버에 등록된 운영정보가 확인되기 전까지 기본 과정은 교육 설계 예시로 표시됩니다. 모집 여부·교육 기간·지원 대상은 관리자 확인 완료 후 공개됩니다.")
     )
@@ -572,24 +649,23 @@ function Consultation() {
   React.useEffect(function () {
     if (isStaticPreview) return undefined;
 
-    let active = true;
-    api.get("/courses")
+    const controller = new AbortController();
+    api.get("/courses", { signal: controller.signal })
       .then(function (response) {
-        if (!active) return;
         const courseList = Array.isArray(response.data) ? response.data : [];
         setAvailableCourses(courseList);
         setCourseError(courseList.length ? "" : "현재 신청 가능한 교육과정이 등록되지 않았습니다.");
       })
-      .catch(function () {
-        if (!active) return;
+      .catch(function (requestError) {
+        if (requestError.code === "ERR_CANCELED") return;
         setAvailableCourses([]);
         setCourseError("교육과정 정보를 불러오지 못했습니다. 백엔드 연결을 확인해 주세요.");
       })
       .finally(function () {
-        if (active) setCourseLoading(false);
+        if (!controller.signal.aborted) setCourseLoading(false);
       });
 
-    return function () { active = false; };
+    return function () { controller.abort(); };
   }, []);
 
   function updateField(name, value) {
@@ -607,6 +683,10 @@ function Consultation() {
     }
     if (!availableCourses.some(function (course) { return course.title === form.courseTitle; })) {
       setError("서버에서 제공하는 교육과정을 선택해 주세요.");
+      return;
+    }
+    if (form.preferredDate && form.preferredDate < getTodayLocalDate()) {
+      setError("상담 희망 날짜는 오늘 이후로 선택해 주세요.");
       return;
     }
     setSubmitting(true);
@@ -652,29 +732,29 @@ function Consultation() {
       ),
       h("form", { className: "form", onSubmit: submitForm },
         h("label", null, "이름 *",
-          h("input", { required: true, maxLength: 40, value: form.name, onChange: function (e) { updateField("name", e.target.value); } })
+          h("input", { required: true, name: "name", autoComplete: "name", maxLength: 40, value: form.name, onChange: function (e) { updateField("name", e.target.value); } })
         ),
         h("label", null, "연락처 *",
-          h("input", { required: true, maxLength: 20, pattern: "[0-9+() -]{9,20}", value: form.phone, placeholder: "010-0000-0000", onChange: function (e) { updateField("phone", e.target.value); } })
+          h("input", { required: true, name: "phone", type: "tel", inputMode: "tel", autoComplete: "tel", maxLength: 20, pattern: "[0-9+() -]{9,20}", value: form.phone, placeholder: "010-0000-0000", onChange: function (e) { updateField("phone", e.target.value); } })
         ),
         h("label", null, "이메일",
-          h("input", { type: "email", maxLength: 120, value: form.email, onChange: function (e) { updateField("email", e.target.value); } })
+          h("input", { type: "email", name: "email", autoComplete: "email", inputMode: "email", maxLength: 120, value: form.email, onChange: function (e) { updateField("email", e.target.value); } })
         ),
         h("label", null, "희망 교육과정 *",
-          h("select", { required: true, disabled: courseLoading || availableCourses.length === 0, value: form.courseTitle, onChange: function (e) { updateField("courseTitle", e.target.value); } },
+          h("select", { required: true, name: "courseTitle", "aria-label": "희망 교육과정", "aria-describedby": courseError ? "consultation-course-error" : undefined, disabled: courseLoading || availableCourses.length === 0, value: form.courseTitle, onChange: function (e) { updateField("courseTitle", e.target.value); } },
             h("option", { value: "", disabled: true }, courseLoading ? "교육과정 불러오는 중..." : "과정을 선택하세요"),
             availableCourses.map(function (course) {
               return h("option", { key: course.id, value: course.title }, course.title);
             })
           ),
-          courseError ? h("small", { className: "form-help error-text" }, courseError) : null
+          courseError ? h("small", { id: "consultation-course-error", className: "form-help error-text", role: "status" }, courseError) : null
         ),
         h("div", { className: "two" },
           h("label", null, "상담 희망 날짜",
-            h("input", { type: "date", value: form.preferredDate, onChange: function (e) { updateField("preferredDate", e.target.value); } })
+            h("input", { type: "date", name: "preferredDate", min: getTodayLocalDate(), value: form.preferredDate, onChange: function (e) { updateField("preferredDate", e.target.value); } })
           ),
           h("label", null, "상담 희망 시간대",
-            h("select", { value: form.preferredPeriod, onChange: function (e) { updateField("preferredPeriod", e.target.value); } },
+            h("select", { name: "preferredPeriod", "aria-label": "상담 희망 시간대", value: form.preferredPeriod, onChange: function (e) { updateField("preferredPeriod", e.target.value); } },
               ["오전", "오후"].map(function (value) {
                 return h("option", { key: value, value: value }, value);
               })
@@ -682,23 +762,29 @@ function Consultation() {
           )
         ),
         h("label", null, "문의 내용 *",
-          h("textarea", { required: true, minLength: 10, maxLength: 2000, rows: 5, value: form.message, onChange: function (e) { updateField("message", e.target.value); } })
+          h("textarea", { required: true, name: "message", minLength: 10, maxLength: 2000, rows: 6, value: form.message, onChange: function (e) { updateField("message", e.target.value); } })
         ),
         h("label", { className: "checkrow" },
-          h("input", { type: "checkbox", checked: form.privacyConsent, onChange: function (e) { updateField("privacyConsent", e.target.checked); } }),
+          h("input", { type: "checkbox", name: "privacyConsent", required: true, checked: form.privacyConsent, onChange: function (e) { updateField("privacyConsent", e.target.checked); } }),
           " 개인정보 수집 및 이용 동의 (필수)"
         ),
         h("label", { className: "checkrow" },
           h("input", { type: "checkbox", checked: form.marketingConsent, onChange: function (e) { updateField("marketingConsent", e.target.checked); } }),
           " 마케팅 수신 동의 (선택)"
         ),
-        error ? h("p", { className: "error" }, error) : null,
+        error ? h("p", { className: "error", role: "alert", "aria-live": "assertive" }, error) : null,
         h("button", { className: "btn full", disabled: submitting || !form.privacyConsent || isStaticPreview || courseLoading || availableCourses.length === 0 },
           submitting ? "신청 처리 중..." : "상담 신청하기"
         )
       )
     )
   );
+}
+
+function getTodayLocalDate() {
+  const now = new Date();
+  now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+  return now.toISOString().slice(0, 10);
 }
 
 function formatNoticeDate(value) {
@@ -747,7 +833,7 @@ function Notices() {
   const categories = ["전체", "공지", "모집 안내", "교육과정", "교육 소식", "운영 안내"];
   const pageSize = 8;
 
-  async function loadNotices() {
+  async function loadNotices(signal) {
     setLoading(true);
     setError("");
     try {
@@ -755,9 +841,12 @@ function Notices() {
         setItems(previewNotices);
         return;
       }
-      const response = await api.get("/notices");
-      setItems(Array.isArray(response.data) ? response.data : []);
+      const response = await api.get("/notices", signal ? { signal: signal } : undefined);
+      if (!signal || !signal.aborted) {
+        setItems(Array.isArray(response.data) ? response.data : []);
+      }
     } catch (requestError) {
+      if (signal && signal.aborted) return;
       setItems([]);
       setError(
         requestError.response && requestError.response.data && requestError.response.data.message
@@ -765,12 +854,14 @@ function Notices() {
           : "공지사항 서버에 연결할 수 없습니다. 잠시 후 다시 시도해 주세요."
       );
     } finally {
-      setLoading(false);
+      if (!signal || !signal.aborted) setLoading(false);
     }
   }
 
   React.useEffect(function () {
-    loadNotices();
+    const controller = new AbortController();
+    loadNotices(controller.signal);
+    return function () { controller.abort(); };
   }, []);
 
   const normalizedKeyword = keyword.trim().toLowerCase();
@@ -911,7 +1002,7 @@ function NoticeDetail() {
   const [loading, setLoading] = React.useState(true);
   const [error, setError] = React.useState("");
 
-  async function loadNotice() {
+  async function loadNotice(signal) {
     setLoading(true);
     setError("");
     try {
@@ -923,31 +1014,34 @@ function NoticeDetail() {
         else setError("해당 미리보기 안내를 찾을 수 없습니다.");
         return;
       }
-      const response = await api.get("/notices/" + params.id);
-      setNotice(response.data);
+      const response = await api.get("/notices/" + params.id, signal ? { signal: signal } : undefined);
+      if (!signal || !signal.aborted) setNotice(response.data);
     } catch (requestError) {
+      if (signal && signal.aborted) return;
       setError(
         requestError.response && requestError.response.status === 404
           ? "해당 공지사항을 찾을 수 없거나 현재 공개되지 않은 게시글입니다."
           : "공지사항 상세 정보를 불러오지 못했습니다. 다시 시도해 주세요."
       );
     } finally {
-      setLoading(false);
+      if (!signal || !signal.aborted) setLoading(false);
     }
   }
 
   React.useEffect(function () {
-    loadNotice();
+    const controller = new AbortController();
+    loadNotice(controller.signal);
+    return function () { controller.abort(); };
   }, [params.id]);
 
   return h("section", { className: "page notice-detail-page" },
     h("div", { className: "container" },
       h("button", { className: "notice-back", onClick: function () { navigate("/notices"); } }, "← 공지사항 목록"),
       loading ? h("div", { className: "notice-state" }, "공지사항을 불러오는 중입니다.") :
-      error ? h("div", { className: "notice-state error-state" },
+      error ? h("div", { className: "notice-state error-state", role: "alert", "aria-live": "assertive" },
         h("h2", null, "게시글을 확인할 수 없습니다."),
         h("p", null, error),
-        h("button", { className: "btn", onClick: loadNotice }, "다시 시도")
+        h("button", { className: "btn", onClick: function () { loadNotice(); } }, "다시 시도")
       ) : h("article", { className: "notice-detail" },
         h("div", { className: "notice-detail-meta" },
           h("span", { className: "notice-tag" }, notice.category || "공지"),
@@ -966,8 +1060,124 @@ function NoticeDetail() {
   );
 }
 
+
+function RouteEffects() {
+  const location = useLocation();
+  const navigationType = useNavigationType();
+  const scrollPositions = React.useRef({});
+  const [showBackToTop, setShowBackToTop] = React.useState(false);
+
+  React.useEffect(function () {
+    const previousMode = window.history.scrollRestoration;
+    if ("scrollRestoration" in window.history) {
+      window.history.scrollRestoration = "manual";
+    }
+    return function () {
+      if ("scrollRestoration" in window.history) {
+        window.history.scrollRestoration = previousMode || "auto";
+      }
+    };
+  }, []);
+
+  React.useEffect(function () {
+    function saveScrollPosition() {
+      const top = window.scrollY || window.pageYOffset || 0;
+      scrollPositions.current[location.key] = top;
+      setShowBackToTop(top > 520 && !location.pathname.startsWith("/admin"));
+    }
+
+    saveScrollPosition();
+    window.addEventListener("scroll", saveScrollPosition, { passive: true });
+    return function () {
+      window.removeEventListener("scroll", saveScrollPosition);
+    };
+  }, [location.key, location.pathname]);
+
+  React.useLayoutEffect(function () {
+    const metadata = getPageMetadata(location.pathname);
+    document.title = metadata.title + " | IT ACADEMY";
+
+    const description = document.querySelector('meta[name="description"]');
+    if (description) description.setAttribute("content", metadata.description);
+
+    const scrollAction = getScrollAction(
+      navigationType,
+      scrollPositions.current[location.key]
+    );
+
+    if (location.hash) {
+      let targetId = location.hash.slice(1);
+      try {
+        targetId = decodeURIComponent(targetId);
+      } catch (error) {
+        // 잘못된 해시 문자열은 원문 ID로 조회합니다.
+      }
+      window.requestAnimationFrame(function () {
+        const target = document.getElementById(targetId);
+        if (target) {
+          target.scrollIntoView({ block: "start" });
+          if (!target.hasAttribute("tabindex")) target.setAttribute("tabindex", "-1");
+          target.focus({ preventScroll: true });
+        } else {
+          window.scrollTo(0, 0);
+        }
+      });
+    } else {
+      window.scrollTo(0, scrollAction.top);
+      const main = document.getElementById("main-content");
+      if (main) main.focus({ preventScroll: true });
+    }
+
+    const announcer = document.getElementById("route-announcer");
+    if (announcer) announcer.textContent = metadata.title;
+  }, [location.key, location.pathname, location.hash, navigationType]);
+
+  function scrollToTop() {
+    const reducedMotion = window.matchMedia &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: reducedMotion ? "auto" : "smooth"
+    });
+  }
+
+  return h(React.Fragment, null,
+    h("div", {
+      id: "route-announcer",
+      className: "sr-only",
+      "aria-live": "polite",
+      "aria-atomic": "true"
+    }),
+    showBackToTop ? h("button", {
+      type: "button",
+      className: "back-to-top",
+      onClick: scrollToTop,
+      "aria-label": "페이지 맨 위로 이동"
+    },
+      h("span", { "aria-hidden": "true" }, "↑"),
+      h("span", null, "맨 위로")
+    ) : null
+  );
+}
+
+function NotFound() {
+  return h("section", { className: "page not-found-page" },
+    h("div", { className: "container not-found-content" },
+      h("span", { className: "eyebrow" }, "ERROR 404"),
+      h("h1", null, "페이지를 찾을 수 없습니다."),
+      h("p", { className: "lead" }, "주소가 변경되었거나 공개되지 않은 페이지일 수 있습니다."),
+      h("div", { className: "not-found-actions" },
+        h(Link, { to: "/", className: "btn" }, "메인 페이지로 이동"),
+        h(Link, { to: "/courses", className: "btn ghost" }, "교육과정 살펴보기")
+      )
+    )
+  );
+}
+
 function App() {
   return h(BrowserRouter, { basename: import.meta.env.BASE_URL },
+    h(RouteEffects),
     h(Routes, null,
       h(Route, { element: h(Layout) },
         h(Route, { path: "/", element: h(AcademyHome) }),
@@ -977,7 +1187,8 @@ function App() {
         h(Route, { path: "/projects", element: h(AcademyProjects) }),
         h(Route, { path: "/consultation", element: h(Consultation) }),
         h(Route, { path: "/notices", element: h(Notices) }),
-        h(Route, { path: "/notices/:id", element: h(NoticeDetail) })
+        h(Route, { path: "/notices/:id", element: h(NoticeDetail) }),
+        h(Route, { path: "*", element: h(NotFound) })
       ),
       h(Route, { path: "/admin/*", element: h(AdminApp) })
     )
