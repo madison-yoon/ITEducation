@@ -437,6 +437,8 @@ export function AcademyProjects() {
   const [projects, setProjects] = React.useState(projectFallback);
   const [selected, setSelected] = React.useState(null);
   const [loading, setLoading] = React.useState(true);
+  const dialogRef = React.useRef(null);
+  const triggerRef = React.useRef(null);
 
   React.useEffect(function () {
     let active = true;
@@ -452,11 +454,45 @@ export function AcademyProjects() {
 
   React.useEffect(function () {
     if (!selected) return undefined;
-    function closeOnEscape(event) {
-      if (event.key === "Escape") setSelected(null);
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
+    const dialog = dialogRef.current;
+    const focusable = dialog
+      ? Array.from(dialog.querySelectorAll(
+          'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+        ))
+      : [];
+
+    if (focusable.length) focusable[0].focus();
+
+    function manageDialogKeyboard(event) {
+      if (event.key === "Escape") {
+        setSelected(null);
+        return;
+      }
+
+      if (event.key !== "Tab" || focusable.length === 0) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
     }
-    document.addEventListener("keydown", closeOnEscape);
-    return function () { document.removeEventListener("keydown", closeOnEscape); };
+
+    document.addEventListener("keydown", manageDialogKeyboard);
+    return function () {
+      document.body.style.overflow = previousOverflow;
+      document.removeEventListener("keydown", manageDialogKeyboard);
+      if (triggerRef.current && triggerRef.current.isConnected) {
+        triggerRef.current.focus({ preventScroll: true });
+      }
+    };
   }, [selected]);
 
   const categories = ["전체"].concat(Array.from(new Set(projects.map(function (item) { return item.category; }))));
@@ -501,7 +537,7 @@ export function AcademyProjects() {
       h("div", { className: "academy-project-grid" },
         visible.map(function (project, index) {
           return h("article", { className: "academy-project-card", key: project.id || project.title },
-            h("button", { type: "button", className: "academy-project-open", onClick: function () { setSelected(project); }, "aria-label": project.title + " 상세 보기" },
+            h("button", { type: "button", className: "academy-project-open", onClick: function (event) { triggerRef.current = event.currentTarget; setSelected(project); }, "aria-haspopup": "dialog", "aria-label": project.title + " 상세 보기" },
               h("div", { className: "academy-project-art project-art-" + ((index % 6) + 1), "aria-hidden": "true" },
                 h("div", { className: "project-art-grid" }),
                 h("div", { className: "project-art-object" }),
@@ -539,11 +575,11 @@ export function AcademyProjects() {
       )
     ),
     selected ? h("div", { className: "academy-project-modal-backdrop", role: "presentation", onMouseDown: function (event) { if (event.target === event.currentTarget) setSelected(null); } },
-      h("article", { className: "academy-project-modal", role: "dialog", "aria-modal": "true", "aria-labelledby": "academy-project-modal-title" },
+      h("article", { ref: dialogRef, className: "academy-project-modal", role: "dialog", "aria-modal": "true", "aria-labelledby": "academy-project-modal-title", "aria-describedby": "academy-project-modal-description", tabIndex: -1 },
         h("button", { type: "button", className: "academy-modal-close", onClick: function () { setSelected(null); }, "aria-label": "상세 창 닫기" }, "×"),
         h(Eyebrow, null, (selected.category || "PROJECT") + " · " + (selected.duration || "CAPSTONE")),
         h("h2", { id: "academy-project-modal-title" }, selected.title),
-        h("p", { className: "academy-modal-lead" }, selected.description),
+        h("p", { id: "academy-project-modal-description", className: "academy-modal-lead" }, selected.description),
         h("div", { className: "academy-modal-facts" },
           h("div", null, h("small", null, "PROJECT PERIOD"), h("b", null, selected.duration || "과정별 상이")),
           h("div", null, h("small", null, "TEAM SIZE"), h("b", null, selected.teamSize || selected.team || "운영안에 따라 편성")),
