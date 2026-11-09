@@ -3455,3 +3455,347 @@ a {
     transition-duration: .01ms !important;
   }
 }
+
+
+/* Navigation, page recovery and interaction quality */
+html {
+  scroll-behavior: auto;
+  scroll-padding-top: 104px;
+}
+
+#main-content {
+  min-height: 60vh;
+  outline: none;
+}
+
+#main-content:focus {
+  outline: none;
+}
+
+.preview-environment-banner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 42px;
+  padding: 8px 20px;
+  background: #17264a;
+  color: #dce6ff;
+  font-size: 12px;
+  line-height: 1.6;
+  text-align: center;
+}
+
+.preview-environment-banner strong {
+  flex: none;
+  color: #93e4e0;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.back-to-top {
+  position: fixed;
+  z-index: 1100;
+  right: max(26px, env(safe-area-inset-right));
+  bottom: max(26px, env(safe-area-inset-bottom));
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  min-height: 48px;
+  padding: 0 17px;
+  border: 1px solid rgba(255,255,255,.2);
+  border-radius: 999px;
+  background: #17264a;
+  color: #fff;
+  box-shadow: 0 12px 32px rgba(12, 24, 50, .24);
+  font-size: 13px;
+  font-weight: 750;
+  cursor: pointer;
+  transition: transform .18s ease, background .18s ease, box-shadow .18s ease;
+}
+
+.back-to-top:hover {
+  transform: translateY(-3px);
+  background: #2d4786;
+  box-shadow: 0 16px 36px rgba(12, 24, 50, .3);
+}
+
+.back-to-top span:first-child {
+  font-size: 18px;
+  line-height: 1;
+}
+
+.not-found-page {
+  display: grid;
+  min-height: min(72vh, 780px);
+  align-items: center;
+}
+
+.not-found-content {
+  max-width: 850px;
+  padding-top: 80px;
+  padding-bottom: 90px;
+  text-align: center;
+}
+
+.not-found-content h1 {
+  margin: 17px 0;
+  font-size: clamp(38px, 5vw, 58px);
+  font-weight: 820;
+  letter-spacing: -.065em;
+  line-height: 1.2;
+  word-break: keep-all;
+}
+
+.not-found-content .lead {
+  margin: 0 auto;
+}
+
+.not-found-actions {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 31px;
+}
+
+.not-found-actions .btn.ghost {
+  border: 1px solid #dbe2ee;
+  background: #fff;
+  color: #425574;
+}
+
+/* Readable metadata: labels remain secondary but never collapse to decorative microtype. */
+.academy-eyebrow,
+.academy-hero-kicker,
+.academy-hero-proof span,
+.academy-truth-grid span,
+.academy-method-marker,
+.academy-method-output span,
+.academy-course-code,
+.academy-status,
+.academy-course-foot > span,
+.academy-course-foot a,
+.academy-feature-project-copy small,
+.academy-feature-project-copy > span,
+.academy-data-note,
+.academy-project-meta,
+.academy-project-count,
+.academy-project-art > span,
+.academy-project-art > small,
+.academy-project-stack span,
+.academy-project-card-foot,
+.academy-review-footnote,
+.academy-review-grid article > span,
+.academy-review-grid p,
+.academy-modal-facts small,
+.academy-modal-result b,
+.academy-modal-deliverables span,
+.academy-modal-stack span,
+.academy-assessment-card-head,
+.academy-assessment-note,
+.academy-score-row small,
+.course-info-disclosure,
+.course-status-pill,
+.course-detail-tags span,
+.course-section-heading .eyebrow,
+.course-faq-list summary,
+.course-faq-list p,
+.application-steps b,
+.application-steps p,
+.notice-featured-label,
+.notice-featured > small,
+.notice-tag,
+.notice-pin,
+.notice-summary,
+.notice-list-head,
+.notice-row time,
+.notice-detail-meta time,
+.notice-detail-footer,
+.notice-pagination button,
+.academy-footer-main > div:first-child > small,
+.academy-footer-links > b,
+.academy-footer-bottom {
+  font-size: 12px;
+}
+
+.academy-hero-proof span,
+.academy-hero-bottom-inner,
+.academy-window-head,
+.academy-pipeline span,
+.academy-quality-line b,
+.academy-quality-line span,
+.academy-visual-caption,
+.academy-console-top,
+.academy-console-top b,
+.academy-code-line.muted,
+.academy-console-checks b {
+  font-size: 11px;
+}
+
+.academy-method-card > p,
+.academy-method-output b,
+.academy-course-card > p,
+.academy-project-card-body p,
+.academy-modal-lead,
+.academy-modal-section-grid p,
+.academy-modal-section-grid li,
+.academy-subpage-hero p,
+.academy-projects-hero p,
+.academy-about-cta p,
+.academy-project-cta p,
+.course-recruit-panel p,
+.course-section-heading > p,
+.curriculum-item p,
+.academy-course-quality-grid p {
+  line-height: 1.85;
+}
+
+/* Admin is an operational product surface and follows the same legibility baseline. */
+.admin-sidebar nav button,
+.admin-sidebar-bottom button,
+.admin-sidebar-bottom span,
+.admin-topbar small,
+.admin-kicker,
+.admin-topbar > span,
+.admin-stats small,
+.admin-panel th,
+.admin-panel td,
+.admin-field,
+.admin-field input,
+.admin-field select,
+.admin-field textarea,
+.admin-toolbar input,
+.admin-toolbar select,
+.admin-list b,
+.admin-list small,
+.admin-primary,
+.admin-secondary,
+.admin-danger,
+.admin-alert,
+.admin-pagination,
+.admin-message,
+.admin-text-button,
+.admin-error {
+  font-size: 13px;
+}
+
+.admin-sidebar small {
+  font-size: 12px;
+}
+
+.admin-field {
+  gap: 9px;
+  line-height: 1.55;
+}
+
+.admin-field input,
+.admin-field select,
+.admin-field textarea,
+.admin-toolbar input,
+.admin-toolbar select,
+.admin-list select {
+  min-height: 46px;
+  padding: 12px 14px;
+}
+
+.admin-primary,
+.admin-secondary,
+.admin-danger {
+  min-height: 42px;
+  padding: 10px 15px;
+}
+
+@media (max-width: 650px) {
+  .preview-environment-banner {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 3px;
+    padding: 9px 18px;
+    font-size: 12px;
+    text-align: left;
+  }
+
+  .back-to-top {
+    right: 16px;
+    bottom: max(16px, env(safe-area-inset-bottom));
+    min-height: 46px;
+    padding: 0 15px;
+    font-size: 12px;
+  }
+
+  .not-found-content {
+    padding-top: 52px;
+    padding-bottom: 64px;
+  }
+
+  .not-found-actions {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .not-found-actions .btn {
+    width: 100%;
+  }
+
+  .academy-eyebrow,
+  .academy-data-note,
+  .academy-project-meta,
+  .academy-project-count,
+  .academy-project-art > span,
+  .academy-project-art > small,
+  .academy-project-stack span,
+  .academy-project-card-foot,
+  .academy-review-footnote,
+  .academy-review-grid p,
+  .academy-modal-facts small,
+  .academy-modal-result b,
+  .academy-modal-deliverables span,
+  .academy-modal-stack span,
+  .academy-score-row small,
+  .notice-featured-label,
+  .notice-featured > small,
+  .notice-tag,
+  .notice-pin,
+  .notice-summary,
+  .notice-row time,
+  .notice-detail-meta time,
+  .notice-detail-footer,
+  .academy-footer-main > div:first-child > small,
+  .academy-footer-links > b,
+  .academy-footer-bottom {
+    font-size: 12px;
+  }
+
+  .admin-sidebar nav button,
+  .admin-sidebar-bottom button,
+  .admin-sidebar-bottom span,
+  .admin-topbar small,
+  .admin-kicker,
+  .admin-stats small,
+  .admin-panel th,
+  .admin-panel td,
+  .admin-field,
+  .admin-field input,
+  .admin-field select,
+  .admin-field textarea,
+  .admin-toolbar input,
+  .admin-toolbar select,
+  .admin-list b,
+  .admin-list small,
+  .admin-primary,
+  .admin-secondary,
+  .admin-danger {
+    font-size: 12px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .back-to-top {
+    transition: none;
+  }
+}
