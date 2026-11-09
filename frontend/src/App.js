@@ -993,7 +993,7 @@ function NoticeDetail() {
           return String(item.id) === String(params.id);
         });
         if (preview) setNotice(preview);
-        else setError("해당 미리보기 안내를 찾을 수 없습니다.");
+        else setError("공지사항을 찾을 수 없습니다.");
         return;
       }
       const response = await api.get("/notices/" + params.id, signal ? { signal: signal } : undefined);
