@@ -33,6 +33,13 @@ public class InquiryService {
             );
         }
 
+        if (item.getPreferredDate() != null && item.getPreferredDate().isBefore(LocalDate.now())) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "상담 희망 날짜는 오늘 이후로 선택해 주세요."
+            );
+        }
+
         if (!courses.existsByTitle(item.getCourseTitle())) {
             throw new ResponseStatusException(
                     HttpStatus.BAD_REQUEST,
