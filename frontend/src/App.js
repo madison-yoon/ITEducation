@@ -618,24 +618,23 @@ function Consultation() {
   React.useEffect(function () {
     if (isStaticPreview) return undefined;
 
-    let active = true;
-    api.get("/courses")
+    const controller = new AbortController();
+    api.get("/courses", { signal: controller.signal })
       .then(function (response) {
-        if (!active) return;
         const courseList = Array.isArray(response.data) ? response.data : [];
         setAvailableCourses(courseList);
         setCourseError(courseList.length ? "" : "현재 신청 가능한 교육과정이 등록되지 않았습니다.");
       })
-      .catch(function () {
-        if (!active) return;
+      .catch(function (requestError) {
+        if (requestError.code === "ERR_CANCELED") return;
         setAvailableCourses([]);
         setCourseError("교육과정 정보를 불러오지 못했습니다. 백엔드 연결을 확인해 주세요.");
       })
       .finally(function () {
-        if (active) setCourseLoading(false);
+        if (!controller.signal.aborted) setCourseLoading(false);
       });
 
-    return function () { active = false; };
+    return function () { controller.abort(); };
   }, []);
 
   function updateField(name, value) {
@@ -653,6 +652,10 @@ function Consultation() {
     }
     if (!availableCourses.some(function (course) { return course.title === form.courseTitle; })) {
       setError("서버에서 제공하는 교육과정을 선택해 주세요.");
+      return;
+    }
+    if (form.preferredDate && form.preferredDate < getTodayLocalDate()) {
+      setError("상담 희망 날짜는 오늘 이후로 선택해 주세요.");
       return;
     }
     setSubmitting(true);
@@ -698,29 +701,29 @@ function Consultation() {
       ),
       h("form", { className: "form", onSubmit: submitForm },
         h("label", null, "이름 *",
-          h("input", { required: true, maxLength: 40, value: form.name, onChange: function (e) { updateField("name", e.target.value); } })
+          h("input", { required: true, name: "name", autoComplete: "name", maxLength: 40, value: form.name, onChange: function (e) { updateField("name", e.target.value); } })
         ),
         h("label", null, "연락처 *",
-          h("input", { required: true, maxLength: 20, pattern: "[0-9+() -]{9,20}", value: form.phone, placeholder: "010-0000-0000", onChange: function (e) { updateField("phone", e.target.value); } })
+          h("input", { required: true, name: "phone", type: "tel", inputMode: "tel", autoComplete: "tel", maxLength: 20, pattern: "[0-9+() -]{9,20}", value: form.phone, placeholder: "010-0000-0000", onChange: function (e) { updateField("phone", e.target.value); } })
         ),
         h("label", null, "이메일",
-          h("input", { type: "email", maxLength: 120, value: form.email, onChange: function (e) { updateField("email", e.target.value); } })
+          h("input", { type: "email", name: "email", autoComplete: "email", inputMode: "email", maxLength: 120, value: form.email, onChange: function (e) { updateField("email", e.target.value); } })
         ),
         h("label", null, "희망 교육과정 *",
-          h("select", { required: true, disabled: courseLoading || availableCourses.length === 0, value: form.courseTitle, onChange: function (e) { updateField("courseTitle", e.target.value); } },
+          h("select", { required: true, name: "courseTitle", "aria-label": "희망 교육과정", "aria-describedby": courseError ? "consultation-course-error" : undefined, disabled: courseLoading || availableCourses.length === 0, value: form.courseTitle, onChange: function (e) { updateField("courseTitle", e.target.value); } },
             h("option", { value: "", disabled: true }, courseLoading ? "교육과정 불러오는 중..." : "과정을 선택하세요"),
             availableCourses.map(function (course) {
               return h("option", { key: course.id, value: course.title }, course.title);
             })
           ),
-          courseError ? h("small", { className: "form-help error-text" }, courseError) : null
+          courseError ? h("small", { id: "consultation-course-error", className: "form-help error-text", role: "status" }, courseError) : null
         ),
         h("div", { className: "two" },
           h("label", null, "상담 희망 날짜",
-            h("input", { type: "date", value: form.preferredDate, onChange: function (e) { updateField("preferredDate", e.target.value); } })
+            h("input", { type: "date", name: "preferredDate", min: getTodayLocalDate(), value: form.preferredDate, onChange: function (e) { updateField("preferredDate", e.target.value); } })
           ),
           h("label", null, "상담 희망 시간대",
-            h("select", { value: form.preferredPeriod, onChange: function (e) { updateField("preferredPeriod", e.target.value); } },
+            h("select", { name: "preferredPeriod", "aria-label": "상담 희망 시간대", value: form.preferredPeriod, onChange: function (e) { updateField("preferredPeriod", e.target.value); } },
               ["오전", "오후"].map(function (value) {
                 return h("option", { key: value, value: value }, value);
               })
@@ -728,23 +731,29 @@ function Consultation() {
           )
         ),
         h("label", null, "문의 내용 *",
-          h("textarea", { required: true, minLength: 10, maxLength: 2000, rows: 5, value: form.message, onChange: function (e) { updateField("message", e.target.value); } })
+          h("textarea", { required: true, name: "message", minLength: 10, maxLength: 2000, rows: 6, value: form.message, onChange: function (e) { updateField("message", e.target.value); } })
         ),
         h("label", { className: "checkrow" },
-          h("input", { type: "checkbox", checked: form.privacyConsent, onChange: function (e) { updateField("privacyConsent", e.target.checked); } }),
+          h("input", { type: "checkbox", name: "privacyConsent", required: true, checked: form.privacyConsent, onChange: function (e) { updateField("privacyConsent", e.target.checked); } }),
           " 개인정보 수집 및 이용 동의 (필수)"
         ),
         h("label", { className: "checkrow" },
           h("input", { type: "checkbox", checked: form.marketingConsent, onChange: function (e) { updateField("marketingConsent", e.target.checked); } }),
           " 마케팅 수신 동의 (선택)"
         ),
-        error ? h("p", { className: "error" }, error) : null,
+        error ? h("p", { className: "error", role: "alert", "aria-live": "assertive" }, error) : null,
         h("button", { className: "btn full", disabled: submitting || !form.privacyConsent || isStaticPreview || courseLoading || availableCourses.length === 0 },
           submitting ? "신청 처리 중..." : "상담 신청하기"
         )
       )
     )
   );
+}
+
+function getTodayLocalDate() {
+  const now = new Date();
+  now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+  return now.toISOString().slice(0, 10);
 }
 
 function formatNoticeDate(value) {
