@@ -309,12 +309,20 @@ class AdminApiIntegrationTest {
         MockHttpSession session = (MockHttpSession) tokenResult.getRequest().getSession(false);
         String token = csrfToken(session);
         String yesterday = java.time.LocalDate.now().minusDays(1).toString();
+        String body = objectMapper.writeValueAsString(java.util.Map.of(
+                "name", "테스트 사용자",
+                "phone", "010-7777-6666",
+                "courseTitle", "AI·머신러닝 실무 개발자 과정",
+                "preferredDate", yesterday,
+                "message", "과거 상담 날짜 검증을 위한 충분한 문의 내용입니다.",
+                "privacyConsent", true
+        ));
 
         mvc.perform(post("/api/inquiries")
                         .session(session)
                         .header("X-CSRF-TOKEN", token)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\\"name\\":\\"테스트 사용자\\",\\"phone\\":\\"010-7777-6666\\",\\"courseTitle\\":\\"AI·머신러닝 실무 개발자 과정\\",\\"preferredDate\\":\\""+yesterday+"\\",\\"message\\":\\"과거 상담 날짜 검증을 위한 충분한 문의 내용입니다.\\",\\"privacyConsent\\":true}"))
+                        .content(body))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.message").value("상담 희망 날짜는 오늘 이후로 선택해 주세요."));
     }
