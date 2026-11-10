@@ -772,7 +772,10 @@ p { color: var(--site-ink-soft); }
 .program-card-details { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 22px; margin-top: 22px; }
 .program-card-detail { padding-top: 12px; border-top: 1px solid var(--site-line); }
 .program-card-detail > b { display: block; margin-bottom: 7px; color: var(--site-brand-strong); font-size: 12px; }
-.program-card-detail p { margin: 0; color: var(--site-ink-soft); font-size: 13px; line-height: 1.7; }
+ .program-card-detail p { margin: 0; color: var(--site-ink-soft); font-size: 13px; line-height: 1.7; }
+.program-card-audience,
+.program-card-outcome { min-width: 0; }
+.program-curriculum { scroll-margin-top: 100px; }
 .program-card-footer { display: flex; align-items: flex-end; justify-content: space-between; gap: 18px; margin-top: 22px; padding-top: 14px; border-top: 1px solid var(--site-line); }
 .program-card-skills { color: var(--site-muted); font-size: 12px; line-height: 1.6; }
 .program-card-link { flex: 0 0 auto; color: var(--site-brand-strong); font-size: 13px; font-weight: 800; text-decoration: underline; text-underline-offset: 4px; }
