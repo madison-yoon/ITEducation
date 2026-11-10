@@ -1213,7 +1213,7 @@ function NoticeDetail() {
 
   return h("section", { className: "notice-detail-page" },
     h("div", { className: "site-container notice-detail-shell" },
-      h(Link, { to: "/notices", className: "notice-detail-return" }, "← 공지사항 목록"),
+      h(Link, { to: "/notices", className: "notice-detail-return" }, "목록으로 돌아가기"),
       loading ? h("div", { className: "notice-state", role: "status" }, "공지사항을 불러오고 있습니다.") :
       error ? h("div", { className: "notice-detail-empty", role: "alert" },
         h("p", { className: "program-section-index" }, "공개된 안내 없음"),
@@ -1233,7 +1233,7 @@ function NoticeDetail() {
         h("div", { className: "notice-detail-divider" }),
         h("div", { className: "notice-content" }, renderNoticeContent(notice.content)),
         h("footer", { className: "notice-detail-footer" },
-          h(Link, { to: "/notices", className: "notice-detail-return" }, "← 공지사항 목록으로"),
+          h(Link, { to: "/notices", className: "notice-detail-return" }, "목록으로 돌아가기"),
           h(Link, { to: "/courses", className: "site-text-link" }, "교육과정 확인")
         )
       )
