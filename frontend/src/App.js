@@ -212,39 +212,49 @@ function Layout() {
     )
   );
 }
+const programArtwork = {
+  1: "https://images.unsplash.com/photo-1759752394243-9a1592d13f14?auto=format&fit=crop&w=900&q=82",
+  2: "https://images.unsplash.com/photo-1763568258586-da55ea292766?auto=format&fit=crop&w=900&q=82",
+  3: "https://images.unsplash.com/photo-1774901128283-64c62117216a?auto=format&fit=crop&w=900&q=82",
+  4: "https://images.unsplash.com/photo-1695668548342-c0c1ad479aee?auto=format&fit=crop&w=900&q=82"
+};
+
 function CourseCard(props) {
   const course = props.course;
   const guide = courseSeed.find(function (item) { return String(item.id) === String(course.id); }) || {};
   const audience = course.audience || guide.audience || "과정의 학습 범위와 준비 내용은 상세 안내에서 확인해 주세요.";
   const outcome = course.outcome || guide.outcome || "실습 결과와 구현 과정을 정리하는 프로젝트";
   const learningGoal = course.learningGoal || guide.learningGoal || course.skills || "과정별 주요 기술과 실습";
-  const category = String(course.category || "PROGRAM").toLowerCase().replace(/[^a-z0-9]+/g, "-");
+  const category = String(course.category || guide.category || "PROGRAM").toLowerCase().replace(/[^a-z0-9]+/g, "-");
+  const image = programArtwork[Number(course.id)] || programArtwork[1];
 
   return h("article", { className: "program-card", "data-category": category },
-    h("div", { className: "program-card-rail" },
-      h("span", { className: "program-card-index" }, String(course.id).padStart(2, "0")),
-      h("span", { className: "program-card-field" }, course.category)
-    ),
-    h("div", { className: "program-card-body" },
-      h("h2", null, course.title),
-      h("p", { className: "program-card-summary" }, course.summary || course.description),
-      h("div", { className: "program-card-details" },
-        h("div", { className: "program-card-detail" },
-          h("b", null, "이런 관심에 맞습니다"),
-          h("p", { className: "program-card-audience" }, audience)
-        ),
-        h("div", { className: "program-card-detail" },
-          h("b", null, "학습 방향"),
-          h("p", null, learningGoal)
-        ),
-        h("div", { className: "program-card-detail program-card-outcome" },
-          h("b", null, "대표 결과물 예시"),
-          h("p", { className: "program-card-detail program-card-outcome" }, outcome)
-        )
+    h(Link, { to: "/courses/" + course.id, className: "program-card-link" },
+      h("div", { className: "program-card-art" },
+        h("img", { src: image, alt: "", loading: "lazy", decoding: "async" }),
+        h("span", null, guide.category || course.category || "교육과정")
       ),
-      h("div", { className: "program-card-footer" },
-        h("span", { className: "program-card-skills" }, course.skills || guide.skills),
-        h(Link, { to: "/courses/" + course.id, className: "program-card-link" }, "과정 자세히 보기")
+      h("div", { className: "program-card-body" },
+        h("h2", null, course.title),
+        h("p", { className: "program-card-summary" }, course.summary || course.description),
+        h("div", { className: "program-card-details" },
+          h("div", { className: "program-card-detail program-card-audience" },
+            h("b", null, "이런 관심에 맞습니다"),
+            h("p", null, audience)
+          ),
+          h("div", { className: "program-card-detail" },
+            h("b", null, "학습 방향"),
+            h("p", null, learningGoal)
+          ),
+          h("div", { className: "program-card-detail program-card-outcome" },
+            h("b", null, "대표 결과물 예시"),
+            h("p", null, outcome)
+          )
+        ),
+        h("div", { className: "program-card-footer" },
+          h("span", { className: "program-card-skills" }, course.skills || guide.skills),
+          h("strong", null, "과정 자세히 보기", h("span", { "aria-hidden": "true" }, "→"))
+        )
       )
     )
   );
