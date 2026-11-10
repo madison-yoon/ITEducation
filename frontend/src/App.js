@@ -91,16 +91,9 @@ function AcademyBrandMark() {
     "aria-hidden": "true",
     focusable: "false"
   },
-    h("path", {
-      d: "M4.5 35 17.2 5h5.6L36 35h-8l-8-19.4L12 35z",
-      fill: "currentColor"
-    }),
-    h("path", {
-      d: "M12.5 27.5h15",
-      stroke: "var(--site-accent)",
-      strokeWidth: "3",
-      strokeLinecap: "square"
-    })
+    h("path", { d: "M4 36 16.5 5h4.8L10.8 36H4Z", fill: "currentColor" }),
+    h("path", { d: "M18.7 5h4.8L36 36h-6.8L18.7 5Z", fill: "currentColor" }),
+    h("path", { d: "M12.1 24.5h15.8l2.2 5.2H9.9l2.2-5.2Z", fill: "var(--site-accent)" })
   );
 }
 
