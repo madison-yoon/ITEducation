@@ -213,10 +213,10 @@ function Layout() {
   );
 }
 const programArtwork = {
-  1: "https://images.unsplash.com/photo-1759752394243-9a1592d13f14?auto=format&fit=crop&w=900&q=82",
-  2: "https://images.unsplash.com/photo-1763568258586-da55ea292766?auto=format&fit=crop&w=900&q=82",
-  3: "https://images.unsplash.com/photo-1774901128283-64c62117216a?auto=format&fit=crop&w=900&q=82",
-  4: "https://images.unsplash.com/photo-1695668548342-c0c1ad479aee?auto=format&fit=crop&w=900&q=82"
+  1: "https://images.unsplash.com/photo-1753613648137-602c669cbe07?auto=format&fit=crop&w=900&q=82",
+  2: "https://images.unsplash.com/photo-1666875753105-c63a6f3bdc86?auto=format&fit=crop&w=900&q=82",
+  3: "https://images.unsplash.com/photo-1754039985001-ccafee437736?auto=format&fit=crop&w=900&q=82",
+  4: "https://images.unsplash.com/photo-1775519520461-6b6e068d9250?auto=format&fit=crop&w=900&q=82"
 };
 
 function CourseCard(props) {
