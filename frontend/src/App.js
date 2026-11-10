@@ -91,21 +91,29 @@ function AcademyBrandMark() {
     "aria-hidden": "true",
     focusable: "false"
   },
-    h("path", { d: "M5 9.5c5.2-2 9.9-1.8 15 1.2v21c-5.1-2.9-9.8-3.2-15-1.2z", fill: "currentColor" }),
-    h("path", { d: "M35 9.5c-5.2-2-9.9-1.8-15 1.2v21c5.1-2.9 9.8-3.2 15-1.2z", fill: "none", stroke: "currentColor", strokeWidth: "2" }),
-    h("path", { d: "M20 11v21", stroke: "var(--site-signal)", strokeWidth: "2.5" }),
-    h("path", { d: "M9 16h6M9 21h6M25 16h6M25 21h6", stroke: "var(--site-brand-soft)", strokeWidth: "1.6" })
+    h("path", {
+      d: "M4.5 35 17.2 5h5.6L36 35h-8l-8-19.4L12 35z",
+      fill: "currentColor"
+    }),
+    h("path", {
+      d: "M12.5 27.5h15",
+      stroke: "var(--site-accent)",
+      strokeWidth: "3",
+      strokeLinecap: "square"
+    })
   );
 }
+
 
 function Header() {
   const [menuOpen, setMenuOpen] = React.useState(false);
   const location = useLocation();
   const links = [
-    ["/about", "교육 철학"],
     ["/courses", "교육과정"],
     ["/projects", "프로젝트"],
-    ["/notices", "공지사항"]
+    ["/notices", "공지사항"],
+    ["/consultation", "상담 안내"],
+    ["/about", "기관 소개"]
   ];
 
   React.useEffect(function () {
@@ -127,8 +135,8 @@ function Header() {
         h(Link, { to: "/", className: "brand academy-brand", "aria-label": "IT ACADEMY 홈" },
           h("span", { className: "academy-brand-symbol", "aria-hidden": "true" }, h(AcademyBrandMark)),
           h("span", { className: "academy-brand-copy" },
-            h("b", null, "ACADEMY"),
-            h("small", null, "AI / DATA / SOFTWARE")
+            h("b", null, "IT ACADEMY"),
+            h("small", null, "Learn · Build · Grow")
           )
         ),
         h("button", {
@@ -148,54 +156,62 @@ function Header() {
             }, item[1]);
           }),
           h(Link, {
+            to: "/courses",
+            className: "academy-search-link",
+            "aria-label": "교육과정 검색",
+            onClick: function () { setMenuOpen(false); }
+          },
+            h("svg", { viewBox: "0 0 24 24", "aria-hidden": "true" },
+              h("circle", { cx: "10.8", cy: "10.8", r: "6.8" }),
+              h("path", { d: "m16 16 5 5" })
+            )
+          ),
+          h(Link, {
             to: "/consultation",
             className: "btn small academy-header-cta",
             onClick: function () { setMenuOpen(false); }
-          }, "교육 상담 ↗")
+          }, "상담 안내", h("span", { "aria-hidden": "true" }, "→"))
         )
       )
     )
   );
 }
-
 function Layout() {
   return h(React.Fragment, null,
     h(Header),
     h("main", { id: "main-content", tabIndex: -1 }, h(Outlet)),
     h("footer", { className: "footer academy-site-footer" },
       h("div", { className: "container academy-footer-main" },
-        h("div", null,
-          h(Link, { to: "/", className: "brand academy-brand footer-brand" },
+        h("div", { className: "academy-footer-brand-block" },
+          h(Link, { to: "/", className: "brand academy-brand footer-brand", "aria-label": "IT ACADEMY 홈" },
             h("span", { className: "academy-brand-symbol", "aria-hidden": "true" }, h(AcademyBrandMark)),
             h("span", { className: "academy-brand-copy" },
-              h("b", null, "ACADEMY"),
-              h("small", null, "AI · DATA · ENGINEERING")
+              h("b", null, "IT ACADEMY"),
+              h("small", null, "Learn · Build · Grow")
             )
           ),
-          h("p", null, "기술을 이해하고, 문제를 해결하며, 결과를 검증하는 교육"),
-          h("small", null, "이해하고 구현해 결과를 설명하는 학습")
+          h("p", null, "기술을 이해하고, 직접 구현하며, 결과로 설명하는 교육."),
+          h("small", null, "교육과정과 운영 조건은 확인된 내용만 안내합니다.")
         ),
         h("div", { className: "academy-footer-links" },
-          h("b", null, "사이트 안내"),
-          h(Link, { to: "/about" }, "교육 철학"),
+          h("b", null, "교육 안내"),
           h(Link, { to: "/courses" }, "교육과정"),
-          h(Link, { to: "/projects" }, "프로젝트 사례"),
-          h(Link, { to: "/notices" }, "공지사항")
+          h(Link, { to: "/projects" }, "프로젝트"),
+          h(Link, { to: "/about" }, "기관 소개")
         ),
         h("div", { className: "academy-footer-links" },
-          h("b", null, "상담 안내"),
-          h(Link, { to: "/consultation" }, "교육 상담 신청"),
-          h("span", null, "모집·운영 조건은 확정된 공지로 안내합니다.")
+          h("b", null, "도움말"),
+          h(Link, { to: "/notices" }, "공지사항"),
+          h(Link, { to: "/consultation" }, "상담 안내")
         )
       ),
       h("div", { className: "container academy-footer-bottom" },
-        h("span", null, "© " + new Date().getFullYear() + " IT ACADEMY"),
-        h("span", null, "교육기관의 실제 연락처·주소·운영 실적은 확인된 정보만 게시합니다.")
+        h("span", null, "© " + new Date().getFullYear() + " IT ACADEMY. All rights reserved."),
+        h("span", null, "모집·교육 운영 정보는 확정된 공지사항을 기준으로 안내합니다.")
       )
     )
   );
 }
-
 function CourseCard(props) {
   const course = props.course;
   const guide = courseSeed.find(function (item) { return String(item.id) === String(course.id); }) || {};
