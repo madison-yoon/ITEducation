@@ -108,8 +108,8 @@ p { color: var(--site-ink-soft); }
 }
 .site-button:hover, .academy-button:hover, .academy-header-cta:hover, .btn:hover {
   color: #fff;
-  background: var(--site-accent-strong);
-  border-color: var(--site-accent-strong);
+  background: var(--site-button-hover);
+  border-color: var(--site-button-hover);
   text-decoration: none;
 }
 .site-button:active, .academy-button:active { transform: translateY(1px); }
