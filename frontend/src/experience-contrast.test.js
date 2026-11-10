@@ -26,7 +26,9 @@ test("core body and heading text meet WCAG AA on warm ivory surfaces", function 
     ["#5c6a60", "#fffdf9"],
     ["#f4f3eb", "#102b23"],
     ["#f0a16e", "#102b23"],
-    ["#102b23", "#e8753a"]
+    ["#102b23", "#e8753a"],
+    ["#ffffff", "#a94421"],
+    ["#a94421", "#f2ede4"]
   ];
   for (const [foreground, background] of pairs) {
     assert.ok(contrastRatio(foreground, background) >= 4.5, foreground + " on " + background + " must meet 4.5:1");
