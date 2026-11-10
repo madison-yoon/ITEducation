@@ -435,9 +435,9 @@ export function AcademyHome() {
             h("div", { className: "academy-code-line" }, h("span", null, "05"), h("b", null, "const"), " release = ", h("em", null, "document(quality);"))
           ),
           h("div", { className: "academy-console-checks" },
-            h("div", null, h("span", { className: "check-mark" }, "✓"), h("span", null, "요구사항 추적"), h("b", null, "TRACEABLE")),
-            h("div", null, h("span", { className: "check-mark" }, "✓"), h("span", null, "테스트 증거"), h("b", null, "VERIFIED")),
-            h("div", null, h("span", { className: "check-mark" }, "✓"), h("span", null, "사람의 코드 리뷰"), h("b", null, "REVIEWED"))
+            h("div", null, h("span", { className: "check-mark" }, "01"), h("span", null, "요구사항 추적"), h("b", null, "REQUIRED")),
+            h("div", null, h("span", { className: "check-mark" }, "02"), h("span", null, "테스트 증거"), h("b", null, "REQUIRED")),
+            h("div", null, h("span", { className: "check-mark" }, "03"), h("span", null, "사람의 코드 리뷰"), h("b", null, "REQUIRED"))
           )
         )
       )
@@ -748,7 +748,7 @@ export function AcademyProjects() {
                 h("small", null, (project.category || "PROJECT").toUpperCase())
               ),
               h("div", { className: "academy-project-card-body" },
-                h("div", { className: "academy-project-meta" }, h("span", null, project.category), h("span", null, project.duration || "프로젝트 실습")),
+                h("div", { className: "academy-project-meta" }, h("span", null, project.category), h("span", null, project.duration ? "설계 예시 · " + project.duration : "교육 설계 예시")),
                 h("h2", null, project.title),
                 h("p", null, project.description),
                 h("p", { className: "academy-project-card-focus" }, blueprint.focus),
@@ -788,8 +788,8 @@ export function AcademyProjects() {
         h("h2", { id: "academy-project-modal-title" }, selected.title),
         h("p", { id: "academy-project-modal-description", className: "academy-modal-lead" }, selected.description),
         h("div", { className: "academy-modal-facts" },
-          h("div", null, h("small", null, "PROJECT PERIOD"), h("b", null, selected.duration || "과정별 상이")),
-          h("div", null, h("small", null, "TEAM SIZE"), h("b", null, selected.teamSize || selected.team || "운영안에 따라 편성")),
+          h("div", null, h("small", null, "설계 예시 기간"), h("b", null, selected.duration || "과정별 설계 확인")),
+          h("div", null, h("small", null, "설계 예시 팀 구성"), h("b", null, selected.teamSize || selected.team || "과정별 운영안에 따라 편성")),
           h("div", null, h("small", null, "PROJECT TYPE"), h("b", null, "교육 설계 예시"))
         ),
         h("div", { className: "academy-modal-section-grid" },
