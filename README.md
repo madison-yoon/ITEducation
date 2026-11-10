@@ -29,7 +29,7 @@ AI·데이터·소프트웨어 교육기관의 교육 철학, 교육과정, 프�
 | 데이터 접근 | Spring Data JPA, Hibernate |
 | 데이터베이스 | MySQL 8.x |
 | 보안 | Spring Security, 세션 인증, BCrypt, CSRF, 역할 기반 권한 |
-| 테스트 | JUnit 5, Spring Boot Test, MockMvc, H2 |
+| 테스트 | Node 내장 test, Playwright Chromium, JUnit 5, Spring Boot Test, MockMvc, H2 |
 | 배포 | Docker Compose, Nginx, Caddy HTTPS, GitHub Actions |
 
 프론트엔드는 .js 파일만 사용합니다. JSX, TSX, TypeScript는 사용하지 않으며 화면 요소는 React.createElement()로 작성합니다.
@@ -169,7 +169,23 @@ cd /d D:\dev\ITEducation\backend
 gradle clean test build
 ~~~
 
-통합 테스트는 공개 API, 관리자 인증·권한, CSRF, 프로젝트 응답 구조, 상담 입력 검증, 개인정보 동의 및 중복 접수 동작을 확인합니다. 실제 브라우저·실서비스 DB·운영 서버 환경 검증은 별도 수행해야 합니다.
+통합 테스트는 공개 API, 관리자 인증·권한, CSRF, 프로젝트 응답 구조, 상담 입력 검증, 개인정보 동의 및 중복 접수 동작을 확인합니다.
+
+GitHub Actions는 Chromium 브라우저 회귀 테스트 6개도 실행합니다. GitHub Pages의 실제 `/ITEducation/` 경로를 재현해 메인·과정 탐색, 공지 상세, 프로젝트 모달의 Escape·포커스 복원, 정적 미리보기 상담 접수 차단, 404 화면, 360px 가로 넘침을 검사합니다. 실패 시 스크린샷과 Trace를 7일간 보관합니다.
+
+로컬에서 브라우저 테스트를 실행하려면 다음 명령을 사용합니다.
+
+~~~cmd
+cd /d D:\dev\ITEducation\frontend
+npm install --no-save --no-package-lock @playwright/test
+npx playwright install chromium
+set GITHUB_PAGES=true
+set VITE_STATIC_PREVIEW=true
+npm run build
+npx playwright test --config=playwright.config.js
+~~~
+
+실제 브라우저·실서비스 DB·운영 서버 환경 검증은 별도 수행해야 합니다.
 
 ## 8. 정적 미리보기와 실제 서비스 구분
 
