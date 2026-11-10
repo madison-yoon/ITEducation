@@ -67,7 +67,7 @@ test.describe("IT ACADEMY public website", function () {
     await expect(page).toHaveURL(/\/notices\/sample-notice-01$/);
     await expect(page.getByRole("heading", { name: "2026년 11월 교육과정 운영 및 상담 안내" })).toBeVisible();
     await expect(page.getByRole("note").filter({ hasText: "시연용 예시 게시물" })).toBeVisible();
-    await expect(page.getByRole("note").filter({ hasText: "실제 운영 공지가 아닙니다" })).toHaveCount(0);
+    await expect(page.getByRole("note").filter({ hasText: "실제 운영 공지가 아닙니다" })).toBeVisible();
   });
 
   test("loads the new project artwork and exposes the full implementation blueprint", async function ({ page }) {
