@@ -16,7 +16,7 @@ const artworkFiles = [
 ];
 
 test("all project and homepage artwork files use the new editorial palette", function () {
-  const palette = ["#172c31", "#176b68", "#fbfdfc"];
+  const palette = ["#102b23", "#e8753a", "#fffdf9"];
   for (const file of artworkFiles) {
     assert.ok(existsSync(new URL(file, root)), "missing " + file);
     const svg = readFileSync(new URL(file, root), "utf8");
