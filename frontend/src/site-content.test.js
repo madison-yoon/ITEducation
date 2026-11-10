@@ -69,7 +69,7 @@ test("consultation form is available in preview and submits to the existing back
   assert.match(consultation, /api\.post\("\/inquiries"/);
   assert.match(consultation, /name: "privacyConsent"/);
   assert.match(consultation, /name: "courseTitle"/);
-  assert.match(consultation, /setAvailableCourses\(courseSeed\)/);
+  assert.match(consultation, /React\.useState\(courseSeed\)/);
 });
 
 test("home and project pages do not present an invented academy grading framework", function () {
