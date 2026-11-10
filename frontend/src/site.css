@@ -1471,11 +1471,18 @@ button:disabled { opacity: .55; cursor: not-allowed; }
   font-size: 14px;
   line-height: 1.9;
 }
+#main-content .notice-detail-page .notice-content {
+  max-width: 780px;
+  color: var(--site-ink-soft);
+  font-size: 14px;
+  line-height: 1.9;
+}
 #main-content .notice-detail-page .notice-detail-footer {
   justify-content: space-between;
   gap: 18px;
   padding-top: 18px;
   border-top: 1px solid var(--site-line);
+  color: var(--site-muted);
 }
 @media (max-width: 800px) {
   #main-content .notice-page { padding: 24px 0 65px; }
