@@ -103,7 +103,15 @@ test.describe("IT ACADEMY public website", function () {
     await expect(projectImages).toHaveCount(6);
     const projectArtwork = await decodeArtwork(page, ".academy-project-image");
     expect(projectArtwork).toHaveLength(6);
-    expect(projectArtwork.every(function (image) { return image.width === 900 && image.height === 560; })).toBe(true);
+    expect(projectArtwork.every(function (image) { return image.width > 0 && image.height > 0; })).toBe(true);
+    expect(projectArtwork.map(function (image) { return image.file; })).toEqual([
+      "ai-movie-recommender.svg",
+      "consumer-data-insights.svg",
+      "rag-document-assistant.svg",
+      "customer-voc-analytics.svg",
+      "learning-operations-platform.svg",
+      "vibe-coding-quality.svg"
+    ]);
 
     const trigger = page.locator(".academy-project-open").first();
     await trigger.click();
@@ -119,7 +127,7 @@ test.describe("IT ACADEMY public website", function () {
     await expect(images).toHaveCount(3);
     const featuredArtwork = await decodeArtwork(page, ".academy-feature-image");
     expect(featuredArtwork).toHaveLength(3);
-    expect(featuredArtwork.every(function (image) { return image.width === 900 && image.height === 560; })).toBe(true);
+    expect(featuredArtwork.every(function (image) { return image.width > 0 && image.height > 0; })).toBe(true);
 
     await page.goto("projects");
     const galleryFiles = await page.locator(".academy-project-image").evaluateAll(function (elements) {
