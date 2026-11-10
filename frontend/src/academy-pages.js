@@ -218,22 +218,22 @@ function SectionHeading(props) {
 const courseArtworks = {
   1: {
     label: "AI · 머신러닝",
-    image: "https://images.unsplash.com/photo-1759752394243-9a1592d13f14?auto=format&fit=crop&w=900&q=82",
+    image: "https://images.unsplash.com/photo-1753613648137-602c669cbe07?auto=format&fit=crop&w=900&q=82",
     alt: "노트북으로 코드를 살펴보는 학습 공간"
   },
   2: {
     label: "데이터 분석",
-    image: "https://images.unsplash.com/photo-1763568258586-da55ea292766?auto=format&fit=crop&w=900&q=82",
+    image: "https://images.unsplash.com/photo-1666875753105-c63a6f3bdc86?auto=format&fit=crop&w=900&q=82",
     alt: "데이터 그래프가 표시된 개발 화면"
   },
   3: {
     label: "생성형 AI",
-    image: "https://images.unsplash.com/photo-1774901128283-64c62117216a?auto=format&fit=crop&w=900&q=82",
+    image: "https://images.unsplash.com/photo-1754039985001-ccafee437736?auto=format&fit=crop&w=900&q=82",
     alt: "코드 편집기와 터미널 화면"
   },
   4: {
     label: "웹 서비스",
-    image: "https://images.unsplash.com/photo-1695668548342-c0c1ad479aee?auto=format&fit=crop&w=900&q=82",
+    image: "https://images.unsplash.com/photo-1775519520461-6b6e068d9250?auto=format&fit=crop&w=900&q=82",
     alt: "서버 인프라 장비"
   }
 };
@@ -503,7 +503,7 @@ export function AcademyHome() {
             h(Link, { to: "/consultation", className: "academy-section-button" }, "상담 안내 보기", h("span", null, "→"))
           ),
           h("img", {
-            src: "https://images.pexels.com/photos/7709145/pexels-photo-7709145.jpeg?auto=compress&dpr=1&h=750&w=1260",
+            src: "https://images.unsplash.com/photo-1712159018726-4564d92f3ec2?auto=format&fit=crop&w=1000&q=82",
             alt: "헤드셋을 착용하고 상담 업무를 하는 사람",
             loading: "lazy",
             decoding: "async"
