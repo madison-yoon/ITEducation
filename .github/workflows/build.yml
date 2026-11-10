@@ -2,7 +2,7 @@ name: Build Check
 
 on:
   push:
-    branches: [main, "fix/**", "feature/**", "quality/**"]
+    branches: [main, "fix/**", "feature/**", "quality/**", "redesign/**"]
   pull_request:
     branches: [main]
 
