@@ -35,6 +35,9 @@ test("the home page follows the approved hero, course, project, notice and CTA s
   assert.match(academy, /MOMO 영화 리뷰 커뮤니티/);
   assert.match(academy, /const relatedProjects = projectFallback\.slice\(1, 4\)/);
   assert.match(academy, /교육 설계 예시/);
+  assert.match(academy, /소비 데이터 인사이트 랩/);
+  assert.match(academy, /근거 중심 사내 문서 AI/);
+  assert.match(academy, /고객 VOC 분류·분석 시스템/);
   assert.match(academy, /images\/academy-hero\.webp/);
   assert.doesNotMatch(academy.slice(academy.indexOf('const featuredProject'), academy.indexOf('const relatedProjects')), /IT ACADEMY 통합 플랫폼|AI 로또 분석기|날씨 생활 도우미/);
   assert.doesNotMatch(academy, /PROJECT SCORE FRAMEWORK|100 PTS|TRACEABLE|VERIFIED|REVIEWED/);
@@ -122,4 +125,8 @@ test("project artwork remains mapped and available for every example", function 
 
 test("final submission audit is linked from the project README", function () {
   assert.match(readme, /docs\/FINAL_SUBMISSION_AUDIT_2026-11\.md/);
+  assert.match(readme, /소비 데이터 분석·사내 문서 RAG·고객 VOC 분류/);
+  assert.doesNotMatch(readme, /AI 로또 분석기|날씨 생활 도우미|IT ACADEMY 통합 플랫폼/);
+  assert.match(readme, /academy-hero\.webp/);
+  assert.doesNotMatch(readme, /Pexels 이미지 CDN/);
 });
