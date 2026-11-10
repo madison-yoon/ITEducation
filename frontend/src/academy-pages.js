@@ -6,7 +6,6 @@ import { courseCatalog as courseFallback } from "./course-catalog.js";
 const h = React.createElement;
 
 
-
 const projectFallback = [
   {
     id: 1, title: "AI 영화 추천 플랫폼", category: "AI · WEB", duration: "6주", teamSize: "4명",
