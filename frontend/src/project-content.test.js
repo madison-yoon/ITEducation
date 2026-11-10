@@ -15,7 +15,7 @@ const artworkFiles = [
   "vibe-coding-quality.svg"
 ];
 
-test("all project and homepage artwork files use the new editorial palette", function () {
+test("all project gallery illustrations use the approved forest green, ivory and orange palette", function () {
   const palette = ["#102b23", "#e8753a", "#fffdf9"];
   for (const file of artworkFiles) {
     assert.ok(existsSync(new URL(file, root)), "missing " + file);
@@ -26,8 +26,10 @@ test("all project and homepage artwork files use the new editorial palette", fun
   }
 });
 
-test("the same project illustration is used in featured and gallery image components", function () {
+test("the featured MOMO banner uses photography while gallery cards use original project illustrations", function () {
   assert.match(projectPage, /academy-project-feature-image/);
+  assert.match(projectPage, /className: "academy-feature-image"/);
+  assert.match(projectPage, /photo-1753613648137/);
   assert.match(projectPage, /academy-project-image/);
   assert.match(projectPage, /projectArtwork/);
   assert.match(projectPage, /getProjectArtwork\(project\)/);
