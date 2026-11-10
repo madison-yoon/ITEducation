@@ -327,8 +327,8 @@ p { color: var(--site-ink-soft); }
   z-index: -2;
   inset: 0;
   background:
-    linear-gradient(90deg, rgba(7,29,22,.98) 0%, rgba(7,29,22,.95) 34%, rgba(7,29,22,.73) 56%, rgba(7,29,22,.32) 100%),
-    url("https://images.unsplash.com/photo-1759752394243-9a1592d13f14?auto=format&fit=crop&w=2000&q=86") center 44% / cover no-repeat;
+    radial-gradient(ellipse at 78% 42%, rgba(36,91,68,.5), transparent 43%),
+    linear-gradient(110deg, #0b251e 0%, #123b2e 100%);
   transform: scale(1.015);
 }
 .academy-hero-layout {
