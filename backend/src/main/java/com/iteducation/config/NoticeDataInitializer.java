@@ -6,7 +6,9 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 // 공지 테이블이 비어 있는 신규 환경에만 사이트 시연용 공지 예시를 등록합니다.
 @Component
@@ -19,8 +21,6 @@ public class NoticeDataInitializer implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        if (notices.count() > 0) return;
-
         LocalDateTime now = LocalDateTime.now();
         List<Notice> samples = List.of(
             notice("IT ACADEMY 홈페이지 이용 안내", "공지", true, now.minusHours(1),
@@ -39,7 +39,10 @@ public class NoticeDataInitializer implements CommandLineRunner {
                 "공지사항 화면에서는 분류 필터와 검색 기능을 이용해 필요한 안내를 찾을 수 있습니다.\n\n• 분류 필터로 공지, 모집 안내, 교육과정, 교육 소식과 운영 안내를 구분합니다.\n• 검색창에서 제목과 본문에 포함된 단어를 검색할 수 있습니다.\n• 중요 공지는 목록 상단에 고정해 표시합니다.\n• 각 게시물을 선택하면 상세 내용과 목록 복귀 기능을 이용할 수 있습니다.\n\n사이트 이용 중 확인이 필요한 내용은 상담 신청 화면의 문의 내용에 남겨 주세요.")
         );
 
-        notices.saveAll(samples);
+        Set<String> existingTitles = new HashSet<>();
+        notices.findAll().forEach(item -> existingTitles.add(item.getTitle()));
+        samples.removeIf(item -> existingTitles.contains(item.getTitle()));
+        if (!samples.isEmpty()) notices.saveAll(samples);
     }
 
     private Notice notice(String title, String category, boolean pinned, LocalDateTime createdAt, String content) {
