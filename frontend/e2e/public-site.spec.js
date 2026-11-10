@@ -107,7 +107,8 @@ test.describe("IT ACADEMY approved landing-page composition", function () {
 
     await page.goto("notices/sample-notice-01");
     await expect(page.getByRole("heading", { name: "이 공지사항을 찾을 수 없습니다." })).toBeVisible();
-    await page.getByRole("link", { name: "공지사항 목록으로" }).first().click();
+    await expect(page.getByRole("link", { name: "목록으로 돌아가기" }).first()).toBeVisible();
+    await page.getByRole("link", { name: "목록으로 돌아가기" }).first().click();
     await expect(page).toHaveURL(/\/notices\/?$/);
   });
 
