@@ -201,64 +201,62 @@ export function AcademyHome() {
   }, []);
 
   return h(React.Fragment, null,
-    h("section", { className: "academy-hero" },
-      h("div", { className: "academy-hero-noise", "aria-hidden": "true" }),
+    h("section", { className: "academy-hero academy-hero-editorial" },
       h("div", { className: "container academy-hero-layout" },
         h("div", { className: "academy-hero-copy" },
           h("div", { className: "academy-hero-kicker" },
             h("span", { className: "academy-live-dot" }),
-            "ENGINEERING EDUCATION · BUILT FOR THE AI ERA"
+            "IT ACADEMY / AI · DATA · SOFTWARE"
           ),
           h("h1", null,
-            "AI를 사용하는 사람에서",
+            "배운 것을 넘어,",
             h("br"),
-            h("span", null, "AI로 결과를 만드는 개발자로.")
+            h("span", null, "만들고 증명하는 개발 교육.")
           ),
-          h("p", null, "기초 원리를 이해하고, AI와 협업하며, 실제로 작동하는 제품을 완성합니다. IT ACADEMY는 문제 정의부터 구현·검증·발표까지 연결하는 프로젝트 중심 학습을 설계합니다."),
+          h("p", null, "기초 원리를 이해하고, 직접 구현하고, 테스트로 완성도를 확인합니다. 도구를 많이 아는 것보다 문제를 해결한 과정을 설명할 수 있는 개발자를 키웁니다."),
           h("div", { className: "academy-hero-actions" },
-            h(Link, { to: "/courses", className: "academy-button primary" }, "교육과정 탐색", h("span", null, "↗")),
-            h(Link, { to: "/consultation", className: "academy-button secondary" }, "학습 방향 상담")
+            h(Link, { to: "/courses", className: "academy-button primary" }, "교육과정 살펴보기", h("span", null, "↗")),
+            h(Link, { to: "/consultation", className: "academy-button secondary" }, "상담 안내")
           ),
           h("div", { className: "academy-hero-proof" },
-            h("div", null, h("b", null, "원리"), h("span", null, "WHY BEFORE HOW")),
-            h("div", null, h("b", null, "실습"), h("span", null, "BUILD WITH PURPOSE")),
-            h("div", null, h("b", null, "검증"), h("span", null, "TEST WHAT YOU BUILD"))
+            h("div", null, h("b", null, "개념 이해"), h("span", null, "WHY IT WORKS")),
+            h("div", null, h("b", null, "직접 구현"), h("span", null, "BUILD IT YOURSELF")),
+            h("div", null, h("b", null, "품질 검증"), h("span", null, "PROVE IT WORKS"))
           )
         ),
-        h("div", { className: "academy-hero-visual", "aria-hidden": "true" },
-          h("div", { className: "academy-visual-grid" }),
-          h("div", { className: "academy-orbit orbit-a" }),
-          h("div", { className: "academy-orbit orbit-b" }),
-          h("div", { className: "academy-orbit orbit-c" }),
-          h("div", { className: "academy-cube-scene" },
-            h("div", { className: "academy-cube" },
-              h("div", { className: "cube-face cube-front" }, h("small", null, "IT"), h("strong", null, "BUILD"), h("span", null, "01 / CREATE")),
-              h("div", { className: "cube-face cube-back" }, h("strong", null, "DATA")),
-              h("div", { className: "cube-face cube-right" }, h("strong", null, "AI")),
-              h("div", { className: "cube-face cube-left" }, h("strong", null, "CODE")),
-              h("div", { className: "cube-face cube-top" }, h("strong", null, "IDEA")),
-              h("div", { className: "cube-face cube-bottom" }, h("strong", null, "SHIP"))
-            )
+        h("div", { className: "academy-hero-editorial-board" },
+          h("div", { className: "academy-board-heading" },
+            h("span", null, "THE LEARNING STANDARD"),
+            h("b", null, "01 — 03")
           ),
-          h(FloatingWindow, { className: "float-top", label: "BUILD PIPELINE" },
-            h("div", { className: "academy-pipeline" },
-              h("span", null, "PLAN"), h("i", null, "→"), h("span", null, "BUILD"), h("i", null, "→"), h("span", null, "VERIFY")
-            )
+          h("div", { className: "academy-board-step" },
+            h("span", null, "01"),
+            h("div", null, h("b", null, "원리를 이해합니다"), h("p", null, "기술과 문법이 필요한 이유부터 학습합니다.")),
+            h("small", null, "UNDERSTAND")
           ),
-          h(FloatingWindow, { className: "float-bottom", label: "QUALITY CHECKLIST" },
-            h("div", { className: "academy-quality-line" }, h("b", null, "TEST PLAN"), h("span", null, "REQUIRED"), h("i", null)),
-            h("div", { className: "academy-quality-line" }, h("b", null, "CODE REVIEW"), h("span", null, "REQUIRED"), h("i", null))
+          h("div", { className: "academy-board-step" },
+            h("span", null, "02"),
+            h("div", null, h("b", null, "작동하는 것을 만듭니다"), h("p", null, "화면·서버·데이터를 연결해 기능을 완성합니다.")),
+            h("small", null, "BUILD")
           ),
-          h("span", { className: "academy-visual-caption" }, "LEARN · BUILD · VALIDATE")
+          h("div", { className: "academy-board-step" },
+            h("span", null, "03"),
+            h("div", null, h("b", null, "결과를 검증합니다"), h("p", null, "테스트와 리뷰로 동작과 품질을 확인합니다.")),
+            h("small", null, "VERIFY")
+          ),
+          h("div", { className: "academy-board-footer" },
+            h("span", null, "NO SHORTCUTS."),
+            h("b", null, "WORK THAT RUNS.")
+          )
         )
       ),
       h("div", { className: "academy-hero-bottom" },
         h("div", { className: "container academy-hero-bottom-inner" },
-          h("span", null, "FROM FIRST PRINCIPLE"),
+          h("span", null, "원리에서 출발해"),
           h("i", null),
-          h("span", null, "TO WORKING PRODUCT"),
+          h("span", null, "실제 제품을 만들고"),
           h("i", null),
-          h("span", null, "WITH PROVABLE QUALITY")
+          h("span", null, "검증 가능한 결과로 마칩니다")
         )
       )
     ),
