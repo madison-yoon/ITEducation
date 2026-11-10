@@ -280,7 +280,8 @@ p { color: var(--site-ink-soft); }
 .academy-site-footer .academy-brand { color: #fff; }
 .academy-site-footer .academy-brand-copy b { color: #fff; }
 .academy-site-footer .academy-brand-copy small { color: #c4d0c9; }
-.academy-site-footer .academy-brand-symbol { color: var(--site-accent); }
+.academy-brand-symbol, .academy-site-footer .academy-brand-symbol { color: #f2dfc7; }
+.academy-brand-symbol, .academy-site-footer .academy-brand-symbol { border: 0; border-radius: 0; background: transparent; box-shadow: none; }
 .academy-footer-main {
   display: grid;
   grid-template-columns: minmax(0, 1.5fr) repeat(2, minmax(150px, .65fr));
@@ -436,17 +437,18 @@ p { color: var(--site-ink-soft); }
   font-style: normal;
 }
 .academy-hologram-future {
-  right: -23px;
-  bottom: 95px;
+  top: 112px;
+  right: 24px;
+  bottom: auto;
   display: flex;
   align-items: center;
   gap: 9px;
   padding: 12px 16px;
-  border-color: rgba(245,172,112,.65);
-  background: rgba(91,47,25,.7);
-  transform: rotate(2deg);
+  border-color: rgba(153,224,214,.7);
+  background: rgba(14,55,48,.78);
+  transform: none;
 }
-.academy-hologram-future span { color: #ffb57f; font-size: 24px; }
+.academy-hologram-future span { color: #a6e4db; font-size: 24px; }
 .academy-hologram-future b { color: #fff4e9; font-size: 14px; }
 .academy-hologram-chart {
   right: 18px;
@@ -723,7 +725,7 @@ p { color: var(--site-ink-soft); }
   z-index: -1;
   inset: 0;
   background:
-    linear-gradient(90deg,rgba(10,37,29,.98) 0%,rgba(10,37,29,.9) 53%,rgba(10,37,29,.35) 100%),
+    linear-gradient(90deg,rgba(10,37,29,.98) 0%,rgba(10,37,29,.78) 48%,rgba(10,37,29,.08) 100%),
     url("https://images.unsplash.com/photo-1542042179-de5cdc0cf242?auto=format&fit=crop&fm=jpg&w=1400&q=82") center 45% / cover no-repeat;
   content: "";
 }
@@ -1318,7 +1320,7 @@ button:disabled { opacity: .55; cursor: not-allowed; }
   .academy-hero-visual { height: 230px; }
   .academy-hologram-code { top: 10px; left: 7px; width: 160px; padding: 10px; }
   .academy-hologram-chart { top: 10px; right: 7px; width: 110px; padding: 9px; }
-  .academy-hologram-future { right: 7px; bottom: 15px; padding: 8px 10px; }
+  .academy-hologram-future { top: auto; right: 7px; bottom: 15px; padding: 8px 10px; }
   .academy-hologram-future b { font-size: 11px; }
   .academy-feature-item { gap: 9px; padding: 11px 8px; }
   .academy-feature-item:first-child { padding-left: 8px; }
