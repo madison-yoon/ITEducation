@@ -7,6 +7,7 @@ const legacy = readFileSync(new URL("./design-system.css", import.meta.url), "ut
 const html = readFileSync(new URL("../index.html", import.meta.url), "utf8");
 const favicon = readFileSync(new URL("../public/favicon.svg", import.meta.url), "utf8");
 const entry = readFileSync(new URL("./main.js", import.meta.url), "utf8");
+const academy = readFileSync(new URL("./academy-pages.js", import.meta.url), "utf8");
 
 test("the Korean webfont is loaded from a pinned Pretendard stylesheet", function () {
   assert.match(html, /orioncactus\/pretendard@v1\.3\.9/);
@@ -38,7 +39,7 @@ test("the approved home composition is present in the same section order", funct
   ];
   for (const selector of selectors) assert.ok(css.includes(selector), "missing composition selector: " + selector);
   assert.match(entry, /design-system\.css[\s\S]*site\.css/);
-  assert.match(html, /images\/academy-hero\.webp/);
+  assert.match(academy, /images\/academy-hero\.webp/);
 });
 
 test("the public design system owns every public route while admin styles remain available", function () {
