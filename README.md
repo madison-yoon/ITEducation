@@ -176,6 +176,7 @@ GitHub Actions는 Chromium 브라우저 회귀 테스트 6개도 실행합니다
 로컬에서 브라우저 테스트를 실행하려면 다음 명령을 사용합니다.
 
 ~~~cmd
+cd /d D:\dev\ITEducation\frontend
 npm install --no-save --no-package-lock @playwright/test
 npx playwright install chromium
 set GITHUB_PAGES=true
