@@ -14,6 +14,50 @@ test.describe("IT ACADEMY public website", function () {
     await expect(page.getByText("운영기관 공지 확인").first()).toBeVisible();
   });
 
+  test("loads the Korean typeface and shared design tokens", async function ({ page }) {
+    await page.goto("./");
+    await page.evaluate(function () { return document.fonts.ready; });
+
+    const typography = await page.evaluate(function () {
+      const loadedPretendard = Array.from(document.fonts).some(function (fontFace) {
+        return fontFace.family.toLowerCase().includes("pretendard") && fontFace.status === "loaded";
+      });
+      return {
+        loadedPretendard: loadedPretendard,
+        family: getComputedStyle(document.body).fontFamily,
+        paper: getComputedStyle(document.documentElement).getPropertyValue("--site-paper").trim(),
+        ink: getComputedStyle(document.documentElement).getPropertyValue("--site-ink").trim(),
+        accent: getComputedStyle(document.documentElement).getPropertyValue("--site-accent").trim()
+      };
+    });
+
+    expect(typography.loadedPretendard).toBe(true);
+    expect(typography.family).toContain("Pretendard Variable");
+    expect(typography.paper).toBe("#f3f1e9");
+    expect(typography.ink).toBe("#202a24");
+    expect(typography.accent).toBe("#bd5034");
+  });
+
+  test("keeps the same design tokens across all public routes", async function ({ page }) {
+    const routes = ["./", "about", "courses", "courses/1", "projects", "notices", "consultation"];
+    for (const route of routes) {
+      await page.goto(route);
+      const values = await page.evaluate(function () {
+        const styles = getComputedStyle(document.documentElement);
+        return {
+          paper: styles.getPropertyValue("--site-paper").trim(),
+          ink: styles.getPropertyValue("--site-ink").trim(),
+          accent: styles.getPropertyValue("--site-accent").trim(),
+          font: getComputedStyle(document.body).fontFamily
+        };
+      });
+      expect(values.paper, route + " should use the shared paper token").toBe("#f3f1e9");
+      expect(values.ink, route + " should use the shared ink token").toBe("#202a24");
+      expect(values.accent, route + " should use the shared accent token").toBe("#bd5034");
+      expect(values.font, route + " should use the Korean font stack").toContain("Pretendard Variable");
+    }
+  });
+
   test("opens a sample notice from the static preview", async function ({ page }) {
     await page.goto("notices");
 
@@ -60,17 +104,20 @@ test.describe("IT ACADEMY public website", function () {
     await expect(page.getByRole("link", { name: "메인 페이지로 이동" })).toBeVisible();
   });
 
-  test("keeps the home page within a narrow mobile viewport", async function ({ page }) {
+  test("keeps all main pages within a narrow mobile viewport", async function ({ page }) {
     await page.setViewportSize({ width: 360, height: 800 });
-    await page.goto("./");
+    const routes = ["./", "about", "courses", "courses/1", "projects", "notices", "consultation"];
 
-    const dimensions = await page.evaluate(function () {
-      return {
-        viewport: document.documentElement.clientWidth,
-        document: document.documentElement.scrollWidth
-      };
-    });
-
-    expect(dimensions.document).toBeLessThanOrEqual(dimensions.viewport);
+    for (const route of routes) {
+      await page.goto(route);
+      await expect(page.locator("body")).toBeVisible();
+      const dimensions = await page.evaluate(function () {
+        return {
+          viewport: document.documentElement.clientWidth,
+          document: document.documentElement.scrollWidth
+        };
+      });
+      expect(dimensions.document, route + " must not cause horizontal overflow").toBeLessThanOrEqual(dimensions.viewport);
+    }
   });
 });
