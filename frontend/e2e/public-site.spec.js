@@ -141,6 +141,26 @@ test.describe("IT ACADEMY approved landing-page composition", function () {
     await expect(page).toHaveURL(/\/notices\/?$/);
   });
 
+  test("notice page uses the forest-and-ivory system without legacy top padding", async function ({ page }) {
+    await page.goto("notices");
+    const layout = await page.evaluate(function () {
+      const main = document.querySelector("main#main-content").getBoundingClientRect();
+      const pageElement = document.querySelector(".notice-page");
+      const hero = document.querySelector(".notice-header").getBoundingClientRect();
+      const style = getComputedStyle(pageElement);
+      return {
+        topGap: hero.top - main.top,
+        paddingTop: style.paddingTop,
+        backgroundColor: style.backgroundColor,
+        backgroundImage: style.backgroundImage
+      };
+    });
+    expect(layout.topGap).toBeLessThan(55);
+    expect(layout.paddingTop).toBe("36px");
+    expect(layout.backgroundColor).toBe("rgb(242, 237, 228)");
+    expect(layout.backgroundImage).toBe("none");
+  });
+
   test("notice categories have visibly distinct semantic colours", async function ({ page }) {
     await page.goto("notices");
     const backgrounds = await page.evaluate(function () {
