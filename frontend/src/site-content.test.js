@@ -6,6 +6,21 @@ const app = readFileSync(new URL("./App.js", import.meta.url), "utf8");
 const academy = readFileSync(new URL("./academy-pages.js", import.meta.url), "utf8");
 const experience = readFileSync(new URL("./experience.css", import.meta.url), "utf8");
 const readme = readFileSync(new URL("../../README.md", import.meta.url), "utf8");
+const { courseCatalog } = await import("./course-catalog.js");
+
+test("homepage and course routes use one consistent, complete course catalogue", function () {
+  assert.equal(courseCatalog.length, 4);
+  assert.deepEqual(courseCatalog.map(function (course) { return course.id; }), [1, 2, 3, 4]);
+  for (const course of courseCatalog) {
+    assert.ok(course.title && course.summary && course.target && course.curriculum && course.skills);
+    assert.equal(course.duration, "운영 정보 확인");
+    assert.equal(course.recruitmentStatus, "모집 정보 확인");
+  }
+  assert.match(app, /courseCatalog as courseSeed/);
+  assert.match(academy, /courseCatalog as courseFallback/);
+  assert.doesNotMatch(app, /const courseSeed = \[/);
+  assert.doesNotMatch(academy, /const courseFallback = \[/);
+});
 
 test("course list explains four learning paths and their concrete outputs", function () {
   assert.match(app, /FIND YOUR LEARNING PATH/);
