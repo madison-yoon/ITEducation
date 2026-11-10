@@ -1,37 +1,21 @@
-# 구현 계획 — IT ACADEMY 전체 공개 사이트 재설계
+# 실행 및 검증 계획 — 기준 시안 재현
 
-## 작업 순서
+## 설계와 구현
 
-1. 테스트 우선: 공지 가상 데이터 없음, 100점 평가표 없음, 과정 placeholder 문구 제거, 정적 상담 폼 비노출, 카테고리 태그 구분, favicon 식별자 테스트를 추가해 RED를 확인한다.
-2. 과정 데이터 보강: course-catalog.js에 각 과정의 적합 대상/학습 목표/대표 결과 필드를 추가하되 운영 사실은 생성하지 않는다.
-3. 공개 페이지 구조: App.js의 과정 목록·상세, 상담, 공지 목록·상세 markup을 새 한국어 콘텐츠 구조로 변경한다. API와 폼 계약을 보존한다.
-4. 교육 홈·프로젝트: academy-pages.js에서 100점 평가표를 제거하고 학습자 관점의 학습 산출물 흐름으로 바꾼다. 프로젝트 예시 사실표시를 유지한다.
-5. 디자인 시스템: main.js에서 새 site.css를 최종 공개 스타일로 로드한다. site.css는 공개 영역의 모든 주요 route를 단일 토큰/컴포넌트 체계로 완전히 정의한다. 관리자 기존 스타일은 회귀되지 않는지 별도 확인한다.
-6. 파비콘: frontend/public/favicon.svg 및 index.html 메타 색상/설명을 새 아이덴티티로 일치시킨다.
-7. 테스트: 단위 테스트와 Playwright 경로별 테스트를 새 UI 기준으로 갱신한다. 1440px·390px 스크린샷을 모든 핵심 route에서 저장한다.
-8. 검토: 실제 브라우저 렌더링 스크린샷을 직접 열어 타이포, 페이지별 밀도, 색, 모바일/데스크톱, empty/error 상태를 리뷰하고 수정한다.
-9. 최종: full Build Check, PR 리뷰, merge, GitHub Pages deploy run, 배포 artifact/commit까지 확인한다.
+1. 기준 시안 「IT ACADEMY 성장의 시작」의 레이아웃·색상·이미지 사용·영역 순서를 기준점으로 고정합니다.
+2. React Router 및 기존 API payload를 보존하면서 홈의 헤더, 히어로, 강점 스트립, 과정 카드, 프로젝트 쇼케이스, 공지·상담, CTA, 푸터를 재구성합니다.
+3. 교육과정 목록/상세, 기관 소개, 프로젝트 목록/상세, 공지, 상담이 같은 그린·아이보리·오렌지 디자인 토큰을 사용하도록 적용합니다.
+4. favicon을 A 심볼로 변경하고 브라우저 메타 색상·설명·사이트명을 일치시킵니다.
+5. 프로젝트 100점 평가표와 허위 정적 공지를 제거하고, GitHub Pages의 상담 입력 폼을 숨겨 개인정보를 받지 않도록 합니다.
 
-## 변경 파일 예정
+## 테스트
 
-- frontend/src/App.js
-- frontend/src/academy-pages.js
-- frontend/src/course-catalog.js
-- frontend/src/preview-content.js
-- frontend/src/preview-content.test.js
-- frontend/src/site-content.test.js
-- frontend/src/main.js
-- frontend/src/site.css (신규)
-- frontend/public/favicon.svg
-- frontend/index.html
-- frontend/e2e/public-site.spec.js
-- frontend/src/design-system.test.js
-- README.md
-- docs/FINAL_SUBMISSION_AUDIT_2026-11.md
+- 단위 테스트: 카탈로그·가짜 공지 제거·프로젝트 평가표 제거·상담 비노출·파비콘·색상 대비
+- Chromium E2E: 메인 섹션 순서·외부 이미지 naturalWidth·과정 필터·상세·공지 빈 상태·상담 안내·프로젝트 모달 키보드 동작
+- 반응형 폭: 360, 390, 768, 1024, 1440px
+- 각 공개 페이지 데스크톱 및 모바일 전체 페이지 스크린샷 생성
+- 프론트엔드, 백엔드, Docker, 브라우저 CI 통과 후 PR 검토 및 병합
 
-## 검증 명령
+## 남은 운영 전 확정 항목
 
-- cd frontend && npm ci && npm test && npm run build
-- Playwright Chromium E2E in GitHub Actions using the real /ITEducation/ base path.
-- gradle clean test build --no-daemon via the existing CI job.
-- docker compose config --quiet && docker compose build.
+공식 기관 연락처·주소·사업자 정보·강사 이력·모집 일정·기간·정원·교육비·지원 자격·개인정보 처리방침·실제 수강생 성과는 운영기관에서 확인한 뒤 게시해야 합니다.
