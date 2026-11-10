@@ -495,7 +495,7 @@ export function AcademyHome() {
     h("section", { className: "academy-learning-outcomes" },
       h("div", { className: "container" },
         h("div", { className: "academy-learning-outcomes-heading" },
-          h("span", { className: "academy-eyebrow" }, "프로젝트에서 남길 결과"),
+          h("span", { className: "academy-eyebrow" }, "프로젝트에서 남길 학습 결과물"),
           h("h2", null, "배운 내용을 다른 사람에게 설명할 수 있도록."),
           h("p", null, "프로젝트는 결과 화면 하나로 끝내지 않습니다. 문제를 어떻게 이해했고 어떤 선택으로 구현했는지, 무엇을 확인했는지까지 정리하는 연습입니다.")
         ),
