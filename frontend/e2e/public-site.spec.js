@@ -1,5 +1,33 @@
 import { expect, test } from "@playwright/test";
 
+async function decodeArtwork(page, selector) {
+  return page.locator(selector).evaluateAll(async function (images) {
+    await Promise.all(images.map(function (image) {
+      if (image.complete) {
+        return image.naturalWidth > 0
+          ? Promise.resolve()
+          : Promise.reject(new Error("Image failed to load: " + image.src));
+      }
+
+      return new Promise(function (resolve, reject) {
+        image.addEventListener("load", resolve, { once: true });
+        image.addEventListener("error", function () {
+          reject(new Error("Image failed to load: " + image.src));
+        }, { once: true });
+        image.loading = "eager";
+      });
+    }));
+
+    return images.map(function (image) {
+      return {
+        file: new URL(image.currentSrc || image.src).pathname.split("/").pop(),
+        width: image.naturalWidth,
+        height: image.naturalHeight
+      };
+    });
+  });
+}
+
 test.describe("IT ACADEMY public website", function () {
   test("loads the home page and navigates to course details", async function ({ page }) {
     await page.goto("./");
@@ -73,15 +101,9 @@ test.describe("IT ACADEMY public website", function () {
 
     const projectImages = page.locator(".academy-project-image");
     await expect(projectImages).toHaveCount(6);
-    for (let index = 0; index < await projectImages.count(); index += 1) {
-      const image = projectImages.nth(index);
-      await image.scrollIntoViewIfNeeded();
-      await expect.poll(async function () {
-        return image.evaluate(function (element) {
-          return element.complete && element.naturalWidth > 0;
-        });
-      }).toBe(true);
-    }
+    const projectArtwork = await decodeArtwork(page, ".academy-project-image");
+    expect(projectArtwork).toHaveLength(6);
+    expect(projectArtwork.every(function (image) { return image.width === 900 && image.height === 560; })).toBe(true);
 
     const trigger = page.locator(".academy-project-open").first();
     await trigger.click();
@@ -95,15 +117,17 @@ test.describe("IT ACADEMY public website", function () {
     await page.goto("./");
     const images = page.locator(".academy-feature-image");
     await expect(images).toHaveCount(3);
-    for (let index = 0; index < await images.count(); index += 1) {
-      const image = images.nth(index);
-      await image.scrollIntoViewIfNeeded();
-      await expect.poll(async function () {
-        return image.evaluate(function (element) {
-          return element.complete && element.naturalWidth > 0;
-        });
-      }).toBe(true);
-    }
+    const featuredArtwork = await decodeArtwork(page, ".academy-feature-image");
+    expect(featuredArtwork).toHaveLength(3);
+    expect(featuredArtwork.every(function (image) { return image.width === 900 && image.height === 560; })).toBe(true);
+
+    await page.goto("projects");
+    const galleryFiles = await page.locator(".academy-project-image").evaluateAll(function (elements) {
+      return elements.map(function (image) {
+        return new URL(image.src).pathname.split("/").pop();
+      });
+    });
+    expect(featuredArtwork.map(function (image) { return image.file; })).toEqual(galleryFiles.slice(0, 3));
   });
 
   test("closes the project detail dialog with Escape and restores focus", async function ({ page }) {
