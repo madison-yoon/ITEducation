@@ -42,6 +42,8 @@ Visitor / Administrator
           v
 React 18 + JavaScript
           |
+          +-- course-catalog.js : 홈·과정 화면에서 공유하는 단일 과정 기본 데이터
+          |
           | /api (Axios, session cookie, CSRF)
           v
 Spring Boot REST API
