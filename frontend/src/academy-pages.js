@@ -1,15 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import api from "./api.js";
+import { courseCatalog as courseFallback } from "./course-catalog.js";
 
 const h = React.createElement;
 
-const courseFallback = [
-  { id: 1, title: "AI·머신러닝 실무 개발자 과정", category: "AI", duration: "운영 정보 확인", recruitmentStatus: "모집 정보 확인", summary: "Python 데이터 전처리, 기준 모델 수립, 분류·회귀 평가, 추천 결과의 API 연동까지 모델을 서비스 흐름으로 연결합니다." },
-  { id: 2, title: "빅데이터 분석 전문가 과정", category: "DATA", duration: "운영 정보 확인", recruitmentStatus: "모집 정보 확인", summary: "SQL 추출과 데이터 품질 점검부터 탐색적 분석, 지표 정의, 필터형 대시보드와 근거 중심 보고서까지 완성합니다." },
-  { id: 3, title: "생성형 AI 서비스 개발 과정", category: "GEN AI", duration: "운영 정보 확인", recruitmentStatus: "모집 정보 확인", summary: "LLM API, 프롬프트 평가, 문서 청킹·임베딩·검색, 출처가 연결된 RAG 응답과 품질·비용 측정을 다룹니다." },
-  { id: 4, title: "AI 기반 웹 서비스 개발 과정", category: "WEB", duration: "운영 정보 확인", recruitmentStatus: "모집 정보 확인", summary: "Java·Spring Boot·MySQL·React를 연결해 인증, 권한, CRUD, 예외 처리, 통합 테스트까지 웹 서비스 전 과정을 구현합니다."}
-];
+
 
 const projectFallback = [
   {
