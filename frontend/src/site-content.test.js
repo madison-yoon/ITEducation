@@ -2,71 +2,86 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync, existsSync } from "node:fs";
 import { courseCatalog } from "./course-catalog.js";
+import { previewNotices } from "./preview-content.js";
 
 const app = readFileSync(new URL("./App.js", import.meta.url), "utf8");
 const academy = readFileSync(new URL("./academy-pages.js", import.meta.url), "utf8");
-const experience = readFileSync(new URL("./experience.css", import.meta.url), "utf8");
+const css = readFileSync(new URL("./site.css", import.meta.url), "utf8");
 const readme = readFileSync(new URL("../../README.md", import.meta.url), "utf8");
 
-test("homepage and course routes use one consistent, complete course catalogue", function () {
+test("homepage, course routes and consultation share one complete prospectus catalogue", function () {
   assert.equal(courseCatalog.length, 4);
   assert.deepEqual(courseCatalog.map(function (course) { return course.id; }), [1, 2, 3, 4]);
   for (const course of courseCatalog) {
-    assert.ok(course.title && course.summary && course.target && course.curriculum && course.skills);
-    assert.equal(course.duration, "운영 정보 확인");
-    assert.equal(course.recruitmentStatus, "모집 정보 확인");
+    assert.ok(course.title && course.summary && course.audience && course.learningGoal && course.outcome);
+    assert.equal(course.duration, undefined);
+    assert.equal(course.recruitmentStatus, undefined);
   }
   assert.match(app, /courseCatalog as courseSeed/);
   assert.match(academy, /courseCatalog as courseFallback/);
-  assert.doesNotMatch(app, /const courseSeed = \[/);
-  assert.doesNotMatch(academy, /const courseFallback = \[/);
+  assert.doesNotMatch(app, /course\.duration/);
+  assert.doesNotMatch(academy, /course\.duration/);
 });
 
-test("course list explains four learning paths and their concrete outputs", function () {
-  assert.match(app, /FIND YOUR LEARNING PATH/);
-  assert.match(app, /데이터로 예측하고 추천하기/);
-  assert.match(app, /데이터에서 의사결정 근거 찾기/);
-  assert.match(app, /문서와 지식을 AI 서비스로 연결하기/);
-  assert.match(app, /화면부터 서버까지 서비스 구현하기/);
-  assert.match(app, /대표 학습 산출물/);
-  assert.match(experience, /\.course-path-grid/);
-  assert.match(experience, /@media \(max-width: 680px\)/);
+test("course list and detail answer learner-fit, learning-goal and tangible-outcome questions", function () {
+  for (const token of [
+    "program-page", "program-header", "program-filters", "program-list",
+    "program-card", "program-card-audience", "program-card-outcome",
+    "program-detail-page", "program-detail-hero", "program-curriculum",
+    "program-module", "program-operations-note"
+  ]) {
+    assert.ok(app.includes(token), "missing course UI: " + token);
+    assert.ok(css.includes("." + token), "missing course style: ." + token);
+  }
+  assert.match(app, /이런 관심에 맞습니다/);
+  assert.match(app, /대표 결과물 예시/);
+  assert.match(app, /모집·일정·교육비는 확인된 공지로 안내합니다/);
+  assert.doesNotMatch(app, /FIND YOUR LEARNING PATH/);
+  assert.doesNotMatch(app, /운영기관 공지 확인/);
+  assert.doesNotMatch(app, /모집 정보 확인/);
 });
 
-test("consultation page explains preparation, process and the information collected", function () {
-  assert.match(app, /BEFORE YOU APPLY/);
-  assert.match(app, /관심 분야/);
-  assert.match(app, /현재 경험/);
-  assert.match(app, /학습 여건/);
-  assert.match(app, /목표 결과/);
-  assert.match(app, /HOW IT WORKS/);
-  assert.match(app, /입력 정보 안내/);
-  assert.match(app, /개인정보 처리 주체/);
-  assert.match(experience, /\.consultation-preparation/);
-  assert.match(experience, /\.consultation-privacy-detail/);
+test("static consultation preview does not collect personal information without a working backend", function () {
+  assert.match(app, /consultation-preview-unavailable/);
+  assert.match(app, /이 미리보기에서는 상담 신청 내용을 저장하지 않습니다/);
+  assert.match(css, /\.consultation-preview-unavailable/);
+  assert.match(app, /className: "consultation-form"/);
+  assert.match(app, /api\.post\("\/inquiries"/);
+  assert.match(app, /name: "privacyConsent"/);
+  assert.match(app, /name: "courseTitle"/);
 });
 
-test("home page presents portfolio evidence without implying unverified test results", function () {
+test("home and project pages present learning outputs instead of invented academy grading", function () {
   assert.match(academy, /PORTFOLIO EVIDENCE/);
-  assert.match(academy, /문제와 요구사항/);
-  assert.match(academy, /설계와 데이터/);
-  assert.match(academy, /구현과 변경/);
-  assert.match(academy, /테스트와 품질/);
-  assert.match(academy, /배포와 회고/);
-  assert.match(academy, /REQUIRED/);
-  assert.doesNotMatch(academy, /"TRACEABLE"|"VERIFIED"|"REVIEWED"/);
-  assert.doesNotMatch(academy, /h\("span", null, "PASS"\)/);
-  assert.doesNotMatch(academy, /h\("span", null, "CHECKED"\)/);
+  assert.match(academy, /academy-learning-outcomes/);
+  assert.match(academy, /학습 결과물/);
+  assert.doesNotMatch(academy, /PROJECT SCORE FRAMEWORK/);
+  assert.doesNotMatch(academy, /100 PTS/);
+  assert.doesNotMatch(academy, /academy-review-framework/);
+  assert.doesNotMatch(academy, /총점 100점/);
 });
 
-test("static preview notices are visibly distinguished from live operational notices", function () {
-  assert.match(app, /isStaticPreview \? h\("p", \{ className: "notice-preview-disclaimer", role: "note" \}/);
-  assert.match(app, /시연용 예시 게시물/);
-  assert.match(app, /실제 운영 공지가 아닙니다/);
-  assert.match(app, /notice-preview-disclaimer/);
+test("static preview contains no fabricated operational notice examples", function () {
+  assert.deepEqual(previewNotices, []);
+  assert.match(app, /게시된 공지사항이 없습니다/);
+  assert.doesNotMatch(app, /2026년 11월 교육과정 운영 및 상담 안내/);
 });
 
-test("all six project illustrations referenced by the portfolio are present", function () {
+test("notice categories have distinct visual identities and readable paragraph/list content", function () {
+  assert.match(app, /getNoticeCategoryClass/);
+  assert.match(app, /renderNoticeContent/);
+  for (const token of [
+    "notice-tag--operations", "notice-tag--recruitment",
+    "notice-tag--program", "notice-tag--news", "notice-tag--default",
+    "notice-column-category", "notice-column-title", "notice-column-date",
+    "notice-detail-return"
+  ]) {
+    assert.ok(css.includes("." + token), "missing notice style: " + token);
+  }
+  assert.match(app, /공지사항 목록으로/);
+});
+
+test("project artwork remains mapped and available for every example", function () {
   const assets = [
     "ai-movie-recommender.svg",
     "consumer-data-insights.svg",
@@ -75,13 +90,9 @@ test("all six project illustrations referenced by the portfolio are present", fu
     "learning-operations-platform.svg",
     "vibe-coding-quality.svg"
   ];
-
   assets.forEach(function (asset) {
     assert.ok(academy.includes(asset), "missing project mapping: " + asset);
-    assert.ok(
-      existsSync(new URL("../public/images/projects/" + asset, import.meta.url)),
-      "missing published asset: " + asset
-    );
+    assert.ok(existsSync(new URL("../public/images/projects/" + asset, import.meta.url)), "missing asset: " + asset);
   });
 });
 
