@@ -1,50 +1,36 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 560" fill="none">
-<defs>
- <linearGradient id="bg" x1="92" y1="26" x2="810" y2="550" gradientUnits="userSpaceOnUse"><stop stop-color="#101B3A"/><stop offset=".55" stop-color="#192C61"/><stop offset="1" stop-color="#38265D"/></linearGradient>
- <radialGradient id="glow" cx="0" cy="0" r="1" gradientTransform="matrix(322 0 0 240 482 270)" gradientUnits="userSpaceOnUse"><stop stop-color="#536FF0" stop-opacity=".44"/><stop offset="1" stop-color="#536FF0" stop-opacity="0"/></radialGradient>
- <linearGradient id="glass" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#C4E6FF" stop-opacity=".42"/><stop offset=".52" stop-color="#607EE6" stop-opacity=".18"/><stop offset="1" stop-color="#B78EFF" stop-opacity=".1"/></linearGradient>
- <linearGradient id="edge" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#BDEBFF"/><stop offset=".48" stop-color="#7397FF"/><stop offset="1" stop-color="#C28CFF"/></linearGradient>
- <linearGradient id="film" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#72D8E5"/><stop offset=".5" stop-color="#607CF5"/><stop offset="1" stop-color="#B77DF2"/></linearGradient>
- <filter id="shadow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="17"/></filter>
- <filter id="soft" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="5"/></filter>
- <pattern id="dots" width="26" height="26" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1" fill="#AFC8FF" fill-opacity=".2"/></pattern>
-</defs>
-<rect width="900" height="560" rx="30" fill="url(#bg)"/><rect width="900" height="560" rx="30" fill="url(#glow)"/>
-<path d="M0 422L900 215V560H0V422Z" fill="url(#dots)" opacity=".42"/>
-<ellipse cx="478" cy="445" rx="280" ry="49" fill="#071126" fill-opacity=".72" filter="url(#shadow)"/>
-<ellipse cx="483" cy="289" rx="293" ry="118" stroke="#77C6FF" stroke-opacity=".36" stroke-width="2" transform="rotate(-16 483 289)"/>
-<ellipse cx="483" cy="289" rx="235" ry="91" stroke="#BA98FF" stroke-opacity=".44" stroke-width="1.5" stroke-dasharray="9 13" transform="rotate(25 483 289)"/>
-<path d="M153 351C273 186 379 150 484 202C579 249 633 324 754 209" stroke="url(#edge)" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="4 12" opacity=".85"/>
-<g transform="translate(560 124) rotate(10)">
- <rect x="0" y="0" width="158" height="218" rx="16" fill="#0C1734" fill-opacity=".7" stroke="#A9C7FF" stroke-opacity=".52" stroke-width="2"/>
- <rect x="12" y="12" width="134" height="194" rx="10" fill="url(#glass)" stroke="#D1E5FF" stroke-opacity=".35"/>
- <path d="M27 149L66 85L91 113L116 61L135 149H27Z" fill="url(#film)" fill-opacity=".8"/>
- <circle cx="84" cy="60" r="17" fill="#E8F4FF" fill-opacity=".72"/>
- <path d="M27 171H128M27 183H102" stroke="#C9DAFF" stroke-opacity=".48" stroke-width="4" stroke-linecap="round"/>
- <rect x="16" y="19" width="18" height="5" rx="2.5" fill="#77E1DC"/>
-</g>
-<g transform="translate(682 210) rotate(17)">
- <rect width="116" height="164" rx="13" fill="#17234A" stroke="#A7BCFF" stroke-opacity=".52" stroke-width="2"/>
- <rect x="10" y="10" width="96" height="144" rx="8" fill="url(#glass)"/>
- <circle cx="58" cy="69" r="29" fill="none" stroke="#86E5E8" stroke-width="5" stroke-dasharray="20 9"/>
- <path d="M29 121H86M29 132H73" stroke="#C4D8FF" stroke-opacity=".55" stroke-width="4" stroke-linecap="round"/>
-</g>
-<g transform="translate(245 153) rotate(-13)">
- <circle cx="104" cy="112" r="96" fill="#0D1734" fill-opacity=".78" stroke="url(#edge)" stroke-width="4"/>
- <circle cx="104" cy="112" r="73" fill="url(#glass)" stroke="#C7D9FF" stroke-opacity=".6" stroke-width="3"/>
- <circle cx="104" cy="112" r="22" fill="#0D1D40" stroke="#A9C8FF" stroke-width="5"/>
- <g fill="#101E42" stroke="#95B9FF" stroke-width="3">
-  <circle cx="104" cy="57" r="13"/><circle cx="152" cy="85" r="13"/><circle cx="152" cy="139" r="13"/>
-  <circle cx="104" cy="167" r="13"/><circle cx="56" cy="139" r="13"/><circle cx="56" cy="85" r="13"/>
- </g>
- <path d="M43 25L60 15M67 10L78 7" stroke="#A9E7FF" stroke-width="3" stroke-linecap="round"/>
-</g>
-<g transform="translate(390 355)">
- <rect x="0" y="0" width="154" height="62" rx="16" fill="#111F43" fill-opacity=".92" stroke="#90B9FF" stroke-opacity=".72" stroke-width="2"/>
- <rect x="12" y="12" width="32" height="38" rx="8" fill="url(#film)"/>
- <path d="M58 20H135M58 32H119M58 43H103" stroke="#D2E2FF" stroke-opacity=".66" stroke-width="4" stroke-linecap="round"/>
- <circle cx="137" cy="10" r="5" fill="#7FE1D9"/>
-</g>
-<g fill="#B7E8FF"><circle cx="170" cy="250" r="6"/><circle cx="767" cy="116" r="5"/><circle cx="748" cy="416" r="4"/><circle cx="305" cy="443" r="4"/></g>
-<g fill="#9C8CFF"><circle cx="188" cy="350" r="5"/><circle cx="614" cy="93" r="4"/><circle cx="821" cy="332" r="5"/></g>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 560" role="img" aria-label="AI 영화 추천 프로젝트를 표현한 편집 디자인 일러스트">
+  <rect width="900" height="560" fill="#263a30"/>
+  <path d="M0 410 900 300V560H0Z" fill="#1d2d25"/>
+  <path d="M52 62H848M52 498H848" stroke="#a9b7a8" stroke-opacity=".28" stroke-width="2"/>
+  <g fill="#f8f6ee">
+    <rect x="92" y="104" width="355" height="286" rx="5"/>
+    <rect x="112" y="124" width="315" height="246" fill="#e6e6dc"/>
+    <rect x="130" y="142" width="134" height="190" fill="#bd5034"/>
+    <rect x="276" y="142" width="134" height="190" fill="#9aaa99"/>
+    <path d="M130 282 178 214 218 247 264 192V332H130Z" fill="#273b30"/>
+    <circle cx="194" cy="190" r="20" fill="#f8f6ee"/>
+    <path d="M276 287 314 236 347 260 410 180V332H276Z" fill="#263a30"/>
+    <circle cx="345" cy="193" r="21" fill="#bd5034"/>
+    <path d="M130 347H248M276 347H388" stroke="#263a30" stroke-width="7" stroke-linecap="square"/>
+  </g>
+  <g transform="translate(526 100)">
+    <rect width="268" height="302" rx="4" fill="#f8f6ee"/>
+    <rect x="20" y="20" width="228" height="262" fill="#e7e8df"/>
+    <circle cx="134" cy="145" r="94" fill="none" stroke="#263a30" stroke-width="2" stroke-dasharray="5 9"/>
+    <circle cx="134" cy="145" r="60" fill="#263a30"/>
+    <circle cx="134" cy="145" r="28" fill="#bd5034"/>
+    <g fill="#bd5034" stroke="#263a30" stroke-width="2">
+      <circle cx="134" cy="48" r="15"/><circle cx="216" cy="103" r="15"/>
+      <circle cx="216" cy="190" r="15"/><circle cx="134" cy="242" r="15"/>
+      <circle cx="52" cy="190" r="15"/><circle cx="52" cy="103" r="15"/>
+    </g>
+    <path d="M134 48V85M216 103 188 119M216 190 188 170M134 242V205M52 190 80 170M52 103 80 119" stroke="#263a30" stroke-width="3"/>
+    <path d="M38 264H228" stroke="#263a30" stroke-width="5"/>
+  </g>
+  <g transform="translate(350 408)">
+    <path d="M0 26 30 0H210L240 26V104H0Z" fill="#bd5034"/>
+    <path d="M30 0V104M210 0V104" stroke="#f8f6ee" stroke-opacity=".75" stroke-width="2" stroke-dasharray="5 8"/>
+    <path d="M61 40H178M61 59H155" stroke="#f8f6ee" stroke-width="7" stroke-linecap="square"/>
+  </g>
+  <g fill="#e9aa91"><circle cx="66" cy="436" r="8"/><circle cx="829" cy="76" r="7"/><circle cx="478" cy="67" r="5"/></g>
 </svg>
