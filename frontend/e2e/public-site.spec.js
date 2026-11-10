@@ -3,6 +3,23 @@ import { expect, test } from "@playwright/test";
 
 const publicRoutes = ["./", "about", "courses", "courses/1", "projects", "notices", "consultation"];
 
+async function waitForVisualAssets(page, route) {
+  const failed = await page.evaluate(async function () {
+    const images = Array.from(document.images);
+    images.forEach(function (image) { image.loading = "eager"; });
+    await document.fonts.ready;
+    await Promise.all(images.map(function (image) {
+      return image.decode().catch(function () { return null; });
+    }));
+    return images.filter(function (image) {
+      return !image.complete || image.naturalWidth <= 0;
+    }).map(function (image) {
+      return image.currentSrc || image.src;
+    });
+  });
+  expect(failed, "image assets on " + route).toEqual([]);
+}
+
 test.describe("IT ACADEMY approved landing-page composition", function () {
   test("home follows the approved visual order and opens course comparison", async function ({ page }) {
     await page.goto("./");
@@ -223,10 +240,12 @@ test.describe("IT ACADEMY approved landing-page composition", function () {
       await page.setViewportSize({ width: 1440, height: 1000 });
       await page.goto(route);
       await expect(page.locator("main#main-content")).toBeVisible();
+      await waitForVisualAssets(page, route + " desktop");
       await page.screenshot({ path: "test-results/visual-review/" + name + "-desktop.png", fullPage: true });
       await page.setViewportSize({ width: 390, height: 844 });
       await page.goto(route);
       await expect(page.locator("main#main-content")).toBeVisible();
+      await waitForVisualAssets(page, route + " mobile");
       await page.screenshot({ path: "test-results/visual-review/" + name + "-mobile.png", fullPage: true });
     }
   });
