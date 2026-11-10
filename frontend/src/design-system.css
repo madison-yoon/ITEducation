@@ -5169,3 +5169,11 @@ img {
     transition: none;
   }
 }
+
+
+/* Remove the inherited cube/orbit scenes: the site's new identity uses editorial project artwork. */
+.academy-scene,
+.academy-hero-visual,
+.notice-heading-visual {
+  display: none;
+}
