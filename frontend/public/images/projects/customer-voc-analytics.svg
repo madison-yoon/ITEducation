@@ -1,31 +1,31 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 560" role="img" aria-label="고객 의견 분류와 이슈 분석을 표현한 편집 디자인 일러스트">
-  <rect width="900" height="560" fill="#172c31"/>
-  <path d="M0 0H900V560H0Z" fill="none" stroke="#b9cbca" stroke-opacity=".45" stroke-width="2"/>
+  <rect width="900" height="560" fill="#102b23"/>
+  <path d="M0 0H900V560H0Z" fill="none" stroke="#c7d0c6" stroke-opacity=".45" stroke-width="2"/>
   <g transform="translate(88 86)">
-    <path d="M0 0H365V175H105L65 218V175H0Z" fill="#fbfdfc"/>
-    <path d="M43 53H300M43 77H260" stroke="#829a9c" stroke-width="8"/>
-    <circle cx="85" cy="128" r="9" fill="#176b68"/><circle cx="125" cy="128" r="9" fill="#176b68"/><circle cx="165" cy="128" r="9" fill="#176b68"/>
-    <path d="M212 126H318" stroke="#172c31" stroke-width="8"/>
+    <path d="M0 0H365V175H105L65 218V175H0Z" fill="#fffdf9"/>
+    <path d="M43 53H300M43 77H260" stroke="#7b8f7f" stroke-width="8"/>
+    <circle cx="85" cy="128" r="9" fill="#e8753a"/><circle cx="125" cy="128" r="9" fill="#e8753a"/><circle cx="165" cy="128" r="9" fill="#e8753a"/>
+    <path d="M212 126H318" stroke="#102b23" stroke-width="8"/>
   </g>
   <g transform="translate(460 118)">
-    <path d="M0 0H330V166H90L48 202V166H0Z" fill="#176b68"/>
-    <path d="M40 52H285M40 77H240" stroke="#fbfdfc" stroke-width="8"/>
-    <path d="M45 118H283" stroke="#fbfdfc" stroke-opacity=".6" stroke-width="4"/>
-    <g fill="#fbfdfc"><circle cx="70" cy="118" r="9"/><circle cx="114" cy="118" r="9"/><circle cx="158" cy="118" r="9"/></g>
+    <path d="M0 0H330V166H90L48 202V166H0Z" fill="#e8753a"/>
+    <path d="M40 52H285M40 77H240" stroke="#fffdf9" stroke-width="8"/>
+    <path d="M45 118H283" stroke="#fffdf9" stroke-opacity=".6" stroke-width="4"/>
+    <g fill="#fffdf9"><circle cx="70" cy="118" r="9"/><circle cx="114" cy="118" r="9"/><circle cx="158" cy="118" r="9"/></g>
   </g>
   <g transform="translate(218 300)">
-    <rect width="468" height="176" fill="#dcebea"/>
-    <path d="M25 35H443M25 147H443" stroke="#172c31" stroke-width="2"/>
+    <rect width="468" height="176" fill="#e3e9df"/>
+    <path d="M25 35H443M25 147H443" stroke="#102b23" stroke-width="2"/>
     <g>
-      <rect x="44" y="67" width="42" height="57" fill="#176b68"/>
-      <rect x="112" y="49" width="42" height="75" fill="#172c31"/>
-      <rect x="180" y="84" width="42" height="40" fill="#789594"/>
-      <rect x="248" y="58" width="42" height="66" fill="#176b68"/>
-      <rect x="316" y="39" width="42" height="85" fill="#172c31"/>
-      <rect x="384" y="72" width="42" height="52" fill="#789594"/>
+      <rect x="44" y="67" width="42" height="57" fill="#e8753a"/>
+      <rect x="112" y="49" width="42" height="75" fill="#102b23"/>
+      <rect x="180" y="84" width="42" height="40" fill="#b94f28"/>
+      <rect x="248" y="58" width="42" height="66" fill="#e8753a"/>
+      <rect x="316" y="39" width="42" height="85" fill="#102b23"/>
+      <rect x="384" y="72" width="42" height="52" fill="#b94f28"/>
     </g>
-    <path d="M45 22H175M191 22H332" stroke="#829a9c" stroke-width="6"/>
+    <path d="M45 22H175M191 22H332" stroke="#7b8f7f" stroke-width="6"/>
   </g>
-  <g fill="#dfe98a"><circle cx="782" cy="437" r="7"/><circle cx="108" cy="465" r="6"/><circle cx="821" cy="66" r="5"/></g>
-  <path d="M245 239C330 262 380 265 450 264M607 288C670 274 702 253 749 238" fill="none" stroke="#b9cbca" stroke-opacity=".7" stroke-width="3" stroke-dasharray="6 10"/>
+  <g fill="#f1a16e"><circle cx="782" cy="437" r="7"/><circle cx="108" cy="465" r="6"/><circle cx="821" cy="66" r="5"/></g>
+  <path d="M245 239C330 262 380 265 450 264M607 288C670 274 702 253 749 238" fill="none" stroke="#c7d0c6" stroke-opacity=".7" stroke-width="3" stroke-dasharray="6 10"/>
 </svg>
