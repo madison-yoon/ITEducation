@@ -27,7 +27,7 @@ test("the home page follows the approved hero, course, project, notice and CTA s
   for (const selector of [
     "academy-hero", "academy-feature-strip", "academy-program-section",
     "academy-course-grid", "academy-project-showcase", "academy-project-feature",
-    "academy-project-side-list", "academy-home-information",
+    "academy-project-side-list", "academy-feature-image", "academy-home-information",
     "academy-home-notices", "academy-home-consultation", "academy-final-cta"
   ]) assert.ok(academy.includes(selector), "missing homepage section: " + selector);
   assert.match(academy, /IT로 만드는/);
