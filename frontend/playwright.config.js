@@ -15,7 +15,7 @@ export default defineConfig({
     trace: "retain-on-failure"
   },
   webServer: {
-    command: "npm run preview -- --host 127.0.0.1 --port 4173 --strictPort",
+    command: "node ./e2e/pages-preview-server.js",
     url: "http://127.0.0.1:4173/ITEducation/",
     reuseExistingServer: !process.env.CI,
     timeout: 30000
