@@ -33,9 +33,10 @@ test("the home page follows the approved hero, course, project, notice and CTA s
   assert.match(academy, /IT로 만드는/);
   assert.match(academy, /당신의 새로운 시작/);
   assert.match(academy, /MOMO 영화 리뷰 커뮤니티/);
-  assert.match(academy, /IT ACADEMY 통합 플랫폼/);
-  assert.match(academy, /AI 로또 분석기/);
-  assert.match(academy, /날씨 생활 도우미/);
+  assert.match(academy, /const relatedProjects = projectFallback\.slice\(1, 4\)/);
+  assert.match(academy, /교육 설계 예시/);
+  assert.match(academy, /images\/academy-hero\.webp/);
+  assert.doesNotMatch(academy.slice(academy.indexOf('const featuredProject'), academy.indexOf('const relatedProjects')), /IT ACADEMY 통합 플랫폼|AI 로또 분석기|날씨 생활 도우미/);
   assert.doesNotMatch(academy, /PROJECT SCORE FRAMEWORK|100 PTS|TRACEABLE|VERIFIED|REVIEWED/);
 });
 
@@ -72,7 +73,18 @@ test("home and project pages do not present an invented academy grading framewor
   assert.doesNotMatch(academy, /100 PTS/);
   assert.doesNotMatch(academy, /academy-review-framework/);
   assert.match(academy, /MOMO 영화 리뷰 커뮤니티/);
-  assert.match(academy, /프로젝트 설계 사례/);
+  assert.match(academy, /교육 설계 예시/);
+});
+
+test("homepage and course routes use the same four approved course photography assets", function () {
+  assert.match(academy, /photo-1753613648137-602c669cbe07/);
+  assert.match(academy, /photo-1666875753105-c63a6f3bdc86/);
+  assert.match(academy, /photo-1754039985001-ccafee437736/);
+  assert.match(academy, /photo-1775519520461-6b6e068d9250/);
+  assert.match(app, /photo-1753613648137-602c669cbe07/);
+  assert.match(app, /photo-1666875753105-c63a6f3bdc86/);
+  assert.match(app, /photo-1754039985001-ccafee437736/);
+  assert.match(app, /photo-1775519520461-6b6e068d9250/);
 });
 
 test("static preview contains no fabricated operational notice examples", function () {
