@@ -4,7 +4,7 @@ import { readFileSync, existsSync } from "node:fs";
 
 const projectPage = readFileSync(new URL("./academy-pages.js", import.meta.url), "utf8");
 const app = readFileSync(new URL("./App.js", import.meta.url), "utf8");
-const css = readFileSync(new URL("./design-system.css", import.meta.url), "utf8");
+const css = readFileSync(new URL("./site.css", import.meta.url), "utf8");
 const root = new URL("../public/images/projects/", import.meta.url);
 const artworkFiles = [
   "ai-movie-recommender.svg",
@@ -27,11 +27,11 @@ test("all project and homepage artwork files use the new editorial palette", fun
 });
 
 test("the same project illustration is used in featured and gallery image components", function () {
-  assert.match(projectPage, /academy-feature-image/);
+  assert.match(projectPage, /academy-project-feature-image/);
   assert.match(projectPage, /academy-project-image/);
   assert.match(projectPage, /projectArtwork/);
   assert.match(projectPage, /getProjectArtwork\(project\)/);
-  assert.match(css, /\.academy-feature-image,/);
+  assert.match(css, /\.academy-project-feature-image/);
   assert.match(css, /\.academy-project-image/);
 });
 
