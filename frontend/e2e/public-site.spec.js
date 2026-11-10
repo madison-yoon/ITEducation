@@ -5,7 +5,7 @@ test.describe("IT ACADEMY public website", function () {
     await page.goto("./");
 
     await expect(page.getByRole("heading", { level: 1 }).first()).toBeVisible();
-    await page.getByRole("link", { name: "교육과정 탐색" }).click();
+    await page.getByRole("link", { name: "교육과정 살펴보기" }).click();
     await expect(page).toHaveURL(/\/courses\/?$/);
     await expect(page.getByRole("heading", { level: 1 }).first()).toBeVisible();
 
