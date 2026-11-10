@@ -9,7 +9,7 @@ const h = React.createElement;
 
 const projectFallback = [
   {
-    id: 1, title: "AI 영화 추천 플랫폼", category: "AI · WEB", duration: "6주", teamSize: "4명",
+    id: 1, title: "AI 영화 추천 플랫폼", category: "AI · WEB",
     description: "사용자 선호와 작품 메타데이터를 분석해 설명 가능한 추천 결과를 제공하는 서비스입니다.",
     problem: "사용자는 방대한 작품 중 취향에 맞는 영화를 찾기 어렵고 추천 이유도 확인하기 어렵습니다.",
     solution: "장르·평점·선호 이력을 정제하고 콘텐츠 유사도와 사용자 피드백을 결합한 추천 흐름을 설계합니다.",
@@ -20,7 +20,7 @@ const projectFallback = [
     evaluationPoints: ["추천 품질과 평가 지표의 타당성", "데이터 누수 및 편향 점검", "API·화면 통합 테스트"]
   },
   {
-    id: 2, title: "소비 데이터 인사이트 랩", category: "DATA", duration: "4주", teamSize: "3명",
+    id: 2, title: "소비 데이터 인사이트 랩", category: "DATA",
     description: "원천 데이터를 정제하고 핵심 지표를 정의해 의사결정용 대시보드로 전달합니다.",
     problem: "흩어진 거래 데이터만으로는 기간별 변화와 고객군별 차이를 빠르게 파악하기 어렵습니다.",
     solution: "분석 질문을 먼저 정의하고 데이터 품질을 점검한 뒤 SQL·Python 기반 분석과 시각화를 연결합니다.",
@@ -31,7 +31,7 @@ const projectFallback = [
     evaluationPoints: ["분석 질문과 지표 간 정합성", "전처리 근거와 재현성", "시각화의 전달력"]
   },
   {
-    id: 3, title: "근거 중심 사내 문서 AI", category: "GEN AI", duration: "5주", teamSize: "4명",
+    id: 3, title: "근거 중심 사내 문서 AI", category: "GEN AI",
     description: "문서 검색 결과와 출처를 함께 제시하는 RAG 기반 질의응답 서비스를 구현합니다.",
     problem: "문서가 여러 공간에 분산되어 있어 필요한 정보를 찾는 시간이 길고 답변 근거를 추적하기 어렵습니다.",
     solution: "문서 파싱·청킹·임베딩·검색·응답 생성 단계를 분리하고 검색 결과의 출처를 화면에 표시합니다.",
@@ -42,7 +42,7 @@ const projectFallback = [
     evaluationPoints: ["검색 적합도와 근거 일치도", "환각 대응과 안전한 거절", "비용·지연 시간 관리"]
   },
   {
-    id: 4, title: "고객 VOC 분류·분석 시스템", category: "DATA", duration: "5주", teamSize: "3명",
+    id: 4, title: "고객 VOC 분류·분석 시스템", category: "DATA",
     description: "고객 의견을 분류하고 반복 이슈와 우선 대응 대상을 파악하는 NLP 프로젝트입니다.",
     problem: "자유 형식의 고객 의견이 누적되면 담당자가 유형을 분류하고 주요 이슈를 찾는 데 시간이 듭니다.",
     solution: "텍스트 전처리, 라벨 기준 수립, 분류 모델 비교, 신뢰도 기반 검토 흐름을 구현합니다.",
@@ -53,7 +53,7 @@ const projectFallback = [
     evaluationPoints: ["클래스 불균형과 평가 지표", "오분류 원인 분석", "사람의 검토 절차 설계"]
   },
   {
-    id: 5, title: "학습 운영 통합 플랫폼", category: "WEB", duration: "6주", teamSize: "4명",
+    id: 5, title: "학습 운영 통합 플랫폼", category: "WEB",
     description: "사용자·과정·과제·공지 데이터를 연결해 학습 운영 흐름을 관리하는 웹 서비스입니다.",
     problem: "학습 일정과 제출 상태가 여러 도구에 나뉘면 학습자와 운영자 모두 진행 상황을 놓치기 쉽습니다.",
     solution: "역할과 권한을 정의하고 관계형 데이터 모델, API 계약, 반응형 화면을 순서대로 구현합니다.",
@@ -64,7 +64,7 @@ const projectFallback = [
     evaluationPoints: ["도메인·DB 모델의 일관성", "권한·입력값 검증", "통합 테스트와 운영 문서"]
   },
   {
-    id: 6, title: "Vibe Coding 품질 검증 워크벤치", category: "VIBE CODING", duration: "4주", teamSize: "3~4명",
+    id: 6, title: "Vibe Coding 품질 검증 워크벤치", category: "VIBE CODING",
     description: "AI 코딩 도구를 활용하되 생성 코드의 근거·검증·수정 이력을 함께 관리하는 프로젝트입니다.",
     problem: "AI가 만든 코드는 빠르게 동작할 수 있지만 요구사항 누락, 보안 취약점, 이해하지 못한 코드가 남을 수 있습니다.",
     solution: "요구사항을 작업 단위로 나누고 AI 프롬프트·생성 결과·사람의 수정·테스트 증거를 하나의 흐름으로 기록합니다.",
@@ -331,48 +331,17 @@ export function AcademyHome() {
     return function () { controller.abort(); };
   }, []);
 
-  const featuredProjects = [
-    {
-      id: "momo",
-      title: "MOMO 영화 리뷰 커뮤니티",
-      category: "웹 서비스",
-      description: "영화 탐색과 리뷰 작성, 좋아요·싫어요 반응을 연결한 영화 커뮤니티 프로젝트입니다.",
-      stack: "React · Spring Boot · JPA · MySQL",
-      image: projectArtwork[1],
-      link: "https://github.com/madison-yoon/MOMO",
-      linkLabel: "MOMO 프로젝트 보기"
-    },
-    {
-      id: "academy",
-      title: "IT ACADEMY 통합 플랫폼",
-      category: "교육 플랫폼",
-      description: "교육과정, 프로젝트, 공지와 상담 안내를 하나의 웹 경험으로 연결합니다.",
-      stack: "React · Spring Boot",
-      image: projectArtwork[5],
-      link: "https://github.com/madison-yoon/ITEducation"
-    },
-    {
-      id: "lotto",
-      title: "AI 로또 분석기",
-      category: "데이터·AI",
-      description: "회차 데이터 수집과 통계 분석, 여러 예측 모델의 성능 비교를 실험합니다.",
-      stack: "Python · Pandas · Scikit-learn",
-      image: projectArtwork[2]
-    },
-    {
-      id: "weather",
-      title: "날씨 생활 도우미",
-      category: "API 연동",
-      description: "외부 날씨 API를 연결해 지역별 현재 기상과 예보 정보를 보여줍니다.",
-      stack: "React · REST API",
-      image: projectArtwork[4]
-    }
-  ];
-
-  const categoryLabel = function (value) {
-    const labels = { "AI": "AI · 머신러닝", "DATA": "데이터 분석", "GEN AI": "생성형 AI", "WEB": "웹 서비스" };
-    return labels[value] || value || "교육과정";
+  const featuredProject = {
+    id: "momo",
+    title: "MOMO 영화 리뷰 커뮤니티",
+    category: "웹 서비스",
+    description: "영화 탐색과 리뷰 작성, 좋아요·싫어요 반응을 연결한 영화 커뮤니티 프로젝트입니다.",
+    stack: "React · Spring Boot · JPA · MySQL",
+    image: projectArtwork[1],
+    link: "https://github.com/madison-yoon/MOMO"
   };
+  // Reuse gallery examples and label them as educational designs, not actual student work.
+  const relatedProjects = projectFallback.slice(1, 4);
 
   return h(React.Fragment, null,
     h("section", { className: "academy-hero" },
@@ -394,7 +363,7 @@ export function AcademyHome() {
         h("div", { className: "academy-hero-visual", "aria-label": "노트북으로 개발을 공부하는 학습 공간" },
           h("img", {
             className: "academy-hero-image",
-            src: "https://images.unsplash.com/photo-1759752394243-9a1592d13f14?auto=format&fit=crop&w=1800&q=86",
+            src: import.meta.env.BASE_URL + "images/academy-hero.webp",
             alt: "노트북 화면에서 코드를 살펴보는 학습자",
             fetchPriority: "high"
           }),
@@ -473,27 +442,27 @@ export function AcademyHome() {
           h("p", null, "배운 것을 직접 구현하고, 결과와 개발 과정을 함께 정리하는 프로젝트 사례를 만나보세요."),
           h(Link, { to: "/projects", className: "academy-section-button" }, "프로젝트 더보기", h("span", null, "→"))
         ),
-        h("a", { className: "academy-project-feature", href: featuredProjects[0].link, target: "_blank", rel: "noopener noreferrer" },
+        h("a", { className: "academy-project-feature", href: featuredProject.link, target: "_blank", rel: "noopener noreferrer" },
           h("div", { className: "academy-project-feature-image" },
-            h("img", { src: featuredProjects[0].image, alt: "", loading: "lazy", decoding: "async" }),
+            h("img", { src: featuredProject.image, alt: "", loading: "lazy", decoding: "async" }),
             h("span", null, "대표 프로젝트")
           ),
           h("div", { className: "academy-project-feature-copy" },
             h("span", null, "MOVIE REVIEW COMMUNITY"),
-            h("h3", null, featuredProjects[0].title),
-            h("p", null, featuredProjects[0].description),
-            h("small", null, featuredProjects[0].stack),
+            h("h3", null, featuredProject.title),
+            h("p", null, featuredProject.description),
+            h("small", null, featuredProject.stack),
             h("b", null, "프로젝트 보기 →")
           )
         ),
         h("div", { className: "academy-project-side-list" },
-          featuredProjects.slice(1).map(function (project) {
+          relatedProjects.map(function (project) {
             return h("article", { className: "academy-project-side-item", key: project.id },
               h("div", { className: "academy-project-side-image" },
-                h("img", { src: project.image, alt: "", loading: "lazy", decoding: "async" })
+                h("img", { src: getProjectArtwork(project), alt: "", loading: "lazy", decoding: "async" })
               ),
               h("div", null,
-                h("span", null, project.category),
+                h("span", null, "교육 설계 예시 · " + project.category),
                 h("h3", null, project.title),
                 h("p", null, project.description)
               ),
