@@ -189,8 +189,11 @@ p { color: var(--site-ink-soft); }
   height: 45px;
   flex: 0 0 43px;
   place-items: center;
+  border: 0;
+  border-radius: 0;
   color: var(--site-accent);
   background: transparent;
+  box-shadow: none;
 }
 .academy-brand-mark { display: block; width: 40px; height: 40px; }
 .academy-brand-copy { display: grid; gap: 2px; }
