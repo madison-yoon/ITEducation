@@ -13,19 +13,14 @@ import {
 } from "react-router-dom";
 import { getPageMetadata, getScrollAction, formatNoticeDate } from "./navigation.js";
 import api from "./api.js";
+import { courseCatalog as courseSeed } from "./course-catalog.js";
 import { previewNotices } from "./preview-content.js";
 import AdminApp from "./AdminApp.js";
 import { AcademyHome, AcademyAbout, AcademyProjects, AcademyScene } from "./academy-pages.js";
 
 const h = React.createElement;
 
-// API 연결에 실패해도 화면을 확인할 수 있도록 준비한 교육과정 기본 데이터입니다.
-const courseSeed = [
-  { id: 1, title: "AI·머신러닝 실무 개발자 과정", category: "AI", duration: "운영 정보 확인", recruitmentStatus: "모집 정보 확인", summary: "Python 데이터 전처리, 기준 모델, 분류·회귀 평가와 추천 API 연결까지 학습합니다.", target: "지원 대상은 운영기관 확인 필요", curriculum: "Python 기초 → 데이터 처리 → 머신러닝 → 딥러닝 → 영화 추천 프로젝트", skills: "Python · NumPy · Pandas · Scikit-learn · PyTorch" },
-  { id: 2, title: "빅데이터 분석 전문가 과정", category: "DATA", duration: "운영 정보 확인", recruitmentStatus: "모집 정보 확인", summary: "SQL 추출과 데이터 품질 점검, 분석 지표 정의, 대시보드·보고서 구현까지 연결합니다.", target: "지원 대상은 운영기관 확인 필요", curriculum: "Python·SQL → 전처리 → 통계 분석 → 시각화 → 분석 대시보드", skills: "Python · SQL · Pandas · Spark" },
-  { id: 3, title: "생성형 AI 서비스 개발 과정", category: "GEN AI", duration: "운영 정보 확인", recruitmentStatus: "모집 정보 확인", summary: "LLM API, 프롬프트 평가, 임베딩·검색, 출처가 연결된 RAG 응답의 품질을 점검합니다.", target: "지원 대상은 운영기관 확인 필요", curriculum: "API → LLM → 프롬프트 → 임베딩·RAG → 문서 질의응답", skills: "Python · LLM API · Embedding · RAG" },
-  { id: 4, title: "AI 기반 웹 서비스 개발 과정", category: "WEB", duration: "운영 정보 확인", recruitmentStatus: "모집 정보 확인", summary: "Java·Spring Boot·MySQL·React로 인증, 권한, CRUD, 예외 처리와 통합 테스트를 구현합니다.", target: "지원 대상은 운영기관 확인 필요", curriculum: "Java → Spring Boot → React → MySQL → AI API 연동", skills: "Java · Spring Boot · React · MySQL" }
-];
+
 
 
  
