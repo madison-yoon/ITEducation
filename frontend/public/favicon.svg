@@ -1,8 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="IT ACADEMY">
-  <rect width="64" height="64" fill="#172c31"/>
-  <path d="M10 14c7-3 14-2 22 2v33c-8-4-15-5-22-2z" fill="#fbfdfc"/>
-  <path d="M54 14c-7-3-14-2-22 2v33c8-4 15-5 22-2z" fill="none" stroke="#fbfdfc" stroke-width="2.5"/>
-  <path d="M32 16v33" stroke="#dfe98a" stroke-width="3"/>
-  <path d="M16 23h10M16 30h10M16 37h8M38 23h10M38 30h10M40 37h8" fill="none" stroke="#176b68" stroke-width="2"/>
-  <path d="M10 47c7-3 14-2 22 2 8-4 15-5 22-2" fill="none" stroke="#dfe98a" stroke-width="1.5"/>
+  <rect width="64" height="64" rx="11" fill="#102b23"/>
+  <path d="M8 53 25 10h14l17 43H45L32 22 19 53z" fill="#f1a16e"/>
+  <path d="M22 39h20" fill="none" stroke="#fff7ed" stroke-width="4" stroke-linecap="square"/>
+  <path d="M29 53h6" fill="none" stroke="#fff7ed" stroke-width="3"/>
 </svg>
