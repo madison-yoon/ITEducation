@@ -372,6 +372,7 @@ p { color: var(--site-ink-soft); }
 .academy-hero-actions { display: flex; flex-wrap: wrap; gap: 13px; margin-top: 29px; }
 .academy-hero-actions .academy-button { min-width: 164px; }
 .academy-hero-visual {
+  display: block;
   position: absolute;
   z-index: 1;
   top: 0;
