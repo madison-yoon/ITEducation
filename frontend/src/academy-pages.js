@@ -202,16 +202,6 @@ const learningSteps = [
   ["05", "검증과 발표", "단위·통합·브라우저 시나리오를 실행하고 접근성·보안·성능의 기본 위험을 확인한 뒤 남은 한계를 설명합니다.", "테스트 케이스 · 실행 결과 · README · 시연 · 회고"]
 ];
 
-const assessment = [
-  ["문제 정의와 요구사항", 15, "사용자·문제·완료 조건이 명확한가"],
-  ["설계와 데이터 구조", 15, "화면 흐름·API·데이터 모델이 일관적인가"],
-  ["구현과 코드 품질", 20, "기능이 동작하고 변경하기 쉬운 구조인가"],
-  ["테스트와 신뢰성", 20, "핵심 시나리오·예외·보안 조건을 검증했는가"],
-  ["사용성·접근성", 10, "누구나 이해하고 사용할 수 있는가"],
-  ["협업과 버전 관리", 10, "이슈·브랜치·리뷰·작업 기록이 남아 있는가"],
-  ["문서와 발표", 10, "설치·실행·시연·한계를 재현 가능하게 설명하는가"]
-];
-
 function Eyebrow(props) {
   return h("span", { className: props.light ? "academy-eyebrow is-light" : "academy-eyebrow" }, props.children);
 }
@@ -499,24 +489,29 @@ export function AcademyHome() {
       )
     ),
 
-    h("section", { className: "academy-assessment-section" },
-      h("div", { className: "container academy-assessment-layout" },
-        h("div", null,
-          h(Eyebrow, { light: true }, "TRANSPARENT PROJECT REVIEW"),
-          h("h2", null, "좋은 프로젝트는 작동하는 화면만으로 평가하지 않습니다."),
-          h("p", null, "평가 기준을 미리 공개하고 결과물과 개발 과정을 함께 확인하도록 설계합니다. 아래 배점은 교육 프로젝트에 적용할 수 있는 공통 평가안입니다.")
+    h("section", { className: "academy-learning-outcomes" },
+      h("div", { className: "container" },
+        h("div", { className: "academy-learning-outcomes-heading" },
+          h("span", { className: "academy-eyebrow" }, "프로젝트에서 남길 결과"),
+          h("h2", null, "배운 내용을 다른 사람에게 설명할 수 있도록."),
+          h("p", null, "프로젝트는 결과 화면 하나로 끝내지 않습니다. 문제를 어떻게 이해했고 어떤 선택으로 구현했는지, 무엇을 확인했는지까지 정리하는 연습입니다.")
         ),
-        h("div", { className: "academy-assessment-card" },
-          h("div", { className: "academy-assessment-card-head" }, h("span", null, "PROJECT SCORE FRAMEWORK"), h("b", null, "100 PTS")),
-          assessment.map(function (item) {
-            return h("div", { className: "academy-score-row", key: item[0] },
-              h("div", { className: "academy-score-label" }, h("b", null, item[0]), h("strong", null, item[1] + "점")),
-              h("div", { className: "academy-score-track" }, h("span", { style: { width: item[1] + "%" } })),
-              h("small", null, item[2])
+        h("div", { className: "academy-learning-outcomes-grid" },
+          [
+            ["01", "작동하는 결과물", "핵심 사용자 흐름을 직접 실행해 볼 수 있는 웹 서비스, 분석 결과 또는 AI 기능"],
+            ["02", "설계 기록", "요구사항, 데이터 구조, 화면 흐름과 기술 선택 이유"],
+            ["03", "구현 기록", "기능별 변경 내용, 사용한 도구와 협업 기록"],
+            ["04", "검증 자료", "정상·오류 상황의 테스트 결과와 확인하지 못한 한계"],
+            ["05", "설명 자료", "실행 방법, README, 시연 자료와 다음 개선 항목"]
+          ].map(function (item) {
+            return h("article", { className: "academy-learning-outcome", key: item[0] },
+              h("span", null, item[0]),
+              h("h3", null, item[1]),
+              h("p", null, item[2])
             );
-          }),
-          h("p", { className: "academy-assessment-note" }, "평가표는 프로젝트 유형과 교육 운영 방침에 따라 조정할 수 있습니다.")
-        )
+          })
+        ),
+        h("p", { className: "academy-learning-outcomes-note" }, "위 내용은 프로젝트 결과를 정리하는 교육 설계 예시입니다. 실제 과제·산출물은 과정과 운영 범위에 따라 달라집니다.")
       )
     ),
 
@@ -710,10 +705,11 @@ export function AcademyProjects() {
     ),
     h("div", { className: "container academy-projects-content" },
       h("div", { className: "academy-project-summary" },
-        h("div", null, h("strong", null, String(projects.length).padStart(2, "0")), h("span", null, "교육 설계 사례")),
-        h("div", null, h("strong", null, "100"), h("span", null, "점 평가 프레임워크")),
-        h("div", null, h("strong", null, "E2E"), h("span", null, "기획부터 검증까지")),
-        h("p", null, loading ? "프로젝트 정보를 불러오고 있습니다." : "※ 모든 프로젝트는 교육 설계를 위한 예시입니다.")
+        h("div", null,
+          h("strong", null, String(projects.length).padStart(2, "0")),
+          h("span", null, "프로젝트 설계 사례")
+        ),
+        h("p", null, loading ? "프로젝트 정보를 불러오고 있습니다." : "아래 프로젝트는 학습 흐름을 설명하기 위한 예시입니다. 실제 수강생 결과물이나 운영 실적이 아닙니다.")
       ),
       h("div", { className: "academy-project-toolbar" },
         h("div", { className: "academy-project-filters", role: "group", "aria-label": "프로젝트 분야 필터" },
@@ -743,7 +739,7 @@ export function AcademyProjects() {
                 h("small", null, (project.category || "PROJECT").toUpperCase())
               ),
               h("div", { className: "academy-project-card-body" },
-                h("div", { className: "academy-project-meta" }, h("span", null, project.category), h("span", null, project.duration ? "설계 예시 · " + project.duration : "교육 설계 예시")),
+                h("div", { className: "academy-project-meta" }, h("span", null, project.category), h("span", null, "교육 설계 예시")),
                 h("h2", null, project.title),
                 h("p", null, project.description),
                 h("p", { className: "academy-project-card-focus" }, blueprint.focus),
@@ -755,18 +751,25 @@ export function AcademyProjects() {
         })
       ),
       h("p", { className: "academy-honesty-note" }, "실제 수강생 작품, 수상 이력, 취업률로 오인되지 않도록 예시 프로젝트임을 명시합니다. 운영기관의 검증된 실적 자료가 확보되면 해당 자료와 구분해 게시할 수 있습니다."),
-      h("section", { className: "academy-review-framework" },
-        h(SectionHeading, { label: "HOW WE REVIEW", title: "프로젝트 심사 기준", description: "완성 화면만 보는 평가를 피하고 과정의 타당성과 결과의 신뢰성을 함께 확인합니다." }),
-        h("div", { className: "academy-review-grid" },
-          assessment.map(function (item, index) {
-            return h("article", { key: item[0] },
+      h("section", { className: "academy-project-learning" },
+        h("div", null,
+          h("span", { className: "academy-eyebrow" }, "프로젝트 학습 흐름"),
+          h("h2", null, "작은 단계로 완성하고, 과정을 설명합니다."),
+          h("p", null, "프로젝트별 세부 방법은 다르지만 문제를 이해하고 설계한 뒤 구현·검증·정리하는 흐름을 공통으로 연습합니다.")
+        ),
+        h("ol", null,
+          [
+            ["문제 이해", "누가 어떤 상황에서 어려움을 겪는지 구체화합니다."],
+            ["구현 설계", "데이터, 화면, 기능의 범위와 완료 조건을 정리합니다."],
+            ["기능 구현", "작은 단위로 만들고 실행하면서 통합합니다."],
+            ["검증과 정리", "오류와 한계를 확인하고 실행·시연 자료로 정리합니다."]
+          ].map(function (step, index) {
+            return h("li", { key: step[0] },
               h("span", null, "0" + (index + 1)),
-              h("div", null, h("h3", null, item[0]), h("p", null, item[2])),
-              h("strong", null, item[1] + "점")
+              h("div", null, h("h3", null, step[0]), h("p", null, step[1]))
             );
           })
-        ),
-        h("div", { className: "academy-review-footnote" }, "총점 100점 · 프로젝트 유형과 난이도에 따라 평가 세부 항목은 조정할 수 있습니다.")
+        )
       ),
       h("section", { className: "academy-project-cta" },
         h("div", null, h("h2", null, "프로젝트를 통해 어떤 역량을 증명할지 설계하세요."), h("p", null, "관심 분야와 목표에 맞는 교육과정을 상담에서 확인할 수 있습니다.")),
@@ -776,16 +779,16 @@ export function AcademyProjects() {
     selected ? h("div", { className: "academy-project-modal-backdrop", role: "presentation", onMouseDown: function (event) { if (event.target === event.currentTarget) setSelected(null); } },
       h("article", { ref: dialogRef, className: "academy-project-modal", role: "dialog", "aria-modal": "true", "aria-labelledby": "academy-project-modal-title", "aria-describedby": "academy-project-modal-description", tabIndex: -1 },
         h("button", { type: "button", className: "academy-modal-close", onClick: function () { setSelected(null); }, "aria-label": "상세 창 닫기" }, "×"),
-        h(Eyebrow, null, (selected.category || "PROJECT") + " · " + (selected.duration || "CAPSTONE")),
+        h("p", { className: "academy-modal-kicker" }, (selected.category || "프로젝트") + " · 교육 설계 예시"),
         getProjectArtwork(selected) ? h("div", { className: "academy-modal-art" },
           h("img", { src: getProjectArtwork(selected), alt: "", loading: "lazy" })
         ) : null,
         h("h2", { id: "academy-project-modal-title" }, selected.title),
         h("p", { id: "academy-project-modal-description", className: "academy-modal-lead" }, selected.description),
         h("div", { className: "academy-modal-facts" },
-          h("div", null, h("small", null, "설계 예시 기간"), h("b", null, selected.duration || "과정별 설계 확인")),
-          h("div", null, h("small", null, "설계 예시 팀 구성"), h("b", null, selected.teamSize || selected.team || "과정별 운영안에 따라 편성")),
-          h("div", null, h("small", null, "PROJECT TYPE"), h("b", null, "교육 설계 예시"))
+          h("div", null, h("small", null, "프로젝트 분야"), h("b", null, selected.category || "교육 설계 예시")),
+          h("div", null, h("small", null, "사례 성격"), h("b", null, "교육 설계 예시")),
+          h("div", null, h("small", null, "학습 초점"), h("b", null, getProjectBlueprint(selected).focus))
         ),
         h("div", { className: "academy-modal-section-grid" },
           h("section", null, h("h3", null, "01 · 해결할 문제"), h("p", null, selected.problem || "사용자 문제와 해결 목표를 정의합니다.")),
@@ -824,7 +827,7 @@ export function AcademyProjects() {
           h("h3", null, "기술 스택"),
           h("div", null, (selected.stack || []).map(function (item) { return h("span", { key: item }, item); }))
         ),
-        h("div", { className: "academy-modal-result" }, h("b", null, "EXPECTED OUTCOME"), h("p", null, selected.result || "구현 결과와 검증 근거를 포트폴리오로 정리합니다.")),
+        h("div", { className: "academy-modal-result" }, h("b", null, "학습 결과 예시"), h("p", null, selected.result || "구현 결과와 검증 근거를 포트폴리오로 정리합니다.")),
         h(Link, { to: "/consultation", className: "academy-button primary", onClick: function () { setSelected(null); } }, "관련 교육과정 상담하기", h("span", null, "↗"))
       )
     ) : null
