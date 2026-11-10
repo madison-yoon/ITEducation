@@ -1,34 +1,34 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 560" role="img" aria-label="데이터 분석 대시보드를 표현한 편집 디자인 일러스트">
-  <rect width="900" height="560" fill="#edf2f1"/>
-  <path d="M0 0H900V560H0Z" fill="none" stroke="#172c31" stroke-width="2"/>
-  <path d="M48 70H852M48 490H852" stroke="#b9cbca" stroke-width="2"/>
+  <rect width="900" height="560" fill="#e8e0d5"/>
+  <path d="M0 0H900V560H0Z" fill="none" stroke="#102b23" stroke-width="2"/>
+  <path d="M48 70H852M48 490H852" stroke="#c7d0c6" stroke-width="2"/>
   <g transform="translate(82 100)">
-    <rect width="352" height="294" fill="#172c31"/>
-    <path d="M25 44H327M25 58H225" stroke="#c4d1d0" stroke-width="5"/>
-    <path d="M39 242V100M94 242V130M149 242V84M204 242V158M259 242V114" stroke="#fbfdfc" stroke-width="25"/>
-    <path d="M39 242V178M94 242V156M149 242V133M204 242V192M259 242V155" stroke="#176b68" stroke-width="25"/>
-    <path d="M25 262H327" stroke="#dcebea" stroke-width="2"/>
-    <path d="M25 92H327M25 166H327M25 214H327" stroke="#fbfdfc" stroke-opacity=".22" stroke-width="1" stroke-dasharray="3 8"/>
+    <rect width="352" height="294" fill="#102b23"/>
+    <path d="M25 44H327M25 58H225" stroke="#d7d0c5" stroke-width="5"/>
+    <path d="M39 242V100M94 242V130M149 242V84M204 242V158M259 242V114" stroke="#fffdf9" stroke-width="25"/>
+    <path d="M39 242V178M94 242V156M149 242V133M204 242V192M259 242V155" stroke="#e8753a" stroke-width="25"/>
+    <path d="M25 262H327" stroke="#e3e9df" stroke-width="2"/>
+    <path d="M25 92H327M25 166H327M25 214H327" stroke="#fffdf9" stroke-opacity=".22" stroke-width="1" stroke-dasharray="3 8"/>
   </g>
   <g transform="translate(477 86)">
-    <rect width="330" height="190" fill="#fbfdfc" stroke="#172c31" stroke-width="2"/>
-    <path d="M25 30H305" stroke="#172c31" stroke-width="5"/>
-    <path d="M37 140 91 113 145 122 199 73 253 92 291 48" fill="none" stroke="#176b68" stroke-width="7" stroke-linecap="square"/>
-    <g fill="#172c31"><circle cx="37" cy="140" r="7"/><circle cx="91" cy="113" r="7"/><circle cx="145" cy="122" r="7"/><circle cx="199" cy="73" r="7"/><circle cx="253" cy="92" r="7"/><circle cx="291" cy="48" r="7"/></g>
-    <path d="M25 163H305" stroke="#829a9c" stroke-width="2"/>
+    <rect width="330" height="190" fill="#fffdf9" stroke="#102b23" stroke-width="2"/>
+    <path d="M25 30H305" stroke="#102b23" stroke-width="5"/>
+    <path d="M37 140 91 113 145 122 199 73 253 92 291 48" fill="none" stroke="#e8753a" stroke-width="7" stroke-linecap="square"/>
+    <g fill="#102b23"><circle cx="37" cy="140" r="7"/><circle cx="91" cy="113" r="7"/><circle cx="145" cy="122" r="7"/><circle cx="199" cy="73" r="7"/><circle cx="253" cy="92" r="7"/><circle cx="291" cy="48" r="7"/></g>
+    <path d="M25 163H305" stroke="#7b8f7f" stroke-width="2"/>
   </g>
   <g transform="translate(480 315)">
-    <rect width="328" height="108" fill="#176b68"/>
-    <g fill="#fbfdfc">
+    <rect width="328" height="108" fill="#e8753a"/>
+    <g fill="#fffdf9">
       <rect x="22" y="23" width="64" height="64"/><rect x="99" y="23" width="64" height="64"/>
       <rect x="176" y="23" width="64" height="64"/>
     </g>
-    <g fill="#172c31"><path d="M34 70 50 43 73 70Z"/><circle cx="130" cy="52" r="18"/><path d="M191 70V43H226V70Z"/></g>
-    <path d="M258 39H305M258 55H291M258 71H301" stroke="#fbfdfc" stroke-width="5"/>
+    <g fill="#102b23"><path d="M34 70 50 43 73 70Z"/><circle cx="130" cy="52" r="18"/><path d="M191 70V43H226V70Z"/></g>
+    <path d="M258 39H305M258 55H291M258 71H301" stroke="#fffdf9" stroke-width="5"/>
   </g>
   <g transform="translate(110 425)">
-    <path d="M0 0H300" stroke="#172c31" stroke-width="2"/>
-    <path d="M0 18H190M0 34H250" stroke="#172c31" stroke-opacity=".4" stroke-width="5"/>
+    <path d="M0 0H300" stroke="#102b23" stroke-width="2"/>
+    <path d="M0 18H190M0 34H250" stroke="#102b23" stroke-opacity=".4" stroke-width="5"/>
   </g>
-  <g fill="#176b68"><circle cx="840" cy="458" r="8"/><circle cx="452" cy="70" r="6"/></g>
+  <g fill="#e8753a"><circle cx="840" cy="458" r="8"/><circle cx="452" cy="70" r="6"/></g>
 </svg>
