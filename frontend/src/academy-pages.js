@@ -216,20 +216,23 @@ function SectionHeading(props) {
 
 function CoursePreview(props) {
   const course = props.course;
-  return h("article", { className: "academy-course-card" },
+  const guide = courseFallback.find(function (item) { return String(item.id) === String(course.id); }) || {};
+  return h("article", { className: "academy-course-card", "data-category": String(course.category || guide.category || "program").toLowerCase() },
     h("div", { className: "academy-course-top" },
-      h("span", { className: "academy-course-code" }, String(course.category || "PROGRAM").toUpperCase()),
-      h("span", { className: "academy-status" }, course.recruitmentStatus || "과정 안내")
+      h("span", { className: "academy-course-code" }, course.category || guide.category || "PROGRAM"),
+      h("span", { className: "academy-course-type" }, "학습 과정")
     ),
     h("h3", null, course.title),
-    h("p", null, course.summary || course.description || "기초 개념부터 프로젝트까지 단계적으로 학습합니다."),
+    h("p", null, course.summary || guide.summary),
+    h("div", { className: "academy-course-output" },
+      h("b", null, "대표 결과물 예시"),
+      h("span", null, course.outcome || guide.outcome)
+    ),
     h("div", { className: "academy-course-foot" },
-      h("span", null, course.duration || "교육 기간 상담"),
-      h(Link, { to: "/courses/" + course.id }, "과정 구조 보기")
+      h(Link, { to: "/courses/" + course.id }, "과정 살펴보기")
     )
   );
 }
-
 function FloatingWindow(props) {
   return h("div", { className: "academy-float-window " + props.className },
     h("div", { className: "academy-window-head" },
