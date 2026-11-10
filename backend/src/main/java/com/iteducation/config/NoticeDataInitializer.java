@@ -41,8 +41,10 @@ public class NoticeDataInitializer implements CommandLineRunner {
 
         Set<String> existingTitles = new HashSet<>();
         notices.findAll().forEach(item -> existingTitles.add(item.getTitle()));
-        samples.removeIf(item -> existingTitles.contains(item.getTitle()));
-        if (!samples.isEmpty()) notices.saveAll(samples);
+        List<Notice> missingSamples = samples.stream()
+            .filter(item -> !existingTitles.contains(item.getTitle()))
+            .toList();
+        if (!missingSamples.isEmpty()) notices.saveAll(missingSamples);
     }
 
     private Notice notice(String title, String category, boolean pinned, LocalDateTime createdAt, String content) {
