@@ -52,7 +52,7 @@ test("static preview never publishes fabricated notices as operational news", fu
 
 test("notice categories have distinct semantic classes and notice content is parsed into blocks", function () {
   assert.match(app, /getNoticeCategoryClass/);
-  assert.match(app, /parseNoticeContent/);
+  assert.match(app, /renderNoticeContent/);
   for (const token of [
     "notice-tag--operations", "notice-tag--recruitment",
     "notice-tag--program", "notice-tag--news", "notice-tag--default",
