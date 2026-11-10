@@ -50,28 +50,29 @@ const server = createServer(async function (request, response) {
     return;
   }
 
-  const relativePath = pathname.slice(basePath.length).replace(/^\\/+/, "") || "index.html";
-  let filePath = resolve(root, relativePath);
+  const relativePath = pathname.slice(basePath.length + 1) || "index.html";
+  const filePath = resolve(root, relativePath);
 
   if (filePath !== root && !filePath.startsWith(root + sep)) {
     send(response, 403, "Forbidden");
     return;
   }
 
+  let resolvedPath = filePath;
   try {
-    const info = await stat(filePath);
-    if (info.isDirectory()) filePath = join(filePath, "index.html");
+    const info = await stat(resolvedPath);
+    if (info.isDirectory()) resolvedPath = join(resolvedPath, "index.html");
   } catch {
     if (extname(relativePath)) {
       send(response, 404, "Not Found");
       return;
     }
-    filePath = join(root, "index.html");
+    resolvedPath = join(root, "index.html");
   }
 
   try {
-    const body = await readFile(filePath);
-    const type = contentTypes[extname(filePath).toLowerCase()] || "application/octet-stream";
+    const body = await readFile(resolvedPath);
+    const type = contentTypes[extname(resolvedPath).toLowerCase()] || "application/octet-stream";
     response.writeHead(200, {
       "Content-Type": type,
       "Content-Length": body.length,
