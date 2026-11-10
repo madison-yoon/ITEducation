@@ -9,7 +9,7 @@ const academy = readFileSync(new URL("./academy-pages.js", import.meta.url), "ut
 const css = readFileSync(new URL("./site.css", import.meta.url), "utf8");
 const readme = readFileSync(new URL("../../README.md", import.meta.url), "utf8");
 
-test("homepage, course routes and consultation share one complete prospectus catalogue", function () {
+test("homepage, course routes and consultation share one complete course catalogue", function () {
   assert.equal(courseCatalog.length, 4);
   assert.deepEqual(courseCatalog.map(function (course) { return course.id; }), [1, 2, 3, 4]);
   for (const course of courseCatalog) {
@@ -21,6 +21,22 @@ test("homepage, course routes and consultation share one complete prospectus cat
   assert.match(academy, /courseCatalog as courseFallback/);
   assert.doesNotMatch(app, /course\.duration/);
   assert.doesNotMatch(academy, /course\.duration/);
+});
+
+test("the home page follows the approved hero, course, project, notice and CTA sequence", function () {
+  for (const selector of [
+    "academy-hero", "academy-feature-strip", "academy-program-section",
+    "academy-course-grid", "academy-project-showcase", "academy-project-feature",
+    "academy-project-side-list", "academy-home-information",
+    "academy-home-notices", "academy-home-consultation", "academy-final-cta"
+  ]) assert.ok(academy.includes(selector), "missing homepage section: " + selector);
+  assert.match(academy, /IT로 만드는/);
+  assert.match(academy, /당신의 새로운 시작/);
+  assert.match(academy, /MOMO 영화 리뷰 커뮤니티/);
+  assert.match(academy, /IT ACADEMY 통합 플랫폼/);
+  assert.match(academy, /AI 로또 분석기/);
+  assert.match(academy, /날씨 생활 도우미/);
+  assert.doesNotMatch(academy, /PROJECT SCORE FRAMEWORK|100 PTS|TRACEABLE|VERIFIED|REVIEWED/);
 });
 
 test("course list and detail answer learner-fit, learning-goal and tangible-outcome questions", function () {
@@ -51,14 +67,12 @@ test("static consultation preview does not collect personal information without 
   assert.match(app, /name: "courseTitle"/);
 });
 
-test("home and project pages present learning outputs instead of invented academy grading", function () {
-  assert.match(academy, /PORTFOLIO EVIDENCE/);
-  assert.match(academy, /academy-learning-outcomes/);
-  assert.match(academy, /학습 결과물/);
+test("home and project pages do not present an invented academy grading framework", function () {
   assert.doesNotMatch(academy, /PROJECT SCORE FRAMEWORK/);
   assert.doesNotMatch(academy, /100 PTS/);
   assert.doesNotMatch(academy, /academy-review-framework/);
-  assert.doesNotMatch(academy, /총점 100점/);
+  assert.match(academy, /MOMO 영화 리뷰 커뮤니티/);
+  assert.match(academy, /프로젝트 설계 사례/);
 });
 
 test("static preview contains no fabricated operational notice examples", function () {
@@ -75,9 +89,7 @@ test("notice categories have distinct visual identities and readable paragraph/l
     "notice-tag--program", "notice-tag--news", "notice-tag--default",
     "notice-column-category", "notice-column-title", "notice-column-date",
     "notice-detail-return"
-  ]) {
-    assert.ok(css.includes("." + token), "missing notice style: " + token);
-  }
+  ]) assert.ok(css.includes("." + token), "missing notice style: " + token);
   assert.match(app, /공지사항 목록으로/);
 });
 
