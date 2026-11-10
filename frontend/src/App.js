@@ -768,7 +768,7 @@ function Consultation() {
   }
 
   if (receipt) {
-    return h("section", { className: "page" },
+    return h("section", { className: "page consultation-success-page" },
       h("div", { className: "container success" },
         h("div", { className: "check" }, "✓"),
         h("span", { className: "eyebrow" }, "APPLICATION COMPLETE"),
@@ -816,6 +816,11 @@ function Consultation() {
         )
       ),
       h("form", { className: "consultation-form", onSubmit: submitForm },
+        h("div", { className: "consultation-form-heading" },
+          h("p", { className: "program-section-index" }, "APPLICATION"),
+          h("h2", null, "상담 신청서"),
+          h("p", null, "관심 있는 교육과정과 현재 상황을 남겨주세요. 확인에 필요한 내용을 중심으로 작성하면 됩니다.")
+        ),
         h("label", null, "이름 *",
           h("input", { required: true, name: "name", autoComplete: "name", maxLength: 40, value: form.name, onChange: function (e) { updateField("name", e.target.value); } })
         ),
@@ -855,7 +860,6 @@ function Consultation() {
             h("div", null, h("dt", null, "필수 입력"), h("dd", null, "이름, 연락처, 희망 교육과정, 문의 내용")),
             h("div", null, h("dt", null, "선택 입력"), h("dd", null, "이메일, 희망 날짜와 시간대, 마케팅 수신 동의"))
           ),
-          h("p", null, "실제 접수 운영 전에는 운영기관의 개인정보 처리 주체, 수집·이용 목적, 보유 기간, 파기 기준과 문의처를 확정해 별도 안내해야 합니다. 확인되지 않은 정책 정보는 임의로 기재하지 않습니다.")
         ),
         h("label", { className: "checkrow" },
           h("input", { type: "checkbox", name: "privacyConsent", required: true, checked: form.privacyConsent, onChange: function (e) { updateField("privacyConsent", e.target.checked); } }),
