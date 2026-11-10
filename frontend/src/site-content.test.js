@@ -1,12 +1,12 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync, existsSync } from "node:fs";
+import { courseCatalog } from "./course-catalog.js";
 
 const app = readFileSync(new URL("./App.js", import.meta.url), "utf8");
 const academy = readFileSync(new URL("./academy-pages.js", import.meta.url), "utf8");
 const experience = readFileSync(new URL("./experience.css", import.meta.url), "utf8");
 const readme = readFileSync(new URL("../../README.md", import.meta.url), "utf8");
-const { courseCatalog } = await import("./course-catalog.js");
 
 test("homepage and course routes use one consistent, complete course catalogue", function () {
   assert.equal(courseCatalog.length, 4);
