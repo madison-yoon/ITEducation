@@ -13,7 +13,7 @@ AI·데이터·소프트웨어 교육과정과 프로젝트 사례, 공지사항
 1. 사진과 기술 오버레이를 결합한 메인 히어로, 교육과정·프로젝트 행동 버튼
 2. 네 가지 교육 특징 안내
 3. 이미지형 교육과정 카드 네 개
-4. MOMO 대표 프로젝트와 IT ACADEMY·AI 로또 분석기·날씨 생활 도우미 사례
+4. MOMO 대표 프로젝트와 소비 데이터 분석·사내 문서 RAG·고객 VOC 분류의 교육 설계 예시
 5. 공지사항과 상담 안내
 6. 하단 CTA 및 공통 푸터
 
@@ -73,11 +73,11 @@ frontend 디렉터리에서 npm ci 후 npm run dev를 실행합니다.
 
 ## 이미지 출처
 
-- 메인 히어로 및 교육과정 카드: Unsplash 이미지 CDN (각 이미지 URL은 academy-pages.js 및 App.js에 지정)
-- 상담 카드 및 CTA 배경: Pexels 이미지 CDN (원본 사진 URL은 academy-pages.js와 site.css에 지정)
-- 프로젝트 갤러리: 저장소의 자체 SVG 이미지
+- 메인 히어로: 사이트용으로 제작해 저장소에 포함한 최적화 WebP (`frontend/public/images/academy-hero.webp`)
+- 교육과정·상담·하단 CTA 사진: Unsplash 이미지 CDN (URL은 `academy-pages.js`, `App.js`, `site.css`에 지정)
+- 프로젝트 갤러리: 저장소에 포함한 자체 SVG 일러스트레이션
 
-외부 이미지 제공처의 이용 조건을 준수하며, 외부 이미지가 차단되어도 핵심 정보와 링크는 접근할 수 있도록 대체 배경색과 대체 텍스트를 제공합니다.
+외부 사진은 Unsplash에서 제공하며, 핵심 교육 정보와 이동 기능은 외부 사진 로딩에 의존하지 않습니다.
 
 ## 검증
 
