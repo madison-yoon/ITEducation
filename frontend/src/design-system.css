@@ -2628,6 +2628,24 @@ img {
   font-size: 12px;
 }
 
+.notice-preview-disclaimer {
+  display: block;
+  width: fit-content;
+  max-width: 100%;
+  margin: 14px 0 0;
+  padding: 9px 12px;
+  border-left: 3px solid var(--site-accent);
+  background: var(--site-accent-soft);
+  color: var(--site-ink-soft);
+  font-size: 11px;
+  font-weight: 650;
+  line-height: 1.65;
+}
+
+.notice-detail > .notice-preview-disclaimer {
+  margin: 0 0 18px;
+}
+
 .notice-heading-mark {
   flex: 0 0 auto;
   padding-bottom: 8px;
