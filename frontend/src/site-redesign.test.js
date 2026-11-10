@@ -39,8 +39,8 @@ test("home and project pages do not present an invented 100-point academy assess
   assert.doesNotMatch(academy, /PROJECT SCORE FRAMEWORK/);
   assert.doesNotMatch(academy, /100 PTS/);
   assert.doesNotMatch(academy, /academy-review-framework/);
-  assert.match(academy, /academy-learning-outcomes/);
-  assert.match(academy, /학습 결과물/);
+  assert.match(academy, /academy-feature-strip/);
+  assert.match(academy, /academy-project-feature/);
 });
 
 test("static preview never publishes fabricated notices as operational news", function () {
