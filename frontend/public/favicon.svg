@@ -1,6 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="IT ACADEMY">
-  <rect width="64" height="64" rx="11" fill="#102b23"/>
-  <path d="M8 53 25 10h14l17 43H45L32 22 19 53z" fill="#f1a16e"/>
-  <path d="M22 39h20" fill="none" stroke="#fff7ed" stroke-width="4" stroke-linecap="square"/>
-  <path d="M29 53h6" fill="none" stroke="#fff7ed" stroke-width="3"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <rect width="64" height="64" rx="12" fill="#102b23"/>
+  <path d="M7 57 25 8h8L14 57H7Z" fill="#f2dfc7"/>
+  <path d="M30 8h8l19 49H46L30 8Z" fill="#f2dfc7"/>
+  <path d="M19 39h26l4 8H15l4-8Z" fill="#e8753a"/>
 </svg>
