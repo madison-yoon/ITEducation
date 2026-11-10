@@ -8,7 +8,7 @@
   --site-surface: #fffdf9;
   --site-ink: #182a22;
   --site-ink-soft: #34483d;
-  --site-muted: #69776c;
+  --site-muted: #5c6a60;
   --site-muted-soft: #849086;
   --site-line: #d7d0c5;
   --site-line-strong: #b8b2a6;
@@ -16,7 +16,7 @@
   --site-brand-strong: #0d2b22;
   --site-brand-soft: #e3e9df;
   --site-accent: #e8753a;
-  --site-accent-strong: #c95b2b;
+  --site-accent-strong: #a94420;
   --site-accent-soft: #f5e2d4;
   --site-blue: #244a79;
   --site-violet: #62568a;
@@ -97,7 +97,7 @@ p { color: var(--site-ink-soft); }
   padding: 12px 22px;
   border: 1px solid var(--site-accent);
   border-radius: 3px;
-  color: #fff;
+  color: #102b23;
   background: var(--site-accent);
   font-size: 14px;
   font-weight: 780;
@@ -900,6 +900,9 @@ p { color: var(--site-ink-soft); }
 .academy-modal-result p { margin: 6px 0 0; color: var(--site-ink-soft); }
 
 /* Course catalogue — same photo-card language as the home page */
+.program-section-index { margin: 0 0 11px; color: var(--site-brand); font-size: 11px; font-weight: 820; letter-spacing: .035em; }
+.program-curriculum { scroll-margin-top: 95px; }
+.program-card-audience, .program-card-outcome { min-width: 0; }
 .program-page { min-height: 68vh; padding: 0 0 85px; background: var(--site-paper); }
 .program-page > .site-container { padding-top: 55px; }
 .program-header {
