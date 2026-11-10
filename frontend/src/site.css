@@ -1117,55 +1117,6 @@ p { color: var(--site-ink-soft); }
 /* Consultation page — no fake form on static preview */
 .consultation-page { min-height: 68vh; padding: 0 0 80px; background: var(--site-paper); }
 .consultation-page > .site-container { padding-top: 48px; }
-.consultation-heading {
-  position: relative;
-  isolation: isolate;
-  overflow: hidden;
-  max-width: 100%;
-  margin: 0 calc(var(--site-gutter) * -1) 30px;
-  padding: 43px var(--site-gutter) 38px;
-  color: #fff;
-  background: #102b23;
-}
-.consultation-heading .program-section-index { color: #f0a16e; }
-.consultation-heading h1 { margin: 0 0 12px; color: #fff; font-size: clamp(36px,5vw,58px); }
-.consultation-heading > p:last-child { max-width: 720px; margin: 0; color: #d6e0d7; font-size: 14px; line-height: 1.8; }
-.consultation-heading::after {
-  position: absolute;
-  z-index: -1;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  width: 48%;
-  background:
-    linear-gradient(90deg, #102b23 0%, rgba(16,43,35,.3) 34%, rgba(16,43,35,.16) 100%),
-    url("https://images.unsplash.com/photo-1712159018726-4564d92f3ec2?auto=format&fit=crop&w=1000&q=82") center 44% / cover no-repeat;
-  content: "";
-  opacity: .8;
-  pointer-events: none;
-}
-.consultation-heading > * { position: relative; z-index: 1; }
-.consultation-preview-unavailable {
-  display: grid;
-  grid-template-columns: 42px minmax(0,1fr);
-  gap: 17px;
-  padding: 21px;
-  border-left: 4px solid var(--site-accent);
-  background: var(--site-surface);
-}
-.consultation-preview-mark { display: grid; width: 35px; height: 35px; place-items: center; color: #fff; background: var(--site-accent); font-size: 18px; font-weight: 850; }
-.consultation-preview-unavailable h2 { margin: 0 0 6px; font-size: 18px; }
-.consultation-preview-unavailable p { max-width: 830px; margin: 0; color: var(--site-muted); font-size: 12px; line-height: 1.8; }
-.consultation-preview-grid { display: grid; grid-template-columns: 1.05fr .95fr; gap: 35px; margin-top: 42px; }
-.consultation-preview-grid h2 { max-width: 530px; font-size: 27px; }
-.consultation-preview-grid ol { display: grid; margin: 18px 0 0; padding: 0; border-top: 2px solid var(--site-brand); list-style: none; }
-.consultation-preview-grid li { display: grid; grid-template-columns: 42px 1fr; gap: 10px; padding: 13px 0; border-bottom: 1px solid var(--site-line); }
-.consultation-preview-grid li > b { color: var(--site-accent-strong); font-size: 13px; }
-.consultation-preview-grid li > span { color: var(--site-muted); font-size: 12px; line-height: 1.7; }
-.consultation-preview-next { padding: 23px; border-top: 3px solid var(--site-accent); background: #e9e1d6; }
-.consultation-preview-next p:not(.program-section-index) { color: var(--site-muted); font-size: 12px; line-height: 1.8; }
-.consultation-preview-next .site-button { margin: 13px 0 14px; }
-.consultation-preview-next .site-text-link { display: flex; margin-top: 10px; }
 .consultation-layout { display: grid; grid-template-columns: minmax(270px,.82fr) minmax(0,1.18fr); gap: 42px; align-items: start; }
 .consultation-intro h1 { font-size: clamp(32px,4.2vw,50px); }
 .consultation-intro p:last-child { color: var(--site-muted); font-size: 14px; line-height: 1.8; }
@@ -1304,7 +1255,7 @@ button:disabled { opacity: .55; cursor: not-allowed; }
   .notice-header { display: block; padding: 35px var(--site-gutter); }
   .notice-header-note { max-width: none; margin-top: 15px; }
   .notice-toolbar { grid-template-columns: 1fr; }
-  .consultation-preview-grid, .consultation-layout { grid-template-columns: 1fr; gap: 27px; }
+  .consultation-layout { grid-template-columns: 1fr; gap: 27px; }
 }
 @media (max-width: 560px) {
   :root { --site-gutter: 18px; }
@@ -1401,12 +1352,6 @@ button:disabled { opacity: .55; cursor: not-allowed; }
   .notice-detail h1 { font-size: 30px; }
   .notice-detail-footer { align-items: flex-start; flex-direction: column; }
   .consultation-page > .site-container { padding-top: 0; }
-  .consultation-heading { margin-inline: calc(var(--site-gutter) * -1); padding: 37px var(--site-gutter); }
-  .consultation-heading h1 { font-size: 38px; }
-  .consultation-preview-grid { grid-template-columns: 1fr; }
-  .consultation-preview-unavailable { grid-template-columns: 34px 1fr; gap: 12px; padding: 16px; }
-  .consultation-preview-mark { width: 30px; height: 30px; }
-  .consultation-preview-next { padding: 19px; }
   .consultation-form { padding: 20px 16px; }
   .consultation-form .two { grid-template-columns: 1fr; }
   .consultation-page .success { padding: 24px; }
