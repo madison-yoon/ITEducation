@@ -29,8 +29,6 @@ const courseDetailData = {
   1: {
     intro: "데이터를 읽고 모델을 학습시키는 기초부터 실제 서비스에 적용하는 과정까지 경험합니다. 코딩 경험이 많지 않은 학습자도 Python 기초부터 순서대로 따라올 수 있도록 구성한 실습 중심 프로그램입니다.",
     description: "Python으로 데이터를 다루는 방법을 익힌 뒤 통계와 머신러닝의 핵심 원리를 학습합니다. 이후 모델 성능을 평가하고 개선하는 과정을 반복하며, 마지막에는 영화 추천 서비스를 주제로 데이터 수집·전처리·모델링·결과 시각화를 연결한 팀 프로젝트를 완성합니다.",
-    recruitPeriod: "운영기관 공지 확인",
-    startDate: "상담 시 최신 일정 안내",
     outcomes: [
       { title: "데이터 분석 기초", description: "Python과 Pandas로 데이터를 정리하고 분석 결과를 표와 그래프로 표현합니다." },
       { title: "예측 모델 구현", description: "분류·회귀·군집화 알고리즘을 적용하고 성능 지표를 비교합니다." },
@@ -60,7 +58,6 @@ const courseDetailData = {
   2: {
     intro: "데이터를 수집하고 정리하는 단계부터 분석 결과를 시각화하고 대시보드로 전달하는 과정까지 학습합니다.",
     description: "SQL과 Python을 활용해 데이터를 추출·정제하고 기초 통계와 탐색적 데이터 분석을 수행합니다. 분석 목적에 맞는 시각화를 설계하고 결과를 대시보드 형태로 구성하는 프로젝트를 진행합니다.",
-    recruitPeriod: "운영기관 공지 확인", startDate: "상담 시 최신 일정 안내",
     outcomes: [{title:"데이터 추출",description:"SQL로 필요한 데이터를 조회하고 구조를 이해합니다."},{title:"분석과 해석",description:"통계와 탐색적 분석으로 데이터의 특징을 설명합니다."},{title:"시각화 전달",description:"핵심 지표를 대시보드로 구성하고 분석 내용을 발표합니다."}],
     modules: [{title:"Python과 SQL",description:"분석 환경과 데이터베이스 기초를 익힙니다.",tools:"Python · SQL"},{title:"데이터 전처리",description:"결측치와 이상치를 처리하고 분석용 데이터를 구성합니다.",tools:"Pandas · NumPy"},{title:"통계 분석",description:"기술통계와 상관관계 등 분석 기초를 학습합니다.",tools:"Statistics"},{title:"데이터 시각화",description:"분석 결과를 목적에 맞는 차트와 대시보드로 표현합니다.",tools:"Matplotlib · Seaborn · BI"},{title:"분석 프로젝트",description:"주제를 정해 데이터 분석 보고서와 대시보드를 완성합니다.",tools:"SQL · Dashboard · Git"}],
     projectTitle:"소비 패턴 분석 대시보드",projectDescription:"가상의 소비 데이터를 바탕으로 기간·지역·카테고리별 추세를 분석하고 주요 지표를 시각화합니다.",deliverables:["SQL 분석 쿼리","전처리 노트북","대시보드","분석 보고서"],
@@ -70,7 +67,6 @@ const courseDetailData = {
   3: {
     intro: "대규모 언어 모델의 기본 개념을 이해하고 API와 검색 기술을 결합해 실용적인 생성형 AI 서비스를 구현합니다.",
     description: "프롬프트 설계, 임베딩, 벡터 검색, RAG 구조를 단계적으로 학습합니다. 문서 기반 질의응답 서비스를 주제로 데이터 준비부터 검색·응답 흐름과 간단한 사용자 화면까지 구현합니다.",
-    recruitPeriod: "운영기관 공지 확인", startDate: "상담 시 최신 일정 안내",
     outcomes:[{title:"LLM 활용",description:"모델 API와 프롬프트를 사용해 입력에 맞는 응답을 생성합니다."},{title:"검색 증강 생성",description:"문서를 분할하고 임베딩·검색을 통해 근거 기반 응답을 구성합니다."},{title:"AI 서비스 연결",description:"질의응답 흐름을 사용자 화면과 연결해 시연합니다."}],
     modules:[{title:"Python과 API 기초",description:"HTTP 요청과 JSON 데이터 처리 방식을 익힙니다.",tools:"Python · REST API"},{title:"LLM과 프롬프트",description:"모델의 입력·출력 구조와 프롬프트 설계를 학습합니다.",tools:"LLM API · Prompt Engineering"},{title:"임베딩과 벡터 검색",description:"텍스트 임베딩과 유사도 검색의 기본 원리를 익힙니다.",tools:"Embedding · Vector Search"},{title:"RAG 파이프라인",description:"문서 분할, 검색, 컨텍스트 구성, 응답 생성을 연결합니다.",tools:"RAG · Retrieval"},{title:"서비스 프로젝트",description:"문서 질의응답 서비스를 구현하고 품질을 점검합니다.",tools:"Python · API · Web UI"}],
     projectTitle:"내부 문서 검색·질의응답 AI 도우미",projectDescription:"샘플 문서를 등록하고 사용자의 질문과 관련된 내용을 검색해 출처 문맥과 함께 답변하는 데모 서비스를 만듭니다.",deliverables:["문서 전처리 모듈","검색 파이프라인","질의응답 API","시연 화면"],
@@ -80,7 +76,6 @@ const courseDetailData = {
   4: {
     intro: "웹 애플리케이션의 화면과 서버, 데이터베이스를 연결하고 AI API까지 연동하는 풀스택 개발 흐름을 경험합니다.",
     description: "Java와 Spring Boot로 서버 기능과 데이터 처리를 구현하고 React로 사용자 화면을 구성합니다. 데이터베이스 설계, API 연동, 로그인과 게시판 등 서비스의 기본 기능을 연결해 팀 프로젝트를 완성합니다.",
-    recruitPeriod: "운영기관 공지 확인", startDate: "상담 시 최신 일정 안내",
     outcomes:[{title:"백엔드 개발",description:"Spring Boot로 API와 비즈니스 로직을 구현합니다."},{title:"프론트엔드 개발",description:"React로 화면과 사용자 상호작용을 구성합니다."},{title:"서비스 통합",description:"DB와 API를 연결하고 테스트 가능한 웹 서비스를 완성합니다."}],
     modules:[{title:"Java 프로그래밍",description:"객체지향 기초와 예외 처리, 컬렉션을 학습합니다.",tools:"Java"},{title:"Spring Boot와 DB",description:"REST API와 데이터베이스 연동을 구현합니다.",tools:"Spring Boot · MySQL · JPA"},{title:"React 화면 개발",description:"컴포넌트와 상태, 라우팅을 사용해 화면을 만듭니다.",tools:"React · JavaScript · CSS"},{title:"인증과 서비스 기능",description:"로그인과 게시판 등 기본 서비스 기능을 연결합니다.",tools:"Session · REST API"},{title:"팀 프로젝트",description:"기획부터 배포 가능한 형태의 결과물 정리까지 진행합니다.",tools:"Git · Testing · Documentation"}],
     projectTitle:"AI 기능을 연결한 교육·업무 웹 플랫폼",projectDescription:"사용자 인증, 데이터 등록·조회, 검색 기능을 갖춘 웹 서비스를 만들고 외부 AI API를 연결하는 프로젝트입니다.",deliverables:["화면 설계서","REST API","DB 스키마","통합 웹 서비스"],
@@ -272,8 +267,6 @@ function buildCourseDetailData(course) {
   return {
     intro: course.description || course.summary || "등록된 교육과정의 목표와 학습 범위를 안내합니다.",
     description: course.description || course.summary || "단계별 실습과 프로젝트를 통해 과정의 핵심 역량을 학습합니다.",
-    recruitPeriod: "운영기관 공지 확인",
-    startDate: "상담 시 최신 일정 안내",
     outcomes: [
       { title: "핵심 개념 이해", description: "과정의 주요 개념과 기술이 문제 해결에 어떻게 활용되는지 설명합니다." },
       { title: "기능 단위 구현", description: "작은 기능부터 직접 구현하고 실행 결과와 오류 원인을 확인합니다." },
