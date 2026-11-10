@@ -7,7 +7,7 @@
     "dev": "vite --host 0.0.0.0",
     "build": "vite build",
     "preview": "vite preview",
-    "test": "node --test src/navigation.test.js src/preview-content.test.js src/experience-contrast.test.js src/site-content.test.js src/design-system.test.js src/project-content.test.js"
+    "test": "node --test src/navigation.test.js src/preview-content.test.js src/experience-contrast.test.js src/site-content.test.js src/design-system.test.js"
   },
   "dependencies": {
     "axios": "^1.7.9",

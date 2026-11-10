@@ -5,10 +5,10 @@ import api from "./api.js";
 const h = React.createElement;
 
 const courseFallback = [
-  { id: 1, title: "AI·머신러닝 실무 개발자 과정", category: "AI", duration: "운영 정보 확인", recruitmentStatus: "모집 정보 확인", summary: "Python 데이터 전처리, 기준 모델 수립, 분류·회귀 평가, 추천 결과의 API 연동까지 모델을 서비스 흐름으로 연결합니다." },
-  { id: 2, title: "빅데이터 분석 전문가 과정", category: "DATA", duration: "운영 정보 확인", recruitmentStatus: "모집 정보 확인", summary: "SQL 추출과 데이터 품질 점검부터 탐색적 분석, 지표 정의, 필터형 대시보드와 근거 중심 보고서까지 완성합니다." },
-  { id: 3, title: "생성형 AI 서비스 개발 과정", category: "GEN AI", duration: "운영 정보 확인", recruitmentStatus: "모집 정보 확인", summary: "LLM API, 프롬프트 평가, 문서 청킹·임베딩·검색, 출처가 연결된 RAG 응답과 품질·비용 측정을 다룹니다." },
-  { id: 4, title: "AI 기반 웹 서비스 개발 과정", category: "WEB", duration: "운영 정보 확인", recruitmentStatus: "모집 정보 확인", summary: "Java·Spring Boot·MySQL·React를 연결해 인증, 권한, CRUD, 예외 처리, 통합 테스트까지 웹 서비스 전 과정을 구현합니다."}
+  { id: 1, title: "AI·머신러닝 실무 개발자 과정", category: "AI", duration: "운영 정보 확인", recruitmentStatus: "모집 정보 확인", summary: "데이터 분석부터 모델 평가와 서비스 적용까지 학습합니다." },
+  { id: 2, title: "빅데이터 분석 전문가 과정", category: "DATA", duration: "운영 정보 확인", recruitmentStatus: "모집 정보 확인", summary: "데이터 수집·정제·분석·시각화를 하나의 흐름으로 연결합니다." },
+  { id: 3, title: "생성형 AI 서비스 개발 과정", category: "GEN AI", duration: "운영 정보 확인", recruitmentStatus: "모집 정보 확인", summary: "LLM, 임베딩, 검색 증강 생성으로 AI 서비스를 설계합니다." },
+  { id: 4, title: "AI 기반 웹 서비스 개발 과정", category: "WEB", duration: "운영 정보 확인", recruitmentStatus: "모집 정보 확인", summary: "프론트엔드·백엔드·데이터베이스를 연결해 서비스를 구현합니다." }
 ];
 
 const projectFallback = [
@@ -80,105 +80,6 @@ const projectFallback = [
   }
 ];
 
-
-const projectBlueprints = {
-  1: {
-    focus: "추천 후보 생성 · 추천 이유 설명 · 오프라인 품질 비교",
-    architecture: "작품 메타데이터 정규화 → 사용자 선호 이벤트 집계 → 콘텐츠 특성 벡터·유사도 계산 → 추천 API → 설명 가능한 추천 카드",
-    workflow: [
-      ["01", "데이터 기준 정리", "작품 ID·장르·키워드·평점·사용자 반응을 공통 스키마로 정규화합니다."],
-      ["02", "기준 추천기 구현", "인기도 기반 기준선과 콘텐츠 유사도 기반 추천기를 각각 구현합니다."],
-      ["03", "후보와 설명 생성", "유사 장르·키워드·선호 이력을 추천 이유로 연결하고 중복 후보를 제거합니다."],
-      ["04", "API와 화면 통합", "페이지네이션, 빈 결과, 신규 사용자 상태까지 추천 API와 화면에 연결합니다."],
-      ["05", "오프라인 평가", "학습·평가 분리 기준을 고정하고 Precision@K·Recall@K·Hit Rate를 비교합니다."]
-    ],
-    completion: ["동일 입력에서 동일한 추천 결과를 재현할 수 있음", "기준선과 개선 모델의 평가 지표를 같은 데이터 분할로 비교함", "각 추천 카드에서 추천 근거를 사용자가 확인할 수 있음", "신규 사용자·선호 정보 부족·빈 결과가 예외 없이 처리됨"],
-    controls: ["시간 기준 또는 사용자 기준으로 학습·평가 데이터 누수를 차단", "인기 작품 쏠림을 확인하고 장르 다양성·중복 제한을 적용", "추천 점수만으로 품질을 단정하지 않고 오프라인 지표와 시나리오 검증을 함께 기록"]
-  },
-  2: {
-    focus: "데이터 품질 진단 · 지표 정의 · 근거가 남는 대시보드",
-    architecture: "원천 CSV·테이블 → SQL 추출 → Python 전처리·프로파일링 → 지표 마트 → 대시보드·분석 보고서",
-    workflow: [
-      ["01", "분석 질문 구체화", "대상 사용자와 의사결정 질문을 정하고 지표의 분자·분모·집계 단위를 정의합니다."],
-      ["02", "원천 데이터 점검", "자료형·결측·중복·이상치·기간 범위를 프로파일링하고 정제 규칙을 기록합니다."],
-      ["03", "SQL 분석 재현", "필터·조인·집계 쿼리를 분리해 분석 테이블을 만들고 원천 건수와 대조합니다."],
-      ["04", "패턴과 차이 분석", "기간·지역·상품군별 분포를 비교하고 평균뿐 아니라 표본 수와 분산도 함께 확인합니다."],
-      ["05", "대시보드와 보고", "핵심 지표, 필터, 데이터 기준일, 해석과 한계를 한 화면과 보고서로 연결합니다."]
-    ],
-    completion: ["모든 지표에 정의·단위·기준 기간·출처가 명시됨", "전처리 전후 행 수와 결측·중복 처리 내역이 재현됨", "대시보드 숫자가 검증용 SQL 결과와 일치함", "표본이 적거나 비교가 부적절한 구간은 해석 제한을 표시함"],
-    controls: ["개인정보는 분석 목적에 필요한 최소 컬럼만 사용하고 식별자는 제거·가명화", "이상치를 자동 삭제하지 않고 업무 맥락과 원본을 확인", "상관관계를 인과관계로 표현하지 않고 표본 범위와 데이터 기준일을 공개"]
-  },
-  3: {
-    focus: "문서 파이프라인 · 근거 검색 · 출처가 연결된 응답",
-    architecture: "문서 등록 → 파싱·청킹·메타데이터 → 임베딩·벡터 검색 → 검색 문맥 검증 → LLM 응답·인용 UI",
-    workflow: [
-      ["01", "문서 입력 설계", "지원 파일 형식, 문서 버전, 접근 권한, 삭제·갱신 정책을 정의합니다."],
-      ["02", "청킹과 인덱싱", "제목·문단 구조를 보존해 청크를 만들고 원문 위치와 문서 ID를 메타데이터로 저장합니다."],
-      ["03", "검색 성능 점검", "질문별 정답 문서 세트를 만들고 Top-K 적합도와 누락 사례를 분석합니다."],
-      ["04", "근거 기반 생성", "검색 문맥을 제한된 형식으로 전달하고 인용 출처·문서 위치를 답변에 연결합니다."],
-      ["05", "실패와 비용 평가", "근거 부족, 권한 없음, 문서 미검색, API 오류를 구분하고 지연·토큰 비용을 측정합니다."]
-    ],
-    completion: ["답변의 핵심 주장마다 원문 문서와 위치를 추적할 수 있음", "검색 결과가 없거나 근거가 약하면 추측 대신 한계를 표시함", "권한이 없는 문서가 검색·응답에 노출되지 않음", "질문 평가 세트로 검색 적합도·근거 일치·응답 실패를 반복 측정함"],
-    controls: ["문서 내용에 포함된 프롬프트 지시를 신뢰하지 않는 간접 프롬프트 인젝션 방어", "문서 ACL을 검색 단계에서 적용하고 응답 후처리에도 재확인", "문서 버전·삭제·캐시 만료를 관리하며 민감 정보 로그 저장을 제한"]
-  },
-  4: {
-    focus: "VOC 라벨 체계 · 분류 모델 비교 · 사람이 검토하는 운영 흐름",
-    architecture: "문의 원문 → 개인정보 비식별화 → 라벨링 데이터셋 → TF-IDF·분류 기준선 → 검토 대기열·이슈 대시보드",
-    workflow: [
-      ["01", "분류 체계 합의", "상위 카테고리와 세부 라벨, 다중 라벨 여부, 애매한 사례의 판정 규칙을 정의합니다."],
-      ["02", "데이터셋 구축", "중복·개인정보를 정리하고 라벨 근거와 데이터 버전을 기록합니다."],
-      ["03", "기준 모델 비교", "다수 클래스 기준선과 TF-IDF 기반 모델을 먼저 만들고 클래스별 성능을 비교합니다."],
-      ["04", "검토 화면 구현", "예측 라벨·신뢰도·원문 일부·검토 상태를 보여주고 사람이 수정한 이력을 남깁니다."],
-      ["05", "오류 분석 반복", "혼동 행렬과 오분류 샘플을 확인해 라벨 정의·데이터·모델 중 개선 원인을 구분합니다."]
-    ],
-    completion: ["라벨별 정의와 포함·제외 예시가 문서화됨", "정확도뿐 아니라 Macro F1·클래스별 Recall을 함께 보고함", "낮은 신뢰도와 미등록 유형이 사람 검토로 전달됨", "개인정보 비식별화와 수정 이력이 테스트됨"],
-    controls: ["희소 라벨과 클래스 불균형을 숨기지 않고 표본 수를 공개", "감정·불만의 강도를 확정적 사실로 추론하지 않도록 검토 단계 유지", "원문 접근 권한·보유 기간·삭제 정책을 데이터 파이프라인에 반영"]
-  },
-  5: {
-    focus: "역할·권한 모델 · 운영 CRUD · 상태 이력과 통합 테스트",
-    architecture: "요구사항·역할 정의 → 관계형 DB·ERD → Spring Boot API·인증 → React 화면 → 통합·배포 검증",
-    workflow: [
-      ["01", "사용자 흐름 정의", "학습자·강사·운영자의 작업을 구분하고 화면별 권한과 완료 조건을 명세합니다."],
-      ["02", "데이터 모델 설계", "회원·과정·과제·공지·제출 상태의 관계와 제약 조건을 ERD로 정리합니다."],
-      ["03", "서버 기능 구현", "DTO 검증, 서비스 규칙, 트랜잭션, 권한 검사, 오류 응답을 API 계약에 맞춥니다."],
-      ["04", "화면과 상태 연결", "목록·상세·작성 폼을 컴포넌트로 나누고 로딩·빈 상태·오류·저장 성공을 처리합니다."],
-      ["05", "권한·통합 검증", "역할별 접근 시나리오와 CRUD·중복 제출·동시 수정 조건을 테스트하고 실행 문서를 남깁니다."]
-    ],
-    completion: ["비인가 역할의 조회·수정·삭제 요청이 서버에서 차단됨", "필수값·중복·참조 관계가 DB와 API 양쪽에서 검증됨", "목록·상세·등록·수정·삭제 흐름의 통합 테스트가 통과함", "설치·환경변수·실행·테스트 절차가 README에 재현 가능하게 기록됨"],
-    controls: ["버튼 숨김만으로 권한을 처리하지 않고 서버 요청마다 인가 검사", "삭제·상태 변경·중복 요청의 트랜잭션과 제약 조건 검토", "개인정보와 비밀값은 로그·화면·테스트 fixture에 노출하지 않음"]
-  },
-  6: {
-    focus: "요구사항 추적 · AI 변경 검토 · 테스트 증거 자동 수집",
-    architecture: "요구사항 티켓 → AI 작업 지시·생성 diff → 정적 검사·테스트 → 사람 리뷰 → 머지 승인 기록",
-    workflow: [
-      ["01", "작업 단위 고정", "각 요구사항에 완료 조건·영향 파일·위험 수준을 붙이고 작게 분해합니다."],
-      ["02", "AI 작업 기록", "프롬프트·생성 diff·사용 모델·수정 이유를 작업 ID와 연결합니다."],
-      ["03", "자동 검사 실행", "lint·type/build·unit·browser test를 단계별로 실행하고 결과를 수집합니다."],
-      ["04", "사람 리뷰 수행", "보안·접근성·성능·오류 처리와 요구사항 누락을 검토하고 수정 의견을 기록합니다."],
-      ["05", "승인과 회고", "필수 검사가 통과된 변경만 머지하고 미해결 위험과 후속 작업을 남깁니다."]
-    ],
-    completion: ["요구사항마다 코드 변경과 테스트 증거가 연결됨", "AI 생성 코드의 핵심 흐름과 외부 의존성을 담당자가 설명할 수 있음", "필수 검사 실패 시 머지가 차단되거나 명시적 예외 승인이 기록됨", "보안·접근성·성능 위험과 잔여 작업이 보고서에 남음"],
-    controls: ["시크릿·개인정보·실제 운영 데이터가 프롬프트와 로그에 포함되지 않게 제한", "AI 출력의 라이선스·의존성·명령 실행 부작용을 검토", "테스트 통과를 곧바로 제품 안전성이나 정확성의 보증으로 표현하지 않음"]
-  }
-};
-
-function getProjectBlueprint(project) {
-  const id = Number(project && project.id);
-  return projectBlueprints[id] || {
-    focus: "문제 정의 · 구현 · 검증 · 결과 문서화",
-    architecture: "요구사항 → 데이터·화면 설계 → 기능 구현 → 테스트 → 결과 정리",
-    workflow: [
-      ["01", "문제 정의", "사용자와 해결 범위를 구체화합니다."],
-      ["02", "설계", "데이터와 화면·API 구조를 정리합니다."],
-      ["03", "구현", "핵심 기능을 작은 단위로 완성합니다."],
-      ["04", "검증", "정상·오류·경계 조건을 확인합니다."],
-      ["05", "공유", "실행 방법과 한계를 문서로 남깁니다."]
-    ],
-    completion: ["요구사항과 구현 기능이 연결됨", "핵심 시나리오를 재현할 수 있음", "테스트 결과와 미해결 항목이 기록됨"],
-    controls: ["데이터 출처와 사용 권한을 확인", "개인정보와 비밀값을 보호", "검증하지 않은 성과를 사실처럼 게시하지 않음"]
-  };
-}
-
 const projectArtwork = {
   1: import.meta.env.BASE_URL + "images/projects/ai-movie-recommender.svg",
   2: import.meta.env.BASE_URL + "images/projects/consumer-data-insights.svg",
@@ -200,11 +101,11 @@ function getProjectArtwork(project) {
 }
 
 const learningSteps = [
-  ["01", "문제 정의", "대상 사용자와 사용 맥락을 구분하고, 해결할 문제·제외 범위·완료 조건을 요구사항으로 기록합니다.", "문제 정의서 · 사용자 시나리오 · 요구사항 목록"],
-  ["02", "기초 원리", "문법을 따라 치는 데서 멈추지 않고 입력·처리·출력과 데이터 흐름을 추적하며 정상·오류 사례를 직접 실험합니다.", "개념 설명 · 직접 작성한 실습 코드 · 오류 기록"],
-  ["03", "AI 협업", "작업을 작게 나눠 AI에 요청하고 생성 결과의 의존성·보안·라이선스·누락을 검토한 뒤 변경 이유를 남깁니다.", "작업 프롬프트 · 코드 리뷰 · 변경 근거"],
-  ["04", "제품 구현", "화면·API·데이터 모델의 계약을 먼저 맞추고 기능을 통합하며 로딩·빈 상태·오류 상태까지 구현합니다.", "화면 흐름 · API 명세 · ERD · 통합 기능"],
-  ["05", "검증과 발표", "단위·통합·브라우저 시나리오를 실행하고 접근성·보안·성능의 기본 위험을 확인한 뒤 남은 한계를 설명합니다.", "테스트 케이스 · 실행 결과 · README · 시연 · 회고"]
+  ["01", "문제 정의", "사용자와 해결할 문제를 조사하고 요구사항을 문서로 고정합니다.", "요구사항 명세 · 사용자 흐름"],
+  ["02", "기초 원리", "문법과 프레임워크를 암기하는 데서 멈추지 않고 작동 원리를 실습합니다.", "개념 노트 · 단계별 과제"],
+  ["03", "AI 협업", "AI가 만든 결과를 읽고 근거를 확인하며 직접 수정하는 습관을 훈련합니다.", "프롬프트 기록 · 변경 이력"],
+  ["04", "제품 구현", "화면·서버·데이터를 연결하고 실제 사용자 흐름을 완성합니다.", "통합 기능 · API · DB"],
+  ["05", "검증과 발표", "테스트와 리뷰로 품질을 확인하고 결과와 한계를 설명합니다.", "테스트 리포트 · 시연 · 회고"]
 ];
 
 const assessment = [
@@ -467,7 +368,6 @@ export function AcademyHome() {
                 h("small", null, project.category + " · " + project.duration),
                 h("h3", null, project.title),
                 h("p", null, project.description),
-                h("div", { className: "academy-feature-project-focus" }, getProjectBlueprint(project).focus),
                 h("span", null, "프로젝트 설계 보기 ↗")
               )
             );
@@ -604,28 +504,6 @@ export function AcademyAbout() {
           })
         )
       ),
-      h("section", { className: "academy-about-completion" },
-        h(SectionHeading, {
-          label: "DEFINITION OF DONE",
-          title: "다음 단계로 넘어가기 전에 확인하는 기준",
-          description: "학습을 완료했다고 판단하는 기준을 결과물 중심으로 공개합니다. 아래 항목은 교육 설계를 위한 점검 프레임이며, 개별 운영 과정의 제공 범위는 상담과 확정 공지에서 확인해야 합니다."
-        }),
-        h("div", { className: "academy-about-completion-grid" },
-          [
-            ["01", "설명할 수 있는가", "핵심 개념, 데이터 흐름, 선택한 기술의 역할을 자신의 언어로 설명합니다."],
-            ["02", "다시 실행할 수 있는가", "설치·실행 절차와 입력 데이터를 정리해 다른 환경에서도 결과를 재현합니다."],
-            ["03", "실패를 다루는가", "빈 값·잘못된 입력·권한 오류·외부 API 실패 등 정상 밖의 조건을 확인합니다."],
-            ["04", "근거를 남겼는가", "요구사항, 코드 변경, 테스트 결과, 수정 이유가 서로 연결되어 있습니다."],
-            ["05", "한계를 아는가", "미구현 범위, 데이터의 한계, 측정하지 못한 품질을 결과와 구분해 설명합니다."]
-          ].map(function (item) {
-            return h("article", { key: item[0] },
-              h("span", null, item[0]),
-              h("h3", null, item[1]),
-              h("p", null, item[2])
-            );
-          })
-        )
-      ),
       h("section", { className: "academy-about-cta" },
         h("div", null, h("h2", null, "학습 목표와 현재 수준을 먼저 점검하세요."), h("p", null, "상담을 통해 과정의 선수 지식과 실습 범위, 준비 방향을 확인할 수 있습니다.")),
         h(Link, { to: "/consultation", className: "academy-button primary" }, "상담 신청", h("span", null, "↗"))
@@ -737,7 +615,6 @@ export function AcademyProjects() {
       h("div", { className: "academy-project-grid" },
         visible.map(function (project, index) {
           const artwork = getProjectArtwork(project);
-          const blueprint = getProjectBlueprint(project);
           return h("article", { className: "academy-project-card", key: project.id || project.title },
             h("button", { type: "button", className: "academy-project-open", onClick: function (event) { triggerRef.current = event.currentTarget; setSelected(project); }, "aria-haspopup": "dialog", "aria-label": project.title + " 상세 보기" },
               h("div", { className: "academy-project-art project-art-" + ((index % 6) + 1) + (artwork ? " has-project-image" : ""), "aria-hidden": "true" },
@@ -751,7 +628,6 @@ export function AcademyProjects() {
                 h("div", { className: "academy-project-meta" }, h("span", null, project.category), h("span", null, project.duration || "프로젝트 실습")),
                 h("h2", null, project.title),
                 h("p", null, project.description),
-                h("p", { className: "academy-project-card-focus" }, blueprint.focus),
                 h("div", { className: "academy-project-stack" }, (project.stack || []).slice(0, 4).map(function (tech) { return h("span", { key: tech }, tech); })),
                 h("div", { className: "academy-project-card-foot" }, h("span", null, "설계 · 구현 · 테스트"), h("b", null, "상세 보기 ↗"))
               )
@@ -793,33 +669,10 @@ export function AcademyProjects() {
           h("div", null, h("small", null, "PROJECT TYPE"), h("b", null, "교육 설계 예시"))
         ),
         h("div", { className: "academy-modal-section-grid" },
-          h("section", null, h("h3", null, "01 · 해결할 문제"), h("p", null, selected.problem || "사용자 문제와 해결 목표를 정의합니다.")),
-          h("section", null, h("h3", null, "02 · 설계 접근"), h("p", null, selected.solution || "데이터·기술·사용자 흐름을 고려해 구현합니다.")),
+          h("section", null, h("h3", null, "01 · 문제 정의"), h("p", null, selected.problem || "사용자 문제와 해결 목표를 정의합니다.")),
+          h("section", null, h("h3", null, "02 · 해결 접근"), h("p", null, selected.solution || "데이터·기술·사용자 흐름을 고려해 구현합니다.")),
           h("section", null, h("h3", null, "03 · 주요 기능"), h("ul", null, (selected.features || []).map(function (item) { return h("li", { key: item }, item); }))),
           h("section", null, h("h3", null, "04 · 평가 포인트"), h("ul", null, (selected.evaluationPoints || []).map(function (item) { return h("li", { key: item }, item); })))
-        ),
-        h("section", { className: "academy-modal-workflow" },
-          h("h3", null, "구현 흐름"),
-          h("p", { className: "academy-modal-architecture" }, getProjectBlueprint(selected).architecture),
-          h("div", { className: "academy-modal-workflow-grid" },
-            getProjectBlueprint(selected).workflow.map(function (step) {
-              return h("article", { key: step[0] },
-                h("span", null, step[0]),
-                h("b", null, step[1]),
-                h("p", null, step[2])
-              );
-            })
-          )
-        ),
-        h("div", { className: "academy-modal-section-grid academy-modal-review-grid" },
-          h("section", null,
-            h("h3", null, "완료 기준"),
-            h("ul", null, getProjectBlueprint(selected).completion.map(function (item) { return h("li", { key: item }, item); }))
-          ),
-          h("section", null,
-            h("h3", null, "데이터·품질 통제"),
-            h("ul", null, getProjectBlueprint(selected).controls.map(function (item) { return h("li", { key: item }, item); }))
-          )
         ),
         h("div", { className: "academy-modal-deliverables" },
           h("h3", null, "제출 산출물"),

@@ -68,44 +68,6 @@ test.describe("IT ACADEMY public website", function () {
     await expect(page.getByRole("heading", { name: "2026년 11월 교육과정 운영 및 상담 안내" })).toBeVisible();
   });
 
-  test("loads the new project artwork and exposes the full implementation blueprint", async function ({ page }) {
-    await page.goto("projects");
-
-    const projectImages = page.locator(".academy-project-image");
-    await expect(projectImages).toHaveCount(6);
-    for (let index = 0; index < await projectImages.count(); index += 1) {
-      const image = projectImages.nth(index);
-      await image.scrollIntoViewIfNeeded();
-      await expect.poll(async function () {
-        return image.evaluate(function (element) {
-          return element.complete && element.naturalWidth > 0;
-        });
-      }).toBe(true);
-    }
-
-    const trigger = page.locator(".academy-project-open").first();
-    await trigger.click();
-    await expect(page.getByRole("dialog")).toBeVisible();
-    await expect(page.getByRole("heading", { name: "구현 흐름" })).toBeVisible();
-    await expect(page.getByRole("heading", { name: "완료 기준" })).toBeVisible();
-    await expect(page.getByRole("heading", { name: "데이터·품질 통제" })).toBeVisible();
-  });
-
-  test("loads the same project artwork in the homepage feature cards", async function ({ page }) {
-    await page.goto("./");
-    const images = page.locator(".academy-feature-image");
-    await expect(images).toHaveCount(3);
-    for (let index = 0; index < await images.count(); index += 1) {
-      const image = images.nth(index);
-      await image.scrollIntoViewIfNeeded();
-      await expect.poll(async function () {
-        return image.evaluate(function (element) {
-          return element.complete && element.naturalWidth > 0;
-        });
-      }).toBe(true);
-    }
-  });
-
   test("closes the project detail dialog with Escape and restores focus", async function ({ page }) {
     await page.goto("projects");
 
