@@ -38,8 +38,17 @@ test("home page presents portfolio evidence without implying unverified test res
   assert.match(academy, /구현과 변경/);
   assert.match(academy, /테스트와 품질/);
   assert.match(academy, /배포와 회고/);
+  assert.match(academy, /REQUIRED/);
+  assert.doesNotMatch(academy, /"TRACEABLE"|"VERIFIED"|"REVIEWED"/);
   assert.doesNotMatch(academy, /h\("span", null, "PASS"\)/);
   assert.doesNotMatch(academy, /h\("span", null, "CHECKED"\)/);
+});
+
+test("static preview notices are visibly distinguished from live operational notices", function () {
+  assert.match(app, /isStaticPreview \? h\("p", \{ className: "notice-preview-disclaimer", role: "note" \}/);
+  assert.match(app, /시연용 예시 게시물/);
+  assert.match(app, /실제 운영 공지가 아닙니다/);
+  assert.match(app, /notice-preview-disclaimer/);
 });
 
 test("all six project illustrations referenced by the portfolio are present", function () {
