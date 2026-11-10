@@ -126,6 +126,51 @@ test.describe("IT ACADEMY approved landing-page composition", function () {
     }
   });
 
+
+  test("consultation page follows the shared forest-and-ivory design system", async function ({ page }) {
+    await page.goto("consultation");
+    const desktop = await page.evaluate(function () {
+      const intro = document.querySelector(".consultation-intro");
+      const form = document.querySelector(".consultation-form");
+      const introStyle = getComputedStyle(intro);
+      const formStyle = getComputedStyle(form);
+      const rect = intro.getBoundingClientRect();
+      return {
+        introGridColumn: introStyle.gridColumn,
+        introBackground: introStyle.backgroundColor,
+        introWidth: rect.width,
+        formBackground: formStyle.backgroundColor,
+        heading: Boolean(form.querySelector(".consultation-form-heading")),
+        temporaryNotice: document.body.innerText.includes("실제 접수 운영 전에는")
+      };
+    });
+    expect(desktop.introGridColumn).toContain("1 / -1");
+    expect(desktop.introBackground).toBe("rgb(13, 43, 34)");
+    expect(desktop.introWidth).toBeGreaterThan(900);
+    expect(desktop.formBackground).toBe("rgb(255, 253, 249)");
+    expect(desktop.heading).toBe(true);
+    expect(desktop.temporaryNotice).toBe(false);
+
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.reload();
+    const mobile = await page.evaluate(function () {
+      const layout = document.querySelector(".consultation-layout");
+      const intro = document.querySelector(".consultation-intro").getBoundingClientRect();
+      const form = document.querySelector(".consultation-form").getBoundingClientRect();
+      return {
+        columns: getComputedStyle(layout).gridTemplateColumns,
+        introWidth: intro.width,
+        formWidth: form.width,
+        viewport: document.documentElement.clientWidth,
+        overflow: document.documentElement.scrollWidth
+      };
+    });
+    expect(mobile.columns.split(" ").length).toBe(1);
+    expect(mobile.introWidth).toBeLessThanOrEqual(mobile.viewport);
+    expect(mobile.formWidth).toBeLessThanOrEqual(mobile.viewport);
+    expect(mobile.overflow).toBeLessThanOrEqual(mobile.viewport);
+  });
+
   test("the public notice preview displays sample posts and opens their detail pages", async function ({ page }) {
     await page.goto("notices");
     await expect(page.getByRole("heading", { level: 1 })).toHaveText("공지사항");
