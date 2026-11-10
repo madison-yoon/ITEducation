@@ -61,14 +61,15 @@ test("course list and detail answer learner-fit, learning-goal and tangible-outc
   assert.doesNotMatch(app, /모집 정보 확인/);
 });
 
-test("static consultation preview does not collect personal information without a working backend", function () {
-  assert.match(app, /consultation-preview-unavailable/);
-  assert.match(app, /이 미리보기에서는 상담 신청 내용을 저장하지 않습니다/);
-  assert.match(css, /\.consultation-preview-unavailable/);
-  assert.match(app, /className: "consultation-form"/);
-  assert.match(app, /api\.post\("\/inquiries"/);
-  assert.match(app, /name: "privacyConsent"/);
-  assert.match(app, /name: "courseTitle"/);
+test("consultation form is available in preview and submits to the existing backend API", function () {
+  const consultation = app.slice(app.indexOf("function Consultation()"), app.indexOf("function getTodayLocalDate()"));
+  assert.doesNotMatch(consultation, /consultation-preview-unavailable|이 미리보기에서는 상담 신청 내용을 저장하지 않습니다/);
+  assert.doesNotMatch(consultation, /if \(isStaticPreview\)/);
+  assert.match(consultation, /className: "consultation-form"/);
+  assert.match(consultation, /api\.post\("\/inquiries"/);
+  assert.match(consultation, /name: "privacyConsent"/);
+  assert.match(consultation, /name: "courseTitle"/);
+  assert.match(consultation, /React\.useState\(courseSeed\)/);
 });
 
 test("home and project pages do not present an invented academy grading framework", function () {
@@ -90,10 +91,13 @@ test("homepage and course routes use the same four approved course photography a
   assert.match(app, /photo-1775519520461-6b6e068d9250/);
 });
 
-test("static preview contains no fabricated operational notice examples", function () {
-  assert.deepEqual(previewNotices, []);
-  assert.match(app, /게시된 공지사항이 없습니다/);
-  assert.doesNotMatch(app, /2026년 11월 교육과정 운영 및 상담 안내/);
+test("static preview provides searchable sample notices without inventing recruitment dates", function () {
+  assert.equal(previewNotices.length, 7);
+  assert.ok(previewNotices.every(function (notice) { return notice.isDemo && notice.title && notice.content.length > 80; }));
+  assert.equal(previewNotices.filter(function (notice) { return notice.pinned; }).length, 1);
+  assert.match(app, /setItems\(previewNotices\)/);
+  assert.match(app, /일부 게시물은 화면 구성과 기능 확인을 위한 예시 데이터입니다/);
+  assert.doesNotMatch(previewNotices.map(function (notice) { return notice.content; }).join(" "), /확정 개강일|확정 교육비|모집 정원/);
 });
 
 test("notice categories have distinct visual identities and readable paragraph/list content", function () {

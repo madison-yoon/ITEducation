@@ -699,8 +699,8 @@ function Courses() {
 
 function Consultation() {
   const navigate = useNavigate();
-  const [availableCourses, setAvailableCourses] = React.useState(isStaticPreview ? courseSeed : []);
-  const [courseLoading, setCourseLoading] = React.useState(!isStaticPreview);
+  const [availableCourses, setAvailableCourses] = React.useState(courseSeed);
+  const [courseLoading, setCourseLoading] = React.useState(true);
   const [courseError, setCourseError] = React.useState("");
   const [form, setForm] = React.useState({
     name: "", phone: "", email: "", courseTitle: "",
@@ -712,8 +712,6 @@ function Consultation() {
   const [submitting, setSubmitting] = React.useState(false);
 
   React.useEffect(function () {
-    if (isStaticPreview) return undefined;
-
     const controller = new AbortController();
     api.get("/courses", { signal: controller.signal })
       .then(function (response) {
@@ -723,8 +721,7 @@ function Consultation() {
       })
       .catch(function (requestError) {
         if (requestError.code === "ERR_CANCELED") return;
-        setAvailableCourses([]);
-        setCourseError("교육과정 정보를 불러오지 못했습니다. 백엔드 연결을 확인해 주세요.");
+        setCourseError("교육과정 정보를 불러오지 못해 기본 교육과정 목록을 표시합니다.");
       })
       .finally(function () {
         if (!controller.signal.aborted) setCourseLoading(false);
@@ -742,10 +739,6 @@ function Consultation() {
   async function submitForm(event) {
     event.preventDefault();
     setError("");
-    if (isStaticPreview) {
-      setError("온라인 접수 서버에 연결할 수 없습니다.");
-      return;
-    }
     if (!availableCourses.some(function (course) { return course.title === form.courseTitle; })) {
       setError("서버에서 제공하는 교육과정을 선택해 주세요.");
       return;
@@ -786,45 +779,6 @@ function Consultation() {
       )
     );
   }
-  if (isStaticPreview) {
-    return h("section", { className: "consultation-page" },
-      h("div", { className: "site-container consultation-preview" },
-        h("header", { className: "consultation-heading" },
-          h("p", { className: "program-section-index" }, "상담 안내"),
-          h("h1", null, "나에게 맞는 학습 방향부터 확인하세요."),
-          h("p", null, "관심 분야와 현재 경험, 만들고 싶은 결과를 기준으로 교육과정을 살펴볼 수 있습니다.")
-        ),
-        h("section", { className: "consultation-preview-unavailable", role: "note", "aria-labelledby": "consultation-preview-title" },
-          h("span", { className: "consultation-preview-mark", "aria-hidden": "true" }, "i"),
-          h("div", null,
-            h("h2", { id: "consultation-preview-title" }, "이 미리보기에서는 상담 신청 내용을 저장하지 않습니다."),
-            h("p", null, "현재 공개 사이트는 화면 확인을 위한 정적 미리보기입니다. 상담 데이터를 저장할 운영 서버와 개인정보 안내가 연결되지 않아 이름·연락처 등 개인정보 입력을 받지 않습니다.")
-          )
-        ),
-        h("div", { className: "consultation-preview-grid" },
-          h("section", null,
-            h("p", { className: "program-section-index" }, "상담 전에 생각해 볼 내용"),
-            h("h2", null, "어떤 내용을 확인하고 싶으신가요?"),
-            h("ol", null,
-              h("li", null, h("b", null, "관심 분야"), h("span", null, "AI·머신러닝, 데이터 분석, 생성형 AI, 웹 서비스 중 관심 있는 주제")),
-              h("li", null, h("b", null, "현재 경험"), h("span", null, "사용해 본 언어·도구와 직접 해본 실습")),
-              h("li", null, h("b", null, "학습 목표"), h("span", null, "배우고 싶은 기술과 만들어 보고 싶은 결과물")),
-              h("li", null, h("b", null, "참여 조건"), h("span", null, "실제 운영 공지에서 확인할 수업 일정과 참여 요건"))
-            )
-          ),
-          h("section", { className: "consultation-preview-next" },
-            h("p", { className: "program-section-index" }, "다음 단계"),
-            h("h2", null, "먼저 교육 내용을 비교해 보세요."),
-            h("p", null, "과정별 학습 목표와 실습 범위, 프로젝트 결과 예시를 확인한 뒤 실제 운영 정보가 공개되었는지 공지사항을 살펴볼 수 있습니다."),
-            h(Link, { to: "/courses", className: "site-button" }, "교육과정 살펴보기"),
-            h(Link, { to: "/projects", className: "site-text-link" }, "프로젝트 예시 보기"),
-            h(Link, { to: "/notices", className: "site-text-link" }, "공지사항 확인")
-          )
-        )
-      )
-    );
-  }
-
 
   return h("section", { className: "consultation-page" },
     h("div", { className: "site-container consultation-layout" },
@@ -1065,9 +1019,9 @@ function Notices() {
         h("div", null,
           h("p", { className: "program-section-index" }, "소식과 운영 안내"),
           h("h1", null, "공지사항"),
-          h("p", null, "모집 일정과 교육 운영에 관한 확정된 안내를 이곳에서 확인할 수 있습니다.")
+          h("p", null, "교육과정, 학습 준비, 상담 절차와 사이트 이용에 관한 안내를 확인할 수 있습니다.")
         ),
-        h("p", { className: "notice-header-note" }, "공지 내용은 운영기관이 확인한 정보만 게시합니다.")
+        h("p", { className: "notice-header-note" }, "일부 게시물은 화면 구성과 기능 확인을 위한 예시 데이터입니다.")
       ),
       h("div", { className: "notice-toolbar" },
         h("div", { className: "notice-categories", role: "group", "aria-label": "공지사항 분류" },
