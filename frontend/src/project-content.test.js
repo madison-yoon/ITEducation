@@ -4,7 +4,7 @@ import { readFileSync, existsSync } from "node:fs";
 
 const projectPage = readFileSync(new URL("./academy-pages.js", import.meta.url), "utf8");
 const app = readFileSync(new URL("./App.js", import.meta.url), "utf8");
-const css = readFileSync(new URL("./design-system.css", import.meta.url), "utf8");
+const css = readFileSync(new URL("./site.css", import.meta.url), "utf8");
 const root = new URL("../public/images/projects/", import.meta.url);
 const artworkFiles = [
   "ai-movie-recommender.svg",
@@ -15,8 +15,8 @@ const artworkFiles = [
   "vibe-coding-quality.svg"
 ];
 
-test("all project and homepage artwork files use the new editorial palette", function () {
-  const palette = ["#263a30", "#bd5034", "#f8f6ee"];
+test("all project gallery illustrations use the approved forest green, ivory and orange palette", function () {
+  const palette = ["#102b23", "#e8753a", "#fffdf9"];
   for (const file of artworkFiles) {
     assert.ok(existsSync(new URL(file, root)), "missing " + file);
     const svg = readFileSync(new URL(file, root), "utf8");
@@ -26,12 +26,14 @@ test("all project and homepage artwork files use the new editorial palette", fun
   }
 });
 
-test("the same project illustration is used in featured and gallery image components", function () {
-  assert.match(projectPage, /academy-feature-image/);
+test("the featured MOMO banner uses photography while gallery cards use original project illustrations", function () {
+  assert.match(projectPage, /academy-project-feature-image/);
+  assert.match(projectPage, /className: "academy-feature-image"/);
+  assert.match(projectPage, /photo-1753613648137/);
   assert.match(projectPage, /academy-project-image/);
   assert.match(projectPage, /projectArtwork/);
   assert.match(projectPage, /getProjectArtwork\(project\)/);
-  assert.match(css, /\.academy-feature-image,/);
+  assert.match(css, /\.academy-project-feature-image/);
   assert.match(css, /\.academy-project-image/);
 });
 
@@ -46,7 +48,7 @@ test("project blueprints include architecture, steps, completion and risk contro
 });
 
 test("course modules explain practice, evidence and an observable completion check", function () {
-  assert.match(app, /COMPLETION CHECK/);
+  assert.match(app, /확인할 내용/);
   assert.match(app, /validation:/);
   assert.match(app, /동일한 평가 데이터에서 Precision@K/);
   assert.match(app, /서버 요청 단위로 권한이 검증/);

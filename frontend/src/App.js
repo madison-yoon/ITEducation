@@ -29,8 +29,6 @@ const courseDetailData = {
   1: {
     intro: "데이터를 읽고 모델을 학습시키는 기초부터 실제 서비스에 적용하는 과정까지 경험합니다. 코딩 경험이 많지 않은 학습자도 Python 기초부터 순서대로 따라올 수 있도록 구성한 실습 중심 프로그램입니다.",
     description: "Python으로 데이터를 다루는 방법을 익힌 뒤 통계와 머신러닝의 핵심 원리를 학습합니다. 이후 모델 성능을 평가하고 개선하는 과정을 반복하며, 마지막에는 영화 추천 서비스를 주제로 데이터 수집·전처리·모델링·결과 시각화를 연결한 팀 프로젝트를 완성합니다.",
-    recruitPeriod: "운영기관 공지 확인",
-    startDate: "상담 시 최신 일정 안내",
     outcomes: [
       { title: "데이터 분석 기초", description: "Python과 Pandas로 데이터를 정리하고 분석 결과를 표와 그래프로 표현합니다." },
       { title: "예측 모델 구현", description: "분류·회귀·군집화 알고리즘을 적용하고 성능 지표를 비교합니다." },
@@ -60,7 +58,6 @@ const courseDetailData = {
   2: {
     intro: "데이터를 수집하고 정리하는 단계부터 분석 결과를 시각화하고 대시보드로 전달하는 과정까지 학습합니다.",
     description: "SQL과 Python을 활용해 데이터를 추출·정제하고 기초 통계와 탐색적 데이터 분석을 수행합니다. 분석 목적에 맞는 시각화를 설계하고 결과를 대시보드 형태로 구성하는 프로젝트를 진행합니다.",
-    recruitPeriod: "운영기관 공지 확인", startDate: "상담 시 최신 일정 안내",
     outcomes: [{title:"데이터 추출",description:"SQL로 필요한 데이터를 조회하고 구조를 이해합니다."},{title:"분석과 해석",description:"통계와 탐색적 분석으로 데이터의 특징을 설명합니다."},{title:"시각화 전달",description:"핵심 지표를 대시보드로 구성하고 분석 내용을 발표합니다."}],
     modules: [{title:"Python과 SQL",description:"분석 환경과 데이터베이스 기초를 익힙니다.",tools:"Python · SQL"},{title:"데이터 전처리",description:"결측치와 이상치를 처리하고 분석용 데이터를 구성합니다.",tools:"Pandas · NumPy"},{title:"통계 분석",description:"기술통계와 상관관계 등 분석 기초를 학습합니다.",tools:"Statistics"},{title:"데이터 시각화",description:"분석 결과를 목적에 맞는 차트와 대시보드로 표현합니다.",tools:"Matplotlib · Seaborn · BI"},{title:"분석 프로젝트",description:"주제를 정해 데이터 분석 보고서와 대시보드를 완성합니다.",tools:"SQL · Dashboard · Git"}],
     projectTitle:"소비 패턴 분석 대시보드",projectDescription:"가상의 소비 데이터를 바탕으로 기간·지역·카테고리별 추세를 분석하고 주요 지표를 시각화합니다.",deliverables:["SQL 분석 쿼리","전처리 노트북","대시보드","분석 보고서"],
@@ -70,7 +67,6 @@ const courseDetailData = {
   3: {
     intro: "대규모 언어 모델의 기본 개념을 이해하고 API와 검색 기술을 결합해 실용적인 생성형 AI 서비스를 구현합니다.",
     description: "프롬프트 설계, 임베딩, 벡터 검색, RAG 구조를 단계적으로 학습합니다. 문서 기반 질의응답 서비스를 주제로 데이터 준비부터 검색·응답 흐름과 간단한 사용자 화면까지 구현합니다.",
-    recruitPeriod: "운영기관 공지 확인", startDate: "상담 시 최신 일정 안내",
     outcomes:[{title:"LLM 활용",description:"모델 API와 프롬프트를 사용해 입력에 맞는 응답을 생성합니다."},{title:"검색 증강 생성",description:"문서를 분할하고 임베딩·검색을 통해 근거 기반 응답을 구성합니다."},{title:"AI 서비스 연결",description:"질의응답 흐름을 사용자 화면과 연결해 시연합니다."}],
     modules:[{title:"Python과 API 기초",description:"HTTP 요청과 JSON 데이터 처리 방식을 익힙니다.",tools:"Python · REST API"},{title:"LLM과 프롬프트",description:"모델의 입력·출력 구조와 프롬프트 설계를 학습합니다.",tools:"LLM API · Prompt Engineering"},{title:"임베딩과 벡터 검색",description:"텍스트 임베딩과 유사도 검색의 기본 원리를 익힙니다.",tools:"Embedding · Vector Search"},{title:"RAG 파이프라인",description:"문서 분할, 검색, 컨텍스트 구성, 응답 생성을 연결합니다.",tools:"RAG · Retrieval"},{title:"서비스 프로젝트",description:"문서 질의응답 서비스를 구현하고 품질을 점검합니다.",tools:"Python · API · Web UI"}],
     projectTitle:"내부 문서 검색·질의응답 AI 도우미",projectDescription:"샘플 문서를 등록하고 사용자의 질문과 관련된 내용을 검색해 출처 문맥과 함께 답변하는 데모 서비스를 만듭니다.",deliverables:["문서 전처리 모듈","검색 파이프라인","질의응답 API","시연 화면"],
@@ -80,7 +76,6 @@ const courseDetailData = {
   4: {
     intro: "웹 애플리케이션의 화면과 서버, 데이터베이스를 연결하고 AI API까지 연동하는 풀스택 개발 흐름을 경험합니다.",
     description: "Java와 Spring Boot로 서버 기능과 데이터 처리를 구현하고 React로 사용자 화면을 구성합니다. 데이터베이스 설계, API 연동, 로그인과 게시판 등 서비스의 기본 기능을 연결해 팀 프로젝트를 완성합니다.",
-    recruitPeriod: "운영기관 공지 확인", startDate: "상담 시 최신 일정 안내",
     outcomes:[{title:"백엔드 개발",description:"Spring Boot로 API와 비즈니스 로직을 구현합니다."},{title:"프론트엔드 개발",description:"React로 화면과 사용자 상호작용을 구성합니다."},{title:"서비스 통합",description:"DB와 API를 연결하고 테스트 가능한 웹 서비스를 완성합니다."}],
     modules:[{title:"Java 프로그래밍",description:"객체지향 기초와 예외 처리, 컬렉션을 학습합니다.",tools:"Java"},{title:"Spring Boot와 DB",description:"REST API와 데이터베이스 연동을 구현합니다.",tools:"Spring Boot · MySQL · JPA"},{title:"React 화면 개발",description:"컴포넌트와 상태, 라우팅을 사용해 화면을 만듭니다.",tools:"React · JavaScript · CSS"},{title:"인증과 서비스 기능",description:"로그인과 게시판 등 기본 서비스 기능을 연결합니다.",tools:"Session · REST API"},{title:"팀 프로젝트",description:"기획부터 배포 가능한 형태의 결과물 정리까지 진행합니다.",tools:"Git · Testing · Documentation"}],
     projectTitle:"AI 기능을 연결한 교육·업무 웹 플랫폼",projectDescription:"사용자 인증, 데이터 등록·조회, 검색 기능을 갖춘 웹 서비스를 만들고 외부 AI API를 연결하는 프로젝트입니다.",deliverables:["화면 설계서","REST API","DB 스키마","통합 웹 서비스"],
@@ -89,14 +84,29 @@ const courseDetailData = {
   }
 };
 
+function AcademyBrandMark() {
+  return h("svg", {
+    className: "academy-brand-mark",
+    viewBox: "0 0 40 40",
+    "aria-hidden": "true",
+    focusable: "false"
+  },
+    h("path", { d: "M4 36 16.5 5h4.8L10.8 36H4Z", fill: "currentColor" }),
+    h("path", { d: "M18.7 5h4.8L36 36h-6.8L18.7 5Z", fill: "currentColor" }),
+    h("path", { d: "M12.1 24.5h15.8l2.2 5.2H9.9l2.2-5.2Z", fill: "var(--site-accent)" })
+  );
+}
+
+
 function Header() {
   const [menuOpen, setMenuOpen] = React.useState(false);
   const location = useLocation();
   const links = [
-    ["/about", "교육 철학"],
     ["/courses", "교육과정"],
     ["/projects", "프로젝트"],
-    ["/notices", "공지사항"]
+    ["/notices", "공지사항"],
+    ["/consultation", "상담 안내"],
+    ["/about", "기관 소개"]
   ];
 
   React.useEffect(function () {
@@ -116,10 +126,10 @@ function Header() {
     h("header", { className: "header academy-site-header" },
       h("div", { className: "container nav" },
         h(Link, { to: "/", className: "brand academy-brand", "aria-label": "IT ACADEMY 홈" },
-          h("span", { className: "academy-brand-symbol", "aria-hidden": "true" }, "IT"),
+          h("span", { className: "academy-brand-symbol", "aria-hidden": "true" }, h(AcademyBrandMark)),
           h("span", { className: "academy-brand-copy" },
-            h("b", null, "ACADEMY"),
-            h("small", null, "AI · DATA · ENGINEERING")
+            h("b", null, "IT ACADEMY"),
+            h("small", null, "Learn · Build · Grow")
           )
         ),
         h("button", {
@@ -139,68 +149,106 @@ function Header() {
             }, item[1]);
           }),
           h(Link, {
+            to: "/courses",
+            className: "academy-search-link",
+            "aria-label": "교육과정 검색",
+            onClick: function () { setMenuOpen(false); }
+          },
+            h("svg", { viewBox: "0 0 24 24", "aria-hidden": "true" },
+              h("circle", { cx: "10.8", cy: "10.8", r: "6.8" }),
+              h("path", { d: "m16 16 5 5" })
+            )
+          ),
+          h(Link, {
             to: "/consultation",
             className: "btn small academy-header-cta",
             onClick: function () { setMenuOpen(false); }
-          }, "교육 상담 ↗")
+          }, "상담 안내", h("span", { "aria-hidden": "true" }, "→"))
         )
       )
     )
   );
 }
-
 function Layout() {
   return h(React.Fragment, null,
     h(Header),
     h("main", { id: "main-content", tabIndex: -1 }, h(Outlet)),
     h("footer", { className: "footer academy-site-footer" },
       h("div", { className: "container academy-footer-main" },
-        h("div", null,
-          h(Link, { to: "/", className: "brand academy-brand footer-brand" },
-            h("span", { className: "academy-brand-symbol", "aria-hidden": "true" }, "IT"),
+        h("div", { className: "academy-footer-brand-block" },
+          h(Link, { to: "/", className: "brand academy-brand footer-brand", "aria-label": "IT ACADEMY 홈" },
+            h("span", { className: "academy-brand-symbol", "aria-hidden": "true" }, h(AcademyBrandMark)),
             h("span", { className: "academy-brand-copy" },
-              h("b", null, "ACADEMY"),
-              h("small", null, "AI · DATA · ENGINEERING")
+              h("b", null, "IT ACADEMY"),
+              h("small", null, "Learn · Build · Grow")
             )
           ),
-          h("p", null, "기술을 이해하고, 문제를 해결하며, 결과를 검증하는 교육"),
-          h("small", null, "LEARN THE PRINCIPLE. BUILD THE PRODUCT. PROVE THE QUALITY.")
+          h("p", null, "기술을 이해하고, 직접 구현하며, 결과로 설명하는 교육."),
+          h("small", null, "교육과정과 운영 조건은 확인된 내용만 안내합니다.")
         ),
         h("div", { className: "academy-footer-links" },
-          h("b", null, "EXPLORE"),
-          h(Link, { to: "/about" }, "교육 철학"),
+          h("b", null, "교육 안내"),
           h(Link, { to: "/courses" }, "교육과정"),
-          h(Link, { to: "/projects" }, "프로젝트 심사 기준"),
-          h(Link, { to: "/notices" }, "공지사항")
+          h(Link, { to: "/projects" }, "프로젝트"),
+          h(Link, { to: "/about" }, "기관 소개")
         ),
         h("div", { className: "academy-footer-links" },
-          h("b", null, "CONTACT"),
-          h(Link, { to: "/consultation" }, "교육 상담 신청"),
-          h("span", null, "운영 일정·정원·교육비는 최신 공지 기준")
+          h("b", null, "도움말"),
+          h(Link, { to: "/notices" }, "공지사항"),
+          h(Link, { to: "/consultation" }, "상담 안내")
         )
       ),
       h("div", { className: "container academy-footer-bottom" },
-        h("span", null, "© " + new Date().getFullYear() + " IT ACADEMY"),
-        h("span", null, "교육기관의 실제 연락처·주소·운영 실적은 확인된 정보만 게시합니다.")
+        h("span", null, "© " + new Date().getFullYear() + " IT ACADEMY. All rights reserved."),
+        h("span", null, "모집·교육 운영 정보는 확정된 공지사항을 기준으로 안내합니다.")
       )
     )
   );
 }
+const programArtwork = {
+  1: "https://images.unsplash.com/photo-1753613648137-602c669cbe07?auto=format&fit=crop&w=900&q=82",
+  2: "https://images.unsplash.com/photo-1666875753105-c63a6f3bdc86?auto=format&fit=crop&w=900&q=82",
+  3: "https://images.unsplash.com/photo-1754039985001-ccafee437736?auto=format&fit=crop&w=900&q=82",
+  4: "https://images.unsplash.com/photo-1775519520461-6b6e068d9250?auto=format&fit=crop&w=900&q=82"
+};
 
 function CourseCard(props) {
   const course = props.course;
-  return h("article", { className: "course" },
-    h("div", { className: "coursehead" },
-      h("span", { className: "number" }, String(course.id).padStart(2, "0")),
-      h("span", { className: "status" }, course.recruitmentStatus)
-    ),
-    h("small", { className: "eyebrow" }, course.category),
-    h("span", { className: "course-info-disclosure" }, course.infoDisclosure || "교육과정 구성 예시"),
-    h("h3", null, course.title),
-    h("p", null, course.summary),
-    h("div", { className: "coursefoot" },
-      h("b", null, course.duration),
-      h(Link, { to: "/courses/" + course.id }, "자세히 보기 →")
+  const guide = courseSeed.find(function (item) { return String(item.id) === String(course.id); }) || {};
+  const audience = course.audience || guide.audience || "과정의 학습 범위와 준비 내용은 상세 안내에서 확인해 주세요.";
+  const outcome = course.outcome || guide.outcome || "실습 결과와 구현 과정을 정리하는 프로젝트";
+  const learningGoal = course.learningGoal || guide.learningGoal || course.skills || "과정별 주요 기술과 실습";
+  const category = String(course.category || guide.category || "PROGRAM").toLowerCase().replace(/[^a-z0-9]+/g, "-");
+  const image = programArtwork[Number(course.id)] || programArtwork[1];
+
+  return h("article", { className: "program-card", "data-category": category },
+    h(Link, { to: "/courses/" + course.id, className: "program-card-link" },
+      h("div", { className: "program-card-art" },
+        h("img", { src: image, alt: "", loading: "lazy", decoding: "async" }),
+        h("span", null, guide.category || course.category || "교육과정")
+      ),
+      h("div", { className: "program-card-body" },
+        h("h2", null, course.title),
+        h("p", { className: "program-card-summary" }, course.summary || course.description),
+        h("div", { className: "program-card-details" },
+          h("div", { className: "program-card-detail program-card-audience" },
+            h("b", null, "이런 관심에 맞습니다"),
+            h("p", null, audience)
+          ),
+          h("div", { className: "program-card-detail" },
+            h("b", null, "학습 방향"),
+            h("p", null, learningGoal)
+          ),
+          h("div", { className: "program-card-detail program-card-outcome" },
+            h("b", null, "대표 결과물 예시"),
+            h("p", null, outcome)
+          )
+        ),
+        h("div", { className: "program-card-footer" },
+          h("span", { className: "program-card-skills" }, course.skills || guide.skills),
+          h("strong", null, "과정 자세히 보기", h("span", { "aria-hidden": "true" }, "→"))
+        )
+      )
     )
   );
 }
@@ -238,8 +286,6 @@ function buildCourseDetailData(course) {
   return {
     intro: course.description || course.summary || "등록된 교육과정의 목표와 학습 범위를 안내합니다.",
     description: course.description || course.summary || "단계별 실습과 프로젝트를 통해 과정의 핵심 역량을 학습합니다.",
-    recruitPeriod: "운영기관 공지 확인",
-    startDate: "상담 시 최신 일정 안내",
     outcomes: [
       { title: "핵심 개념 이해", description: "과정의 주요 개념과 기술이 문제 해결에 어떻게 활용되는지 설명합니다." },
       { title: "기능 단위 구현", description: "작은 기능부터 직접 구현하고 실행 결과와 오류 원인을 확인합니다." },
@@ -267,33 +313,30 @@ function Courses() {
   const [items, setItems] = React.useState(isStaticPreview ? courseSeed : []);
   const [keyword, setKeyword] = React.useState("");
   const [category, setCategory] = React.useState("전체");
-  const [coursesLoading, setCoursesLoading] = React.useState(true);
+  const [coursesLoading, setCoursesLoading] = React.useState(!isStaticPreview);
   const [coursesError, setCoursesError] = React.useState("");
   const [reloadCount, setReloadCount] = React.useState(0);
 
   React.useEffect(function () {
     if (isStaticPreview) {
+      setItems(courseSeed);
       setCoursesLoading(false);
-      setCoursesError("");
       return undefined;
     }
-
     const controller = new AbortController();
     setCoursesLoading(true);
     setCoursesError("");
-    api.get("/courses", { signal: controller.signal })
-      .then(function (response) {
-        setItems(Array.isArray(response.data) ? response.data : []);
-      })
-      .catch(function (requestError) {
-        if (requestError.code === "ERR_CANCELED") return;
+    api.get("/courses", { signal: controller.signal }).then(function (response) {
+      if (!Array.isArray(response.data)) throw new Error("교육과정 응답 형식이 올바르지 않습니다.");
+      setItems(response.data);
+    }).catch(function (requestError) {
+      if (requestError.code !== "ERR_CANCELED") {
         setItems([]);
-        setCoursesError("교육과정 정보를 불러오지 못했습니다. 서버 연결 상태를 확인한 뒤 다시 시도해 주세요.");
-      })
-      .finally(function () {
-        if (!controller.signal.aborted) setCoursesLoading(false);
-      });
-
+        setCoursesError(requestError.message || "교육과정 정보를 불러오지 못했습니다.");
+      }
+    }).finally(function () {
+      if (!controller.signal.aborted) setCoursesLoading(false);
+    });
     return function () { controller.abort(); };
   }, [reloadCount]);
 
@@ -307,33 +350,35 @@ function Courses() {
     });
 
     if (!selected && coursesLoading) {
-      return h("section", { className: "page" }, h("div", { className: "container" }, h("p", null, "교육과정 정보를 불러오고 있습니다.")));
+      return h("section", { className: "program-detail-page" },
+        h("div", { className: "site-container program-state", role: "status" }, "교육과정 정보를 불러오고 있습니다.")
+      );
     }
     if (!selected && coursesError) {
-      return h("section", { className: "page" },
-        h("div", { className: "container" },
-          h("span", { className: "eyebrow" }, "PROGRAM CONNECTION ERROR"),
+      return h("section", { className: "program-detail-page" },
+        h("div", { className: "site-container program-state", role: "alert" },
           h("h1", null, "교육과정 정보를 불러오지 못했습니다."),
-          h("p", { className: "lead" }, coursesError),
-          h("div", { className: "not-found-actions" },
-            h("button", { type: "button", className: "btn", onClick: retryCourses }, "다시 시도"),
-            h(Link, { to: "/courses", className: "btn ghost" }, "교육과정 목록으로 이동")
-          )
+          h("p", null, coursesError),
+          h("button", { type: "button", className: "site-button", onClick: retryCourses }, "다시 불러오기"),
+          h(Link, { to: "/courses", className: "site-text-link" }, "교육과정 목록")
         )
       );
     }
     if (!selected) {
-      return h("section", { className: "page" },
-        h("div", { className: "container" },
-          h("span", { className: "eyebrow" }, "PROGRAM NOT FOUND"),
+      return h("section", { className: "program-detail-page" },
+        h("div", { className: "site-container program-state" },
           h("h1", null, "과정을 찾을 수 없습니다."),
-          h("p", { className: "lead" }, "과정이 삭제되었거나 공개되지 않았을 수 있습니다."),
-          h(Link, { to: "/courses", className: "btn" }, "교육과정 목록으로 돌아가기")
+          h("p", null, "과정이 삭제되었거나 현재 공개되지 않았습니다."),
+          h(Link, { to: "/courses", className: "site-button" }, "전체 교육과정 보기")
         )
       );
     }
 
     const detailData = courseDetailData[selected.id] || buildCourseDetailData(selected);
+    const courseGuide = courseSeed.find(function (item) { return String(item.id) === String(selected.id); }) || {};
+    const audience = selected.audience || courseGuide.audience || "현재 경험과 학습 목표를 상담에서 함께 확인합니다.";
+    const learningGoal = selected.learningGoal || courseGuide.learningGoal || selected.skills || "과정의 주요 개념과 실습 범위";
+    const outcome = selected.outcome || courseGuide.outcome || detailData.projectTitle;
     const moduleEvidence = {
       1: [
             [
@@ -447,59 +492,47 @@ function Courses() {
     const modules = (detailData.modules || []).map(function (item, index) {
       const evidence = moduleEvidence[selected.id] && moduleEvidence[selected.id][index];
       return Object.assign({}, item, {
-        practice: evidence ? evidence[0] : "핵심 개념을 직접 적용해 작은 기능을 구현하고 정상·오류 조건을 확인합니다.",
+        practice: evidence ? evidence[0] : item.description,
         evidence: evidence ? evidence[1] : "실습 코드, 실행 결과, 개선 기록",
         validation: evidence ? evidence[2] : "정상·오류·경계 조건을 재현하고 구현 이유를 설명합니다."
       });
     });
-    const benefits = detailData.benefits;
-    const faqs = detailData.faqs;
+    const faqs = detailData.faqs || [];
 
-    return h("section", { className: "course-detail-page" },
-      h("div", { className: "course-detail-hero" },
-        h("div", { className: "container course-detail-hero-inner" },
-          h("div", { className: "course-detail-hero-copy" },
-            h("span", { className: "eyebrow light" }, selected.category + " PROGRAM · LEARNING PATH"),
-            h("span", { className: "course-status-pill" }, selected.recruitmentStatus || "모집 안내"),
-            h("h1", null, selected.title),
-            h("p", { className: "course-info-disclosure hero-disclosure" }, selected.infoDisclosure || "교육과정 구성 예시"),
-            h("p", null, detailData.intro),
-            h("div", { className: "course-detail-tags" },
-              h("span", null, "교육 기간 " + selected.duration),
-              h("span", null, "프로젝트 중심 실습"),
-              h("span", null, selected.target || "지원 대상은 상담 시 확인")
+    return h("section", { className: "program-detail-page" },
+      h("header", { className: "program-detail-hero" },
+        h("div", { className: "site-container" },
+          h(Link, { to: "/courses", className: "program-back-link" }, "← 전체 교육과정"),
+          h("p", { className: "program-detail-field" }, selected.category || "교육과정"),
+          h("h1", null, selected.title),
+          h("p", { className: "program-detail-lead" }, detailData.intro || selected.summary),
+          h("div", { className: "program-detail-summary" },
+            h("article", null,
+              h("b", null, "이런 관심에 맞습니다"),
+              h("p", null, audience)
             ),
-            h("div", { className: "actions" },
-              h(Link, { to: "/consultation", className: "btn" }, "과정 상담 신청하기"),
-              h(Link, { to: "/courses", className: "btn ghost" }, "전체 과정 보기")
+            h("article", null,
+              h("b", null, "학습 방향"),
+              h("p", null, learningGoal)
+            ),
+            h("article", null,
+              h("b", null, "대표 결과물 예시"),
+              h("p", null, outcome)
             )
           ),
-          h(AcademyScene, { variant: "courses" })
+          h(Link, { to: "/consultation", className: "site-button site-button--light" }, "이 과정 상담 안내")
         )
       ),
-      h("div", { className: "container course-detail-content" },
-        h("section", { className: "course-recruit-panel" },
-          h("div", null,
-            h("span", { className: "eyebrow" }, "RECRUITMENT GUIDE"),
-            h("h2", null, "모집 안내"),
-            h("p", null, "모집 일정과 정원은 운영기관이 확정한 최신 공지를 기준으로 안내합니다. 확인되지 않은 날짜나 인원은 임의로 표시하지 않습니다.")
-          ),
-          h("div", { className: "recruit-facts" },
-            h("article", null, h("small", null, "모집 기간"), h("b", null, detailData.recruitPeriod)),
-            h("article", null, h("small", null, "개강 예정"), h("b", null, detailData.startDate)),
-            h("article", null, h("small", null, "교육 방식"), h("b", null, "운영기관 확인 필요")),
-            h("article", null, h("small", null, "교육 대상"), h("b", null, selected.target))
-          )
-        ),
-        h("section", { className: "course-detail-section" },
-          h("div", { className: "course-section-heading" },
-            h("span", { className: "eyebrow" }, "WHAT YOU WILL LEARN"),
-            h("h2", null, "과정 소개"),
+      h("div", { className: "site-container program-detail-content" },
+        h("section", { className: "program-section program-overview" },
+          h("div", { className: "program-section-heading" },
+            h("p", { className: "program-section-index" }, "01 / 학습 내용"),
+            h("h2", null, "어떤 내용을 배우나요?"),
             h("p", null, detailData.description)
           ),
-          h("div", { className: "course-outcomes" },
-            detailData.outcomes.map(function (item, index) {
-              return h("article", { key: item.title },
+          h("div", { className: "program-outcomes" },
+            (detailData.outcomes || []).map(function (item, index) {
+              return h("article", { className: "program-outcome", key: item.title },
                 h("span", null, "0" + (index + 1)),
                 h("h3", null, item.title),
                 h("p", null, item.description)
@@ -507,118 +540,63 @@ function Courses() {
             })
           )
         ),
-        h("section", { className: "course-detail-section curriculum-section" },
-          h("div", { className: "course-section-heading" },
-            h("span", { className: "eyebrow" }, "LEARNING ROADMAP"),
-            h("h2", null, "단계별 커리큘럼"),
-            h("p", null, "각 단계는 학습 내용만 나열하지 않습니다. 직접 해볼 과제, 제출할 산출물, 다음 단계로 넘어가기 전에 확인할 완료 기준을 함께 제시합니다.")
+        h("section", { className: "program-section program-curriculum" },
+          h("div", { className: "program-section-heading" },
+            h("p", { className: "program-section-index" }, "02 / 학습 순서"),
+            h("h2", null, "기초부터 프로젝트까지"),
+            h("p", null, "학습 주제와 실습, 정리할 자료를 단계별로 연결했습니다. 실제 운영 시 세부 순서와 범위는 확정 교육 계획을 따릅니다.")
           ),
-          h("div", { className: "curriculum-list" },
+          h("div", { className: "program-modules" },
             modules.map(function (item, index) {
-              return h("article", { className: "curriculum-item", key: item.title },
-                h("span", { className: "curriculum-number" }, "STEP 0" + (index + 1)),
-                h("div", null,
+              return h("article", { className: "program-module", key: item.title },
+                h("div", { className: "program-module-index" }, "STEP", h("b", null, String(index + 1).padStart(2, "0"))),
+                h("div", { className: "program-module-body" },
                   h("h3", null, item.title),
-                  h("p", null, item.description),
-                  h("small", null, item.tools),
-                  h("div", { className: "academy-module-evidence" },
-                    h("div", null,
-                      h("b", null, "PRACTICE"),
-                      h("p", null, item.practice)
-                    ),
-                    h("div", null,
-                      h("b", null, "EVIDENCE"),
-                      h("p", null, item.evidence)
-                    ),
-                    h("div", null,
-                      h("b", null, "COMPLETION CHECK"),
-                      h("p", null, item.validation)
-                    )
+                  h("p", { className: "program-module-description" }, item.description),
+                  h("p", { className: "program-module-tools" }, "사용 기술: " + item.tools),
+                  h("div", { className: "program-module-evidence" },
+                    h("div", null, h("b", null, "직접 해볼 실습"), h("p", null, item.practice)),
+                    h("div", null, h("b", null, "남기는 결과"), h("p", null, item.evidence)),
+                    h("div", null, h("b", null, "확인할 내용"), h("p", null, item.validation))
                   )
                 )
               );
             })
           )
         ),
-        h("section", { className: "course-detail-section" },
-          h("div", { className: "course-section-heading" },
-            h("span", { className: "eyebrow" }, "PROJECT PORTFOLIO"),
-            h("h2", null, "직접 완성하는 프로젝트"),
-            h("p", null, "학습한 기술을 연결해 동작하는 결과물로 구현합니다.")
+        h("section", { className: "program-section program-project" },
+          h("div", { className: "program-section-heading" },
+            h("p", { className: "program-section-index" }, "03 / 프로젝트 예시"),
+            h("h2", null, detailData.projectTitle),
+            h("p", null, detailData.projectDescription)
           ),
-          h("div", { className: "course-project-feature" },
-            h("div", null,
-              h("small", null, "FINAL TEAM PROJECT"),
-              h("h3", null, detailData.projectTitle),
-              h("p", null, detailData.projectDescription)
-            ),
-            h("div", { className: "project-deliverables" },
-              detailData.deliverables.map(function (item) {
-                return h("span", { key: item }, item);
-              })
-            )
+          h("div", { className: "program-project-deliverables" },
+            h("b", null, "정리할 수 있는 자료"),
+            h("ul", null, (detailData.deliverables || []).map(function (item) {
+              return h("li", { key: item }, item);
+            }))
           )
         ),
-        h("section", { className: "course-detail-section academy-course-quality" },
-          h("div", { className: "course-section-heading" },
-            h("span", { className: "eyebrow" }, "LEARNING QUALITY & AI COLLABORATION"),
-            h("h2", null, "수업과 프로젝트의 완성도를 확인하는 기준"),
-            h("p", null, "코드를 많이 작성하는 것보다 요구사항을 이해하고, 선택한 기술을 설명하고, 핵심 기능을 검증하는 능력을 중요하게 다룹니다.")
-          ),
-          h("div", { className: "academy-course-quality-grid" },
+        h("section", { className: "program-section program-working-method" },
+          h("p", { className: "program-section-index" }, "04 / 학습 방법"),
+          h("h2", null, "코드를 이해하고, 직접 구현하고, 결과를 설명합니다."),
+          h("div", { className: "program-method-grid" },
             [
-              ["01", "개념 이해", "주요 개념과 데이터 흐름을 자신의 언어로 설명하고 작은 실습으로 확인합니다."],
-              ["02", "직접 구현", "AI 도구를 보조적으로 활용하되 핵심 로직과 코드 변경 이유를 직접 이해합니다."],
-              ["03", "품질 검증", "정상·오류·경계 조건을 테스트하고 보안과 접근성의 기본 요구를 점검합니다."],
-              ["04", "결과 설명", "README, API 명세, 테스트 결과, 발표 자료로 구현 과정과 한계를 전달합니다."]
+              ["이해", "핵심 개념과 데이터 흐름을 자신의 말로 설명합니다."],
+              ["실습", "작은 기능부터 직접 구현하고 실패 원인을 확인합니다."],
+              ["검증", "정상·오류·경계 조건을 테스트하고 기록합니다."],
+              ["정리", "README와 시연 자료로 선택과 한계를 전달합니다."]
             ].map(function (item) {
-              return h("article", { key: item[0] },
-                h("b", null, item[0]),
-                h("h3", null, item[1]),
-                h("p", null, item[2])
-              );
-            })
-          ),
-          h("div", { className: "academy-course-ai-note" },
-            h("b", null, "AI 활용 원칙"),
-            " AI가 생성한 코드도 제출 전 검토 대상입니다. 요구사항 추적, 직접 설명, 코드 리뷰, 테스트 결과를 확인하는 방식으로 학습하도록 설계합니다."
-          )
-        ),
-        h("section", { className: "course-detail-section" },
-          h("div", { className: "course-section-heading" },
-            h("span", { className: "eyebrow" }, "STUDENT SUPPORT"),
-            h("h2", null, "학습 지원 설계 기준")
-          ),
-          h("div", { className: "course-benefits" },
-            benefits.map(function (item) {
-              return h("article", { key: item.title },
-                h("h3", null, item.title),
-                h("p", null, item.description)
-              );
+              return h("article", { key: item[0] }, h("h3", null, item[0]), h("p", null, item[1]));
             })
           )
         ),
-        h("section", { className: "course-detail-section course-process-section" },
-          h("div", { className: "course-section-heading" },
-            h("span", { className: "eyebrow" }, "HOW TO APPLY"),
-            h("h2", null, "수강 신청 절차")
+        h("section", { className: "program-section program-faq" },
+          h("div", { className: "program-section-heading" },
+            h("p", { className: "program-section-index" }, "05 / 자주 묻는 질문"),
+            h("h2", null, "과정을 알아보기 전에")
           ),
-          h("div", { className: "application-steps" },
-            [["01", "상담 신청", "관심 과정과 학습 목표를 남겨주세요."], ["02", "상담 및 과정 안내", "교육 내용과 참여 조건을 확인합니다."], ["03", "지원 절차 확인", "필요 서류와 등록 절차를 안내받습니다."], ["04", "개강 준비", "학습 환경과 사전 준비 사항을 확인합니다."]].map(function (item) {
-              return h("article", { key: item[0] },
-                h("b", null, item[0]),
-                h("h3", null, item[1]),
-                h("p", null, item[2])
-              );
-            })
-          )
-        ),
-        h("section", { className: "course-detail-section" },
-          h("div", { className: "course-section-heading" },
-            h("span", { className: "eyebrow" }, "FAQ"),
-            h("h2", null, "자주 묻는 질문")
-          ),
-          h("div", { className: "course-faq-list" },
+          h("div", { className: "program-faq-list" },
             faqs.map(function (item) {
               return h("details", { key: item.question },
                 h("summary", null, item.question),
@@ -627,13 +605,16 @@ function Courses() {
             })
           )
         ),
-        h("section", { className: "course-final-cta" },
+        h("section", { className: "program-operations-note" },
           h("div", null,
-            h("span", { className: "eyebrow light" }, "YOUR NEXT CHAPTER STARTS HERE"),
-            h("h2", null, "나에게 맞는 과정인지 먼저 상담해 보세요."),
-            h("p", null, "커리큘럼, 학습 난이도, 준비 사항을 차근차근 안내합니다.")
+            h("p", { className: "program-section-index" }, "운영 안내"),
+            h("h2", null, "모집·일정·교육비는 확인된 공지로 안내합니다."),
+            h("p", null, "이 사이트에 표시된 과정 구성은 학습 내용을 설명하기 위한 설계 예시입니다. 실제 개강일, 교육 기간, 수업 방식, 정원, 교육비와 지원 자격은 운영기관이 확인한 정보가 공지되기 전까지 확정된 것으로 안내하지 않습니다.")
           ),
-          h(Link, { to: "/consultation", className: "btn white" }, "교육과정 상담 신청하기")
+          h("div", { className: "program-operations-links" },
+            h(Link, { to: "/notices", className: "site-text-link" }, "공지사항 확인"),
+            h(Link, { to: "/consultation", className: "site-button" }, "상담 안내 보기")
+          )
         )
       )
     );
@@ -642,130 +623,76 @@ function Courses() {
   const normalizedKeyword = keyword.trim().toLocaleLowerCase("ko-KR");
   const filtered = items.filter(function (course) {
     const categoryMatches = category === "전체" || course.category === category;
+    const guide = courseSeed.find(function (item) { return String(item.id) === String(course.id); }) || {};
     const searchableText = [
-      course.title,
-      course.category,
-      course.summary,
-      course.description,
-      course.skills
+      course.title, course.category, course.summary, course.description, course.skills,
+      course.audience, course.learningGoal, course.outcome, guide.audience, guide.learningGoal, guide.outcome
     ].filter(Boolean).join(" ").toLocaleLowerCase("ko-KR");
-    const keywordMatches = !normalizedKeyword || searchableText.includes(normalizedKeyword);
-    return categoryMatches && keywordMatches;
+    return categoryMatches && (!normalizedKeyword || searchableText.includes(normalizedKeyword));
   });
 
-  return h("section", { className: "page" },
-    h("div", { className: "container" },
-      h("div", { className: "course-page-intro" },
-        h("div", { className: "course-page-intro-copy" },
-          h("span", { className: "eyebrow" }, "OUR PROGRAMS"),
-          h("h1", null, "교육과정"),
-          h("p", { className: "lead" }, "과정별 학습 목표와 기술 범위, 실습 단계, 프로젝트 결과물을 비교해 보세요.")
-        ),
-        h(AcademyScene, { variant: "courses" })
+  const categories = [
+    ["전체", "전체 분야"],
+    ["AI", "AI·머신러닝"],
+    ["DATA", "데이터 분석"],
+    ["GEN AI", "생성형 AI"],
+    ["WEB", "웹 서비스"]
+  ];
+
+  return h("section", { className: "program-page" },
+    h("div", { className: "site-container" },
+      h("header", { className: "program-header" },
+        h("p", { className: "program-section-index" }, "IT ACADEMY · 교육과정 안내"),
+        h("h1", null, "무엇을 배우고, 무엇을 만들 수 있을까요?"),
+        h("p", null, "관심 있는 분야와 만들고 싶은 결과를 기준으로 과정을 비교해 보세요. 각 과정의 학습 목표와 프로젝트 예시를 확인할 수 있습니다.")
       ),
-      h("div", { className: "filters" },
-        h("input", {
-          type: "search",
-          placeholder: "과정명·분야·기술 검색",
-          "aria-label": "교육과정 이름, 분야 또는 기술 검색",
-          autoComplete: "off",
-          value: keyword,
-          onChange: function (event) { setKeyword(event.target.value); }
-        }),
-        h("select", {
-          "aria-label": "교육과정 분야 필터",
-          value: category,
-          onChange: function (event) { setCategory(event.target.value); }
-        },
-          ["전체", "AI", "DATA", "GEN AI", "WEB"].map(function (value) {
-            return h("option", { key: value, value: value }, value);
+      h("div", { className: "program-toolbar" },
+        h("div", { className: "program-filters", role: "group", "aria-label": "교육과정 분야" },
+          categories.map(function (item) {
+            return h("button", {
+              type: "button",
+              key: item[0],
+              className: category === item[0] ? "program-filter is-active" : "program-filter",
+              "aria-pressed": category === item[0],
+              onClick: function () { setCategory(item[0]); }
+            }, item[1]);
           })
+        ),
+        h("label", { className: "program-search" },
+          h("span", { className: "sr-only" }, "교육과정 검색"),
+          h("input", {
+            type: "search",
+            placeholder: "과정명이나 기술 검색",
+            value: keyword,
+            onChange: function (event) { setKeyword(event.target.value); }
+          }),
+          h("span", { "aria-hidden": "true" }, "검색")
         )
       ),
-      h("div", { className: "course-results-summary", "aria-live": "polite" },
-        h("span", null, "검색 결과"),
-        h("strong", null, String(filtered.length) + "개 과정")
+      h("div", { className: "program-results-summary", "aria-live": "polite" },
+        h("span", null, category === "전체" ? "전체 교육 분야" : categories.find(function (item) { return item[0] === category; })[1]),
+        h("b", null, String(filtered.length) + "개 과정")
       ),
       coursesError
-        ? h("div", { className: "notice-state", role: "alert" },
-            h("div", { className: "notice-state-icon", "aria-hidden": "true" }, "!"),
+        ? h("div", { className: "program-state", role: "alert" },
             h("h2", null, "교육과정 정보를 불러오지 못했습니다."),
             h("p", null, coursesError),
-            h("button", { type: "button", className: "btn", onClick: retryCourses }, "다시 시도")
+            h("button", { type: "button", className: "site-button", onClick: retryCourses }, "다시 불러오기")
           )
         : coursesLoading
-        ? h("div", { className: "notice-state", role: "status" },
-            h("h2", null, "교육과정을 불러오고 있습니다."),
-            h("p", null, "최신 과정 정보를 확인하고 있습니다.")
-          )
+        ? h("div", { className: "program-state", role: "status" }, "교육과정을 불러오고 있습니다.")
         : filtered.length
-        ? h("div", { className: "grid4" },
+        ? h("div", { className: "program-list" },
             filtered.map(function (course) {
               return h(CourseCard, { course: course, key: course.id });
             })
           )
-        : h("div", { className: "notice-state" },
-            h("div", { className: "notice-state-icon", "aria-hidden": "true" }, "⌕"),
-            h("h2", null, normalizedKeyword || category !== "전체" ? "조건에 맞는 과정이 없습니다." : "등록된 교육과정이 없습니다."),
-            h("p", null, normalizedKeyword || category !== "전체" ? "검색어를 바꾸거나 분야 필터를 전체로 변경해 주세요." : "운영기관에서 공개할 교육과정을 등록하면 이곳에 표시됩니다."),
-            normalizedKeyword || category !== "전체"
-              ? h("button", { type: "button", className: "btn ghost", onClick: function () { setKeyword(""); setCategory("전체"); } }, "검색 초기화")
-              : null
+        : h("div", { className: "program-state program-state--empty" },
+            h("h2", null, items.length ? "검색 결과가 없습니다." : "현재 공개된 교육과정이 없습니다."),
+            h("p", null, items.length ? "검색어를 바꾸거나 다른 분야를 선택해 주세요." : "운영기관에서 확정한 교육과정이 등록되면 이곳에서 안내합니다."),
+            items.length ? h("button", { type: "button", className: "site-text-link", onClick: function () { setKeyword(""); setCategory("전체"); } }, "검색 조건 초기화") : null
           ),
-      h("section", { className: "course-path-selector", "aria-labelledby": "course-path-selector-title" },
-        h("div", { className: "course-path-heading" },
-          h("span", { className: "eyebrow" }, "FIND YOUR LEARNING PATH"),
-          h("h2", { id: "course-path-selector-title" }, "어떤 문제를 해결하고 싶은지부터 선택하세요."),
-          h("p", null, "분야 이름보다 관심 있는 작업과 만들고 싶은 결과를 기준으로 과정을 비교할 수 있습니다.")
-        ),
-        h("div", { className: "course-path-grid" },
-          [
-            {
-              code: "AI",
-              title: "데이터로 예측하고 추천하기",
-              focus: "데이터를 정리하고 패턴을 찾아 분류·예측·추천 모델의 결과를 비교합니다.",
-              output: "데이터 사전 · 모델 비교표 · 추천 서비스 시연",
-              guide: "Python, 통계, 모델 평가에 관심이 있다면"
-            },
-            {
-              code: "DATA",
-              title: "데이터에서 의사결정 근거 찾기",
-              focus: "SQL과 Python으로 데이터를 추출·정제하고 지표와 대시보드로 의미를 전달합니다.",
-              output: "품질 점검표 · SQL 분석 · 대시보드",
-              guide: "분석 질문, 지표 설계, 시각화에 관심이 있다면"
-            },
-            {
-              code: "GEN AI",
-              title: "문서와 지식을 AI 서비스로 연결하기",
-              focus: "LLM, 임베딩, 검색을 연결하고 답변의 근거와 한계를 검증합니다.",
-              output: "문서 처리 흐름 · 검색 평가 · RAG 시연",
-              guide: "생성형 AI와 근거 기반 검색에 관심이 있다면"
-            },
-            {
-              code: "WEB",
-              title: "화면부터 서버까지 서비스 구현하기",
-              focus: "프론트엔드, 백엔드, 데이터베이스와 인증을 연결해 사용자 흐름을 완성합니다.",
-              output: "화면 설계 · API 명세 · 통합 웹 서비스",
-              guide: "웹 애플리케이션과 풀스택 개발에 관심이 있다면"
-            }
-          ].map(function (item) {
-            return h("article", { className: "course-path-card", key: item.code },
-              h("div", { className: "course-path-card-top" },
-                h("span", null, item.code),
-                h("i", { "aria-hidden": "true" }, "↗")
-              ),
-              h("h3", null, item.title),
-              h("p", null, item.focus),
-              h("div", { className: "course-path-guide" }, item.guide),
-              h("div", { className: "course-path-output" },
-                h("b", null, "대표 학습 산출물"),
-                h("span", null, item.output)
-              )
-            );
-          })
-        ),
-        h("p", { className: "course-data-disclosure" }, "과정별 커리큘럼과 기술 구성은 교육 설계 예시입니다. 실제 개강일·교육 기간·정원·비용·지원 자격은 운영기관이 확인한 정보만 공개합니다.")
-      )
+      h("p", { className: "program-disclosure" }, "이 페이지의 학습 구성은 교육 설계 예시입니다. 실제 모집 여부·개강일·교육 기간·정원·교육비·지원 자격은 운영기관이 확인한 공지사항을 기준으로 안내합니다.")
     )
   );
 }
@@ -859,21 +786,56 @@ function Consultation() {
       )
     );
   }
+  if (isStaticPreview) {
+    return h("section", { className: "consultation-page" },
+      h("div", { className: "site-container consultation-preview" },
+        h("header", { className: "consultation-heading" },
+          h("p", { className: "program-section-index" }, "상담 안내"),
+          h("h1", null, "나에게 맞는 학습 방향부터 확인하세요."),
+          h("p", null, "관심 분야와 현재 경험, 만들고 싶은 결과를 기준으로 교육과정을 살펴볼 수 있습니다.")
+        ),
+        h("section", { className: "consultation-preview-unavailable", role: "note", "aria-labelledby": "consultation-preview-title" },
+          h("span", { className: "consultation-preview-mark", "aria-hidden": "true" }, "i"),
+          h("div", null,
+            h("h2", { id: "consultation-preview-title" }, "이 미리보기에서는 상담 신청 내용을 저장하지 않습니다."),
+            h("p", null, "현재 공개 사이트는 화면 확인을 위한 정적 미리보기입니다. 상담 데이터를 저장할 운영 서버와 개인정보 안내가 연결되지 않아 이름·연락처 등 개인정보 입력을 받지 않습니다.")
+          )
+        ),
+        h("div", { className: "consultation-preview-grid" },
+          h("section", null,
+            h("p", { className: "program-section-index" }, "상담 전에 생각해 볼 내용"),
+            h("h2", null, "어떤 내용을 확인하고 싶으신가요?"),
+            h("ol", null,
+              h("li", null, h("b", null, "관심 분야"), h("span", null, "AI·머신러닝, 데이터 분석, 생성형 AI, 웹 서비스 중 관심 있는 주제")),
+              h("li", null, h("b", null, "현재 경험"), h("span", null, "사용해 본 언어·도구와 직접 해본 실습")),
+              h("li", null, h("b", null, "학습 목표"), h("span", null, "배우고 싶은 기술과 만들어 보고 싶은 결과물")),
+              h("li", null, h("b", null, "참여 조건"), h("span", null, "실제 운영 공지에서 확인할 수업 일정과 참여 요건"))
+            )
+          ),
+          h("section", { className: "consultation-preview-next" },
+            h("p", { className: "program-section-index" }, "다음 단계"),
+            h("h2", null, "먼저 교육 내용을 비교해 보세요."),
+            h("p", null, "과정별 학습 목표와 실습 범위, 프로젝트 결과 예시를 확인한 뒤 실제 운영 정보가 공개되었는지 공지사항을 살펴볼 수 있습니다."),
+            h(Link, { to: "/courses", className: "site-button" }, "교육과정 살펴보기"),
+            h(Link, { to: "/projects", className: "site-text-link" }, "프로젝트 예시 보기"),
+            h(Link, { to: "/notices", className: "site-text-link" }, "공지사항 확인")
+          )
+        )
+      )
+    );
+  }
 
-  return h("section", { className: "page" },
-    h("div", { className: "container formwrap" },
+
+  return h("section", { className: "consultation-page" },
+    h("div", { className: "site-container consultation-layout" },
       h("div", { className: "consultation-side" },
         h("div", { className: "consultation-intro" },
-          h("div", null,
-            h("span", { className: "eyebrow" }, "CONSULTATION"),
-            h("h1", null, "교육과정 상담 신청"),
-            h("p", { className: "lead" }, "희망 과정과 현재 경험, 학습 목표를 남겨주시면 적합한 학습 방향을 안내합니다."),
-            h("div", { className: "consultation-visual-caption" }, "YOUR NEXT STEP STARTS HERE")
-          ),
-          h(AcademyScene, { variant: "consultation" })
+          h("p", { className: "program-section-index" }, "상담 신청"),
+          h("h1", null, "지금의 경험과 다음 목표를 알려주세요."),
+          h("p", null, "관심 있는 분야와 현재 학습 경험을 확인해 과정의 커리큘럼, 준비 내용과 운영 조건을 안내하는 상담을 위한 양식입니다.")
         ),
         h("section", { className: "consultation-preparation", "aria-labelledby": "consultation-preparation-title" },
-          h("span", { className: "eyebrow" }, "BEFORE YOU APPLY"),
+          h("p", { className: "program-section-index" }, "상담 전 준비"),
           h("h2", { id: "consultation-preparation-title" }, "상담 전에 정리하면 좋은 네 가지"),
           h("div", { className: "consultation-prep-list" },
             [
@@ -890,7 +852,7 @@ function Consultation() {
           )
         ),
         h("section", { className: "consultation-process", "aria-labelledby": "consultation-process-title" },
-          h("span", { className: "eyebrow" }, "HOW IT WORKS"),
+          h("p", { className: "program-section-index" }, "상담 진행"),
           h("h2", { id: "consultation-process-title" }, "상담 진행 흐름"),
           h("ol", null,
             h("li", null, h("b", null, "01"), h("span", null, "희망 과정과 문의 내용을 작성합니다.")),
@@ -899,7 +861,7 @@ function Consultation() {
           )
         )
       ),
-      h("form", { className: "form", onSubmit: submitForm },
+      h("form", { className: "consultation-form", onSubmit: submitForm },
         h("label", null, "이름 *",
           h("input", { required: true, name: "name", autoComplete: "name", maxLength: 40, value: form.name, onChange: function (e) { updateField("name", e.target.value); } })
         ),
@@ -950,7 +912,7 @@ function Consultation() {
           " 마케팅 수신 동의 (선택)"
         ),
         error ? h("p", { className: "error", role: "alert", "aria-live": "assertive" }, error) : null,
-        h("button", { className: "btn full", disabled: submitting || !form.privacyConsent || courseLoading || availableCourses.length === 0 },
+        h("button", { type: "submit", className: "site-button consultation-submit", disabled: submitting || !form.privacyConsent || courseLoading || availableCourses.length === 0 },
           submitting ? "신청 처리 중..." : "상담 신청하기"
         )
       )
@@ -965,6 +927,67 @@ function getTodayLocalDate() {
 }
 
 const isStaticPreview = import.meta.env.VITE_STATIC_PREVIEW === "true";
+
+function getNoticeCategoryClass(category) {
+  const classes = {
+    "모집 안내": "notice-tag--recruitment",
+    "교육과정": "notice-tag--program",
+    "교육 소식": "notice-tag--news",
+    "운영 안내": "notice-tag--operations",
+    "공지": "notice-tag--default"
+  };
+  return classes[category] || "notice-tag--default";
+}
+
+function renderNoticeContent(content) {
+  const lines = String(content || "").replace(/\r/g, "").split("\n");
+  const blocks = [];
+  let paragraph = [];
+  let bullets = [];
+
+  function flushParagraph() {
+    if (!paragraph.length) return;
+    const text = paragraph.join(" ").trim();
+    if (text) blocks.push({ type: "paragraph", text: text });
+    paragraph = [];
+  }
+
+  function flushBullets() {
+    if (!bullets.length) return;
+    blocks.push({ type: "list", items: bullets.slice() });
+    bullets = [];
+  }
+
+  lines.forEach(function (line) {
+    const value = line.trim();
+    if (!value) {
+      flushParagraph();
+      flushBullets();
+      return;
+    }
+    const bullet = value.match(/^(?:[•·*-]|\d+[.)])\s*(.+)$/);
+    if (bullet) {
+      flushParagraph();
+      bullets.push(bullet[1]);
+      return;
+    }
+    flushBullets();
+    paragraph.push(value);
+  });
+  flushParagraph();
+  flushBullets();
+
+  return h(React.Fragment, null, blocks.map(function (block, index) {
+    if (block.type === "list") {
+      return h("ul", { className: "notice-content-list", key: "list-" + index },
+        block.items.map(function (item, itemIndex) {
+          return h("li", { key: itemIndex }, item);
+        })
+      );
+    }
+    return h("p", { className: "notice-content-paragraph", key: "paragraph-" + index }, block.text);
+  }));
+}
 
 function Notices() {
   const [items, setItems] = React.useState([]);
@@ -1008,10 +1031,10 @@ function Notices() {
     return function () { controller.abort(); };
   }, []);
 
-  const normalizedKeyword = keyword.trim().toLowerCase();
+  const normalizedKeyword = keyword.trim().toLocaleLowerCase("ko-KR");
   const filtered = items.filter(function (notice) {
-    const title = String(notice.title || "").toLowerCase();
-    const content = String(notice.content || "").toLowerCase();
+    const title = String(notice.title || "").toLocaleLowerCase("ko-KR");
+    const content = String(notice.content || "").toLocaleLowerCase("ko-KR");
     const categoryMatches = category === "전체" || (notice.category || "공지") === category;
     const keywordMatches = !normalizedKeyword || title.includes(normalizedKeyword) || content.includes(normalizedKeyword);
     return categoryMatches && keywordMatches;
@@ -1036,19 +1059,15 @@ function Notices() {
     setPage(1);
   }
 
-  return h("section", { className: "page notice-page" },
-    h("div", { className: "container" },
-      h("div", { className: "notice-heading" },
+  return h("section", { className: "notice-page" },
+    h("div", { className: "site-container notice-container" },
+      h("header", { className: "notice-header" },
         h("div", null,
-          h("span", { className: "eyebrow" }, "NOTICE"),
-          h("h1", null, "IT ACADEMY 소식"),
-          h("p", { className: "lead" }, "교육과정 운영 소식부터 새로운 모집 안내까지, IT ACADEMY의 최신 소식을 확인하세요."),
-          isStaticPreview ? h("p", { className: "notice-preview-disclaimer", role: "note" }, "시연용 예시 게시물입니다. 실제 모집 일정과 운영 공지는 정식 서비스의 최신 게시글을 확인해 주세요.") : null
+          h("p", { className: "program-section-index" }, "소식과 운영 안내"),
+          h("h1", null, "공지사항"),
+          h("p", null, "모집 일정과 교육 운영에 관한 확정된 안내를 이곳에서 확인할 수 있습니다.")
         ),
-        h("div", { className: "notice-heading-visual" },
-          h("div", { className: "notice-heading-mark" }, "NEWS", h("b", null, " & NOTICE")),
-          h(AcademyScene, { variant: "notices" })
-        )
+        h("p", { className: "notice-header-note" }, "공지 내용은 운영기관이 확인한 정보만 게시합니다.")
       ),
       h("div", { className: "notice-toolbar" },
         h("div", { className: "notice-categories", role: "group", "aria-label": "공지사항 분류" },
@@ -1056,7 +1075,8 @@ function Notices() {
             return h("button", {
               type: "button",
               key: value,
-              className: category === value ? "notice-category active" : "notice-category",
+              className: category === value ? "notice-filter is-active" : "notice-filter",
+              "aria-pressed": category === value,
               onClick: function () { changeCategory(value); }
             }, value);
           })
@@ -1065,62 +1085,65 @@ function Notices() {
           h("span", { className: "sr-only" }, "공지사항 검색"),
           h("input", {
             type: "search",
-            placeholder: "제목 또는 내용 검색",
+            placeholder: "제목이나 내용 검색",
             value: keyword,
             onChange: function (event) { changeKeyword(event.target.value); }
           }),
-          h("span", { "aria-hidden": "true" }, "⌕")
+          h("span", { "aria-hidden": "true" }, "검색")
         )
       ),
       h("div", { className: "notice-summary" },
-        h("span", null, "TOTAL ", h("b", null, loading ? "—" : filtered.length)),
-        h("span", null, "최신 공지사항을 확인하세요")
+        h("span", null, "공개 게시물"),
+        h("b", { "aria-live": "polite" }, loading ? "확인 중" : String(filtered.length) + "건")
       ),
-      loading ? h("div", { className: "notice-skeleton", "aria-label": "공지사항 불러오는 중" },
-        [1, 2, 3, 4].map(function (value) {
-          return h("div", { className: "notice-skeleton-row", key: value },
-            h("i", null), h("div", null, h("b", null), h("span", null)), h("em", null)
-          );
-        })
-      ) : error ? h("div", { className: "notice-state error-state" },
-        h("div", { className: "notice-state-icon" }, "!"),
+      loading ? h("div", { className: "notice-loading", role: "status" }, "공지사항을 불러오고 있습니다.") :
+      error ? h("div", { className: "notice-state", role: "alert" },
         h("h2", null, "공지사항을 불러오지 못했습니다."),
         h("p", null, error),
-        h("button", { type: "button", className: "btn", onClick: function () { loadNotices(); } }, "다시 불러오기")
-      ) : filtered.length === 0 ? h("div", { className: "notice-state" },
-        h("div", { className: "notice-state-icon" }, "⌕"),
-        h("h2", null, items.length ? "검색 결과가 없습니다." : "등록된 공지사항이 없습니다."),
-        h("p", null, items.length ? "다른 검색어 또는 분류를 선택해 주세요." : "새로운 소식이 등록되면 이곳에서 확인할 수 있습니다."),
-        items.length ? h("button", { type: "button", className: "btn ghost", onClick: function () { changeKeyword(""); changeCategory("전체"); } }, "검색 초기화") : null
+        h("button", { type: "button", className: "site-button", onClick: function () { loadNotices(); } }, "다시 불러오기")
+      ) : filtered.length === 0 ? h("div", { className: "notice-empty" },
+        h("p", { className: "program-section-index" }, "현재 공개된 소식"),
+        h("h2", null, items.length ? "검색 결과가 없습니다." : "게시된 공지사항이 없습니다."),
+        h("p", null, items.length
+          ? "검색어를 바꾸거나 다른 분류를 선택해 주세요."
+          : "모집 일정과 교육 운영 정보는 확인된 내용이 있을 때만 게시합니다. 확인되지 않은 날짜나 조건은 예시로 만들어 표시하지 않습니다."
+        ),
+        items.length
+          ? h("button", { type: "button", className: "site-text-link", onClick: function () { changeKeyword(""); changeCategory("전체"); } }, "검색 조건 초기화")
+          : h("div", { className: "notice-empty-actions" },
+              h(Link, { to: "/courses", className: "site-button" }, "교육과정 보기"),
+              h(Link, { to: "/consultation", className: "site-text-link" }, "상담 안내")
+            )
       ) : h(React.Fragment, null,
         pinnedNotice ? h(Link, { to: "/notices/" + pinnedNotice.id, className: "notice-featured" },
-          h("div", { className: "notice-featured-label" }, h("span", null, "IMPORTANT NOTICE"), h("b", null, "중요 공지")),
-          h("div", { className: "notice-featured-body" },
-            h("div", null,
-              h("span", { className: "notice-tag featured-tag" }, pinnedNotice.category || "공지"),
-              h("h2", null, pinnedNotice.title),
-              h("p", null, String(pinnedNotice.content || "").replace(/\s+/g, " ").slice(0, 125))
-            ),
-            h("span", { className: "notice-featured-arrow" }, "→")
+          h("div", { className: "notice-featured-meta" },
+            h("span", { className: "notice-tag " + getNoticeCategoryClass(pinnedNotice.category) }, pinnedNotice.category || "공지"),
+            h("b", null, "중요 공지"),
+            pinnedNotice.createdAt ? h("time", null, formatNoticeDate(pinnedNotice.createdAt)) : null
           ),
-          pinnedNotice.createdAt ? h("small", null, formatNoticeDate(pinnedNotice.createdAt)) : null
+          h("h2", null, pinnedNotice.title),
+          h("p", null, String(pinnedNotice.content || "").replace(/\s+/g, " ").slice(0, 150)),
+          h("span", { className: "notice-featured-link" }, "공지 내용 확인")
         ) : null,
-        h("div", { className: "notice-list" },
-          h("div", { className: "notice-list-head" },
-            h("span", null, "분류"),
-            h("span", null, "제목"),
-            h("span", null, "등록일"),
-            h("span", null, " ")
+        h("div", { className: "notice-list", role: "table", "aria-label": "공지사항 목록" },
+          h("div", { className: "notice-list-head", role: "row" },
+            h("span", { className: "notice-column-category", role: "columnheader" }, "분류"),
+            h("span", { className: "notice-column-title", role: "columnheader" }, "제목"),
+            h("span", { className: "notice-column-date", role: "columnheader" }, "작성일")
           ),
           visibleItems.map(function (notice) {
-            return h(Link, { key: notice.id, to: "/notices/" + notice.id, className: notice.pinned ? "notice-row pinned" : "notice-row" },
-              h("span", { className: "notice-tag" }, notice.category || "공지"),
-              h("span", { className: "notice-row-title" },
+            return h(Link, {
+              key: notice.id,
+              to: "/notices/" + notice.id,
+              className: "notice-row",
+              role: "row"
+            },
+              h("span", { className: "notice-tag " + getNoticeCategoryClass(notice.category), role: "cell" }, notice.category || "공지"),
+              h("span", { className: "notice-row-title", role: "cell" },
                 notice.pinned ? h("b", { className: "notice-pin" }, "중요") : null,
                 h("strong", null, notice.title)
               ),
-              notice.createdAt ? h("time", null, formatNoticeDate(notice.createdAt)) : null,
-              h("span", { className: "notice-row-arrow", "aria-hidden": "true" }, "→")
+              notice.createdAt ? h("time", { className: "notice-row-date", role: "cell" }, formatNoticeDate(notice.createdAt)) : h("span", { className: "notice-row-date notice-row-date--empty", role: "cell" }, "—")
             );
           })
         ),
@@ -1131,7 +1154,7 @@ function Notices() {
             return h("button", {
               type: "button",
               key: number,
-              className: currentPage === number ? "active" : "",
+              className: currentPage === number ? "is-active" : "",
               "aria-current": currentPage === number ? "page" : undefined,
               onClick: function () { setPage(number); }
             }, String(number));
@@ -1145,7 +1168,6 @@ function Notices() {
 
 function NoticeDetail() {
   const params = useParams();
-  const navigate = useNavigate();
   const [notice, setNotice] = React.useState(null);
   const [loading, setLoading] = React.useState(true);
   const [error, setError] = React.useState("");
@@ -1159,7 +1181,7 @@ function NoticeDetail() {
           return String(item.id) === String(params.id);
         });
         if (preview) setNotice(preview);
-        else setError("공지사항을 찾을 수 없습니다.");
+        else setError("공개된 공지사항을 찾을 수 없습니다.");
         return;
       }
       const response = await api.get("/notices/" + params.id, signal ? { signal: signal } : undefined);
@@ -1168,8 +1190,8 @@ function NoticeDetail() {
       if (signal && signal.aborted) return;
       setError(
         requestError.response && requestError.response.status === 404
-          ? "해당 공지사항을 찾을 수 없거나 현재 공개되지 않은 게시글입니다."
-          : "공지사항 상세 정보를 불러오지 못했습니다. 다시 시도해 주세요."
+          ? "공개된 공지사항을 찾을 수 없습니다."
+          : "공지사항 내용을 불러오지 못했습니다. 잠시 후 다시 시도해 주세요."
       );
     } finally {
       if (!signal || !signal.aborted) setLoading(false);
@@ -1182,36 +1204,35 @@ function NoticeDetail() {
     return function () { controller.abort(); };
   }, [params.id]);
 
-  return h("section", { className: "page notice-detail-page" },
-    h("div", { className: "container" },
-      h("button", { type: "button", className: "notice-back", onClick: function () { navigate("/notices"); } }, "← 공지사항 목록"),
-      loading ? h("div", { className: "notice-state" }, "공지사항을 불러오는 중입니다.") :
-      error ? h("div", { className: "notice-state error-state", role: "alert", "aria-live": "assertive" },
-        h("h2", null, "게시글을 확인할 수 없습니다."),
+  return h("section", { className: "notice-detail-page" },
+    h("div", { className: "site-container notice-detail-shell" },
+      h(Link, { to: "/notices", className: "notice-detail-return" }, "목록으로 돌아가기"),
+      loading ? h("div", { className: "notice-state", role: "status" }, "공지사항을 불러오고 있습니다.") :
+      error ? h("div", { className: "notice-detail-empty", role: "alert" },
+        h("p", { className: "program-section-index" }, "공개된 안내 없음"),
+        h("h1", null, "이 공지사항을 찾을 수 없습니다."),
         h("p", null, error),
-        h("button", { className: "btn", onClick: function () { loadNotice(); } }, "다시 시도")
+        h(Link, { to: "/notices", className: "site-button" }, "공지사항 목록으로"),
+        h(Link, { to: "/courses", className: "site-text-link" }, "교육과정 확인")
       ) : h("article", { className: "notice-detail" },
-        isStaticPreview ? h("p", { className: "notice-preview-disclaimer", role: "note" }, "시연용 예시 게시물 · 실제 운영 공지가 아닙니다.") : null,
-        h("div", { className: "notice-detail-meta" },
-          h("span", { className: "notice-tag" }, notice.category || "공지"),
-          notice.pinned ? h("b", { className: "notice-pin" }, "중요 공지") : null,
-          notice.createdAt ? h("time", null, formatNoticeDate(notice.createdAt)) : null
-        ),
-        h("div", { className: "notice-detail-title-row" },
-          h("h1", null, notice.title),
-          h(AcademyScene, { variant: "notice-detail" })
+        h("header", { className: "notice-detail-header" },
+          h("div", { className: "notice-detail-meta" },
+            h("span", { className: "notice-tag " + getNoticeCategoryClass(notice.category) }, notice.category || "공지"),
+            notice.pinned ? h("span", { className: "notice-pin" }, "중요 공지") : null,
+            notice.createdAt ? h("time", null, formatNoticeDate(notice.createdAt)) : null
+          ),
+          h("h1", null, notice.title)
         ),
         h("div", { className: "notice-detail-divider" }),
-        h("div", { className: "notice-content" }, notice.content),
-        h("div", { className: "notice-detail-footer" },
-          h("span", null, "IT ACADEMY"),
-          h("button", { type: "button", className: "btn notice-back-action", onClick: function () { navigate("/notices"); } }, "목록으로 돌아가기")
+        h("div", { className: "notice-content" }, renderNoticeContent(notice.content)),
+        h("footer", { className: "notice-detail-footer" },
+          h(Link, { to: "/notices", className: "notice-detail-return" }, "목록으로 돌아가기"),
+          h(Link, { to: "/courses", className: "site-text-link" }, "교육과정 확인")
         )
       )
     )
   );
 }
-
 
 function RouteEffects() {
   const location = useLocation();
