@@ -2,7 +2,8 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 
-const css = readFileSync(new URL("./design-system.css", import.meta.url), "utf8");
+const css = readFileSync(new URL("./site.css", import.meta.url), "utf8");
+const legacy = readFileSync(new URL("./design-system.css", import.meta.url), "utf8");
 const html = readFileSync(new URL("../index.html", import.meta.url), "utf8");
 const entry = readFileSync(new URL("./main.js", import.meta.url), "utf8");
 
@@ -12,38 +13,52 @@ test("the Korean webfont is loaded from a pinned Pretendard stylesheet", functio
   assert.match(css, /"Pretendard Variable"/);
 });
 
-test("the application uses one shared palette and typography scale", function () {
-  for (const token of ["--site-paper", "--site-surface", "--site-ink", "--site-muted", "--site-line", "--site-accent", "--site-forest"]) {
-    assert.match(css, new RegExp(token.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + "\\s*:"));
+test("the prospectus uses one coherent palette and typography scale", function () {
+  for (const token of [
+    "--site-paper", "--site-paper-2", "--site-surface", "--site-ink",
+    "--site-muted", "--site-line", "--site-brand", "--site-signal",
+    "--site-program-ai", "--site-program-data", "--site-program-genai", "--site-program-web"
+  ]) {
+    assert.ok(css.includes(token + ":"), "missing token: " + token);
   }
   assert.match(css, /font-family:\s*var\(--site-font\)/);
-  assert.match(css, /letter-spacing:\s*-\.0(12|15)em/);
-  assert.doesNotMatch(css, /letter-spacing:\s*-\.0(7|8)\d*em/);
+  assert.match(css, /line-height:\s*1\.65/);
+  assert.match(css, /Pretendard Variable/);
+  assert.doesNotMatch(css, /linear-gradient\(|radial-gradient\(/);
+  assert.doesNotMatch(css, /transition:\s*all/);
 });
 
-test("public routes and the admin console share the system styles", function () {
+test("the unified prospectus stylesheet owns all public routes while admin styles remain available", function () {
   for (const selector of [
-    ".academy-site-header", ".academy-hero", ".academy-subpage-hero",
-    ".academy-project-grid", ".course-detail-hero", ".course-path-grid",
-    ".notice-page", ".notice-detail", ".formwrap", ".admin-shell",
-    ".admin-sidebar", ".admin-panel", ".academy-site-footer"
+    ".academy-site-header", ".academy-hero", ".academy-project-grid",
+    ".program-page", ".program-detail-page", ".notice-page", ".notice-detail",
+    ".consultation-page", ".academy-site-footer"
   ]) {
-    assert.ok(css.includes(selector), "missing design-system selector: " + selector);
+    assert.ok(css.includes(selector), "missing public selector: " + selector);
   }
-  assert.match(entry, /design-system\.css/);
-  assert.doesNotMatch(entry, /design-refresh\.css/);
+  for (const selector of [".admin-shell", ".admin-sidebar", ".admin-panel"]) {
+    assert.ok(legacy.includes(selector), "missing retained admin selector: " + selector);
+  }
+  assert.match(entry, /design-system\.css[\s\S]*site\.css/);
 });
 
 test("responsive, keyboard-focus and reduced-motion rules are present", function () {
-  assert.match(css, /@media\s*\(max-width:\s*650px\)/);
-  assert.match(css, /@media\s*\(max-width:\s*380px\)/);
+  assert.match(css, /@media\s*\(max-width:\s*760px\)/);
+  assert.match(css, /@media\s*\(max-width:\s*420px\)/);
   assert.match(css, /:focus-visible/);
   assert.match(css, /prefers-reduced-motion:\s*reduce/);
-  assert.match(css, /min-height:\s*44px/);
+  assert.match(css, /\.site-button[\s\S]{0,100}min-height:\s*48px/);
+});
+
+test("the public theme has no inherited 3D scene or gradient residue", function () {
+  assert.match(css, /\.academy-scene[\s\S]{0,120}display:\s*none/);
+  assert.doesNotMatch(css, /linear-gradient\(|radial-gradient\(/);
 });
 
 test("Korean document metadata remains UTF-8 and accessible", function () {
   assert.match(html, /<html lang="ko">/);
   assert.match(html, /<meta charset="UTF-8"/i);
   assert.match(html, /name="viewport"/);
+  assert.match(html, /name="description"/);
+  assert.match(html, /favicon\.svg/);
 });
