@@ -103,7 +103,7 @@ test.describe("IT ACADEMY approved landing-page composition", function () {
     await expect(page.getByRole("heading", { name: "게시된 공지사항이 없습니다." })).toBeVisible();
     await expect(page.getByText("2026년 11월 교육과정 운영 및 상담 안내")).toHaveCount(0);
     await expect(page.getByRole("link", { name: "교육과정 보기" })).toBeVisible();
-    await expect(page.getByRole("link", { name: "상담 안내" })).toBeVisible();
+    await expect(page.locator(".notice-empty-actions").getByRole("link", { name: "상담 안내" })).toBeVisible();
 
     await page.goto("notices/sample-notice-01");
     await expect(page.getByRole("heading", { name: "이 공지사항을 찾을 수 없습니다." })).toBeVisible();
