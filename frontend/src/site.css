@@ -717,7 +717,7 @@ p { color: var(--site-ink-soft); }
   inset: 0;
   background:
     linear-gradient(90deg,rgba(10,37,29,.98) 0%,rgba(10,37,29,.9) 53%,rgba(10,37,29,.35) 100%),
-    url("https://images.pexels.com/photos/5998302/pexels-photo-5998302.jpeg?auto=compress&dpr=1&h=750&w=1260") center 45% / cover no-repeat;
+    url("https://images.unsplash.com/photo-1542042179-de5cdc0cf242?auto=format&fit=crop&fm=jpg&w=1400&q=82") center 45% / cover no-repeat;
   content: "";
 }
 .academy-final-cta-inner { display: flex; align-items: center; justify-content: space-between; gap: 35px; }
