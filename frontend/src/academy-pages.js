@@ -1,15 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import api from "./api.js";
+import { courseCatalog as courseFallback } from "./course-catalog.js";
 
 const h = React.createElement;
 
-const courseFallback = [
-  { id: 1, title: "AI·머신러닝 실무 개발자 과정", category: "AI", duration: "운영 정보 확인", recruitmentStatus: "모집 정보 확인", summary: "Python 데이터 전처리, 기준 모델 수립, 분류·회귀 평가, 추천 결과의 API 연동까지 모델을 서비스 흐름으로 연결합니다." },
-  { id: 2, title: "빅데이터 분석 전문가 과정", category: "DATA", duration: "운영 정보 확인", recruitmentStatus: "모집 정보 확인", summary: "SQL 추출과 데이터 품질 점검부터 탐색적 분석, 지표 정의, 필터형 대시보드와 근거 중심 보고서까지 완성합니다." },
-  { id: 3, title: "생성형 AI 서비스 개발 과정", category: "GEN AI", duration: "운영 정보 확인", recruitmentStatus: "모집 정보 확인", summary: "LLM API, 프롬프트 평가, 문서 청킹·임베딩·검색, 출처가 연결된 RAG 응답과 품질·비용 측정을 다룹니다." },
-  { id: 4, title: "AI 기반 웹 서비스 개발 과정", category: "WEB", duration: "운영 정보 확인", recruitmentStatus: "모집 정보 확인", summary: "Java·Spring Boot·MySQL·React를 연결해 인증, 권한, CRUD, 예외 처리, 통합 테스트까지 웹 서비스 전 과정을 구현합니다."}
-];
 
 const projectFallback = [
   {
@@ -435,9 +430,9 @@ export function AcademyHome() {
             h("div", { className: "academy-code-line" }, h("span", null, "05"), h("b", null, "const"), " release = ", h("em", null, "document(quality);"))
           ),
           h("div", { className: "academy-console-checks" },
-            h("div", null, h("span", { className: "check-mark" }, "✓"), h("span", null, "요구사항 추적"), h("b", null, "TRACEABLE")),
-            h("div", null, h("span", { className: "check-mark" }, "✓"), h("span", null, "테스트 증거"), h("b", null, "VERIFIED")),
-            h("div", null, h("span", { className: "check-mark" }, "✓"), h("span", null, "사람의 코드 리뷰"), h("b", null, "REVIEWED"))
+            h("div", null, h("span", { className: "check-mark" }, "01"), h("span", null, "요구사항 추적"), h("b", null, "REQUIRED")),
+            h("div", null, h("span", { className: "check-mark" }, "02"), h("span", null, "테스트 증거"), h("b", null, "REQUIRED")),
+            h("div", null, h("span", { className: "check-mark" }, "03"), h("span", null, "사람의 코드 리뷰"), h("b", null, "REQUIRED"))
           )
         )
       )
@@ -748,7 +743,7 @@ export function AcademyProjects() {
                 h("small", null, (project.category || "PROJECT").toUpperCase())
               ),
               h("div", { className: "academy-project-card-body" },
-                h("div", { className: "academy-project-meta" }, h("span", null, project.category), h("span", null, project.duration || "프로젝트 실습")),
+                h("div", { className: "academy-project-meta" }, h("span", null, project.category), h("span", null, project.duration ? "설계 예시 · " + project.duration : "교육 설계 예시")),
                 h("h2", null, project.title),
                 h("p", null, project.description),
                 h("p", { className: "academy-project-card-focus" }, blueprint.focus),
@@ -788,8 +783,8 @@ export function AcademyProjects() {
         h("h2", { id: "academy-project-modal-title" }, selected.title),
         h("p", { id: "academy-project-modal-description", className: "academy-modal-lead" }, selected.description),
         h("div", { className: "academy-modal-facts" },
-          h("div", null, h("small", null, "PROJECT PERIOD"), h("b", null, selected.duration || "과정별 상이")),
-          h("div", null, h("small", null, "TEAM SIZE"), h("b", null, selected.teamSize || selected.team || "운영안에 따라 편성")),
+          h("div", null, h("small", null, "설계 예시 기간"), h("b", null, selected.duration || "과정별 설계 확인")),
+          h("div", null, h("small", null, "설계 예시 팀 구성"), h("b", null, selected.teamSize || selected.team || "과정별 운영안에 따라 편성")),
           h("div", null, h("small", null, "PROJECT TYPE"), h("b", null, "교육 설계 예시"))
         ),
         h("div", { className: "academy-modal-section-grid" },
