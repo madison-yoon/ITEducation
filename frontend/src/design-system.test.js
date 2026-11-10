@@ -25,6 +25,7 @@ test("the approved academy palette uses forest green, warm ivory and orange", fu
   assert.match(css, /--site-ink:\s*#182a22/);
   assert.match(css, /--site-brand:\s*#174738/);
   assert.match(css, /--site-accent:\s*#e8753a/);
+  assert.match(css, /--site-button-bg:\s*#a94421/);
   assert.match(css, /font-family:\s*var\(--site-font\)/);
   assert.match(css, /line-height:\s*1\.65/);
 });
@@ -37,6 +38,7 @@ test("the approved home composition is present in the same section order", funct
   ];
   for (const selector of selectors) assert.ok(css.includes(selector), "missing composition selector: " + selector);
   assert.match(entry, /design-system\.css[\s\S]*site\.css/);
+  assert.match(html, /images\/academy-hero\.webp/);
 });
 
 test("the public design system owns every public route while admin styles remain available", function () {
