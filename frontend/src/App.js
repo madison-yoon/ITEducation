@@ -739,7 +739,7 @@ function Consultation() {
   async function submitForm(event) {
     event.preventDefault();
     setError("");
-        if (!availableCourses.some(function (course) { return course.title === form.courseTitle; })) {
+    if (!availableCourses.some(function (course) { return course.title === form.courseTitle; })) {
       setError("서버에서 제공하는 교육과정을 선택해 주세요.");
       return;
     }
