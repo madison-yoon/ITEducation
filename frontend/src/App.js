@@ -1047,7 +1047,8 @@ function Notices() {
         h("div", null,
           h("span", { className: "eyebrow" }, "NOTICE"),
           h("h1", null, "IT ACADEMY 소식"),
-          h("p", { className: "lead" }, "교육과정 운영 소식부터 새로운 모집 안내까지, IT ACADEMY의 최신 소식을 확인하세요.")
+          h("p", { className: "lead" }, "교육과정 운영 소식부터 새로운 모집 안내까지, IT ACADEMY의 최신 소식을 확인하세요."),
+          isStaticPreview ? h("p", { className: "notice-preview-disclaimer", role: "note" }, "시연용 예시 게시물입니다. 실제 모집 일정과 운영 공지는 정식 서비스의 최신 게시글을 확인해 주세요.") : null
         ),
         h("div", { className: "notice-heading-visual" },
           h("div", { className: "notice-heading-mark" }, "NEWS", h("b", null, " & NOTICE")),
@@ -1195,6 +1196,7 @@ function NoticeDetail() {
         h("p", null, error),
         h("button", { className: "btn", onClick: function () { loadNotice(); } }, "다시 시도")
       ) : h("article", { className: "notice-detail" },
+        isStaticPreview ? h("p", { className: "notice-preview-disclaimer", role: "note" }, "시연용 예시 게시물 · 실제 운영 공지가 아닙니다.") : null,
         h("div", { className: "notice-detail-meta" },
           h("span", { className: "notice-tag" }, notice.category || "공지"),
           notice.pinned ? h("b", { className: "notice-pin" }, "중요 공지") : null,
