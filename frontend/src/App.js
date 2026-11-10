@@ -171,7 +171,7 @@ function Layout() {
       h("div", { className: "container academy-footer-main" },
         h("div", null,
           h(Link, { to: "/", className: "brand academy-brand footer-brand" },
-            h("span", { className: "academy-brand-symbol", "aria-hidden": "true" }, "IT"),
+            h("span", { className: "academy-brand-symbol", "aria-hidden": "true" }, h(AcademyBrandMark)),
             h("span", { className: "academy-brand-copy" },
               h("b", null, "ACADEMY"),
               h("small", null, "AI · DATA · ENGINEERING")
@@ -228,7 +228,7 @@ function CourseCard(props) {
         ),
         h("div", { className: "program-card-detail program-card-outcome" },
           h("b", null, "대표 결과물 예시"),
-          h("p", { className: "program-card-result" }, outcome)
+          h("p", { className: "program-card-detail program-card-outcome" }, outcome)
         )
       ),
       h("div", { className: "program-card-footer" },
@@ -1131,7 +1131,7 @@ function Notices() {
                 notice.pinned ? h("b", { className: "notice-pin" }, "중요") : null,
                 h("strong", null, notice.title)
               ),
-              h("time", { className: "notice-row-date", role: "cell" }, notice.createdAt ? formatNoticeDate(notice.createdAt) : "날짜 미기재")
+              notice.createdAt ? h("time", { className: "notice-row-date", role: "cell" }, formatNoticeDate(notice.createdAt)) : h("span", { className: "notice-row-date notice-row-date--empty", role: "cell" }, "—")
             );
           })
         ),
