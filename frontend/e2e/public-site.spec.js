@@ -24,6 +24,21 @@ test.describe("IT ACADEMY public website", function () {
     await expect(page.getByRole("heading", { name: "2026년 11월 교육과정 운영 및 상담 안내" })).toBeVisible();
   });
 
+  test("closes the project detail dialog with Escape and restores focus", async function ({ page }) {
+    await page.goto("projects");
+
+    const trigger = page.locator(".academy-project-open").first();
+    await expect(trigger).toBeVisible();
+    await trigger.focus();
+    await page.keyboard.press("Enter");
+
+    await expect(page.getByRole("dialog")).toBeVisible();
+    await page.keyboard.press("Escape");
+
+    await expect(page.getByRole("dialog")).toHaveCount(0);
+    await expect(trigger).toBeFocused();
+  });
+
   test("does not report a consultation as received without a backend", async function ({ page }) {
     await page.goto("consultation");
 
