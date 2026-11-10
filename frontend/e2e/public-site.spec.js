@@ -126,16 +126,16 @@ test.describe("IT ACADEMY approved landing-page composition", function () {
     }
   });
 
-  test("the public notice preview shows a real empty state, not invented announcements", async function ({ page }) {
+  test("the public notice preview displays sample posts and opens their detail pages", async function ({ page }) {
     await page.goto("notices");
     await expect(page.getByRole("heading", { level: 1 })).toHaveText("공지사항");
-    await expect(page.getByRole("heading", { name: "게시된 공지사항이 없습니다." })).toBeVisible();
-    await expect(page.getByText("2026년 11월 교육과정 운영 및 상담 안내")).toHaveCount(0);
-    await expect(page.getByRole("link", { name: "교육과정 보기" })).toBeVisible();
-    await expect(page.locator(".notice-empty-actions").getByRole("link", { name: "상담 안내" })).toBeVisible();
+    await expect(page.getByText("예시 데이터입니다")).toBeVisible();
+    await expect(page.locator(".notice-row")).toHaveCount(6);
+    await expect(page.locator(".notice-featured")).toContainText("IT ACADEMY 홈페이지 이용 안내");
 
     await page.goto("notices/sample-notice-01");
-    await expect(page.getByRole("heading", { name: "이 공지사항을 찾을 수 없습니다." })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "IT ACADEMY 홈페이지 이용 안내" })).toBeVisible();
+    await expect(page.getByText("교육과정", { exact: false }).first()).toBeVisible();
     await expect(page.getByRole("link", { name: "목록으로 돌아가기" }).first()).toBeVisible();
     await page.getByRole("link", { name: "목록으로 돌아가기" }).first().click();
     await expect(page).toHaveURL(/\/notices\/?$/);
@@ -214,15 +214,39 @@ test.describe("IT ACADEMY approved landing-page composition", function () {
     await expect(trigger).toBeFocused();
   });
 
-  test("static consultation preview explains that it cannot accept personal data", async function ({ page }) {
+  test("consultation form submits to the existing inquiry API and shows a receipt", async function ({ page }) {
+    await page.route("**/api/csrf", function (route) {
+      return route.fulfill({ status: 200, contentType: "application/json", body: JSON.stringify({ token: "test-csrf-token" }) });
+    });
+    await page.route("**/api/courses", function (route) {
+      return route.fulfill({ status: 200, contentType: "application/json", body: JSON.stringify([
+        { id: 1, title: "AI·머신러닝 실무 개발자 과정" }
+      ]) });
+    });
+    let submittedPayload;
+    await page.route("**/api/inquiries", async function (route) {
+      submittedPayload = route.request().postDataJSON();
+      return route.fulfill({ status: 201, contentType: "application/json", body: JSON.stringify({
+        receiptNo: "ITA-20261110-000001",
+        message: "상담 신청이 접수되었습니다."
+      }) });
+    });
+
     await page.goto("consultation");
-    await expect(page.getByRole("heading", { level: 1 })).toContainText("나에게 맞는 학습 방향");
-    await expect(page.getByRole("note").filter({ hasText: "이 미리보기에서는 상담 신청 내용을 저장하지 않습니다" })).toBeVisible();
-    await expect(page.locator('input[name="name"]')).toHaveCount(0);
-    await expect(page.locator('input[name="phone"]')).toHaveCount(0);
-    await expect(page.locator("form")).toHaveCount(0);
-    await page.getByRole("link", { name: "교육과정 살펴보기" }).click();
-    await expect(page).toHaveURL(/\/courses\/?$/);
+    await expect(page.getByRole("heading", { level: 1 })).toContainText("지금의 경험과 다음 목표");
+    await expect(page.locator(".consultation-form")).toBeVisible();
+    await page.locator('input[name="name"]').fill("홍길동");
+    await page.locator('input[name="phone"]').fill("010-1234-5678");
+    await page.locator('select[name="courseTitle"]').selectOption("AI·머신러닝 실무 개발자 과정");
+    await page.locator('textarea[name="message"]').fill("머신러닝 기초부터 프로젝트까지 학습하고 싶습니다.");
+    await page.locator('input[name="privacyConsent"]').check();
+    await page.getByRole("button", { name: "상담 신청하기" }).click();
+
+    await expect(page.getByRole("heading", { name: "상담 신청이 접수되었습니다." })).toBeVisible();
+    await expect(page.getByText("ITA-20261110-000001")).toBeVisible();
+    expect(submittedPayload.name).toBe("홍길동");
+    expect(submittedPayload.phone).toBe("010-1234-5678");
+    expect(submittedPayload.privacyConsent).toBe(true);
   });
 
   test("shared menu, focus states and all public pages fit the five target widths", async function ({ page }) {
