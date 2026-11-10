@@ -337,7 +337,7 @@ export function AcademyHome() {
     category: "웹 서비스",
     description: "영화 탐색과 리뷰 작성, 좋아요·싫어요 반응을 연결한 영화 커뮤니티 프로젝트입니다.",
     stack: "React · Spring Boot · JPA · MySQL",
-    image: projectArtwork[1],
+    image: "https://images.unsplash.com/photo-1753613648137-602c669cbe07?auto=format&fit=crop&w=1200&q=84",
     link: "https://github.com/madison-yoon/MOMO"
   };
   // Reuse gallery examples and label them as educational designs, not actual student work.
@@ -444,7 +444,7 @@ export function AcademyHome() {
         ),
         h("a", { className: "academy-project-feature", href: featuredProject.link, target: "_blank", rel: "noopener noreferrer" },
           h("div", { className: "academy-project-feature-image" },
-            h("img", { src: featuredProject.image, alt: "", loading: "lazy", decoding: "async" }),
+            h("img", { className: "academy-feature-image", src: featuredProject.image, alt: "", loading: "lazy", decoding: "async" }),
             h("span", null, "대표 프로젝트")
           ),
           h("div", { className: "academy-project-feature-copy" },
