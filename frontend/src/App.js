@@ -760,21 +760,56 @@ function Consultation() {
       )
     );
   }
+  if (isStaticPreview) {
+    return h("section", { className: "consultation-page" },
+      h("div", { className: "site-container consultation-preview" },
+        h("header", { className: "consultation-heading" },
+          h("p", { className: "program-section-index" }, "상담 안내"),
+          h("h1", null, "나에게 맞는 학습 방향부터 확인하세요."),
+          h("p", null, "관심 분야와 현재 경험, 만들고 싶은 결과를 기준으로 교육과정을 살펴볼 수 있습니다.")
+        ),
+        h("section", { className: "consultation-preview-unavailable", role: "note", "aria-labelledby": "consultation-preview-title" },
+          h("span", { className: "consultation-preview-mark", "aria-hidden": "true" }, "i"),
+          h("div", null,
+            h("h2", { id: "consultation-preview-title" }, "이 미리보기에서는 상담 신청 내용을 저장하지 않습니다."),
+            h("p", null, "현재 공개 사이트는 화면 확인을 위한 정적 미리보기입니다. 상담 데이터를 저장할 운영 서버와 개인정보 안내가 연결되지 않아 이름·연락처 등 개인정보 입력을 받지 않습니다.")
+          )
+        ),
+        h("div", { className: "consultation-preview-grid" },
+          h("section", null,
+            h("p", { className: "program-section-index" }, "상담 전에 생각해 볼 내용"),
+            h("h2", null, "어떤 내용을 확인하고 싶으신가요?"),
+            h("ol", null,
+              h("li", null, h("b", null, "관심 분야"), h("span", null, "AI·머신러닝, 데이터 분석, 생성형 AI, 웹 서비스 중 관심 있는 주제")),
+              h("li", null, h("b", null, "현재 경험"), h("span", null, "사용해 본 언어·도구와 직접 해본 실습")),
+              h("li", null, h("b", null, "학습 목표"), h("span", null, "배우고 싶은 기술과 만들어 보고 싶은 결과물")),
+              h("li", null, h("b", null, "참여 조건"), h("span", null, "실제 운영 공지에서 확인할 수업 일정과 참여 요건"))
+            )
+          ),
+          h("section", { className: "consultation-preview-next" },
+            h("p", { className: "program-section-index" }, "다음 단계"),
+            h("h2", null, "먼저 교육 내용을 비교해 보세요."),
+            h("p", null, "과정별 학습 목표와 실습 범위, 프로젝트 결과 예시를 확인한 뒤 실제 운영 정보가 공개되었는지 공지사항을 살펴볼 수 있습니다."),
+            h(Link, { to: "/courses", className: "site-button" }, "교육과정 살펴보기"),
+            h(Link, { to: "/projects", className: "site-text-link" }, "프로젝트 예시 보기"),
+            h(Link, { to: "/notices", className: "site-text-link" }, "공지사항 확인")
+          )
+        )
+      )
+    );
+  }
 
-  return h("section", { className: "page" },
-    h("div", { className: "container formwrap" },
+
+  return h("section", { className: "consultation-page" },
+    h("div", { className: "site-container consultation-layout" },
       h("div", { className: "consultation-side" },
         h("div", { className: "consultation-intro" },
-          h("div", null,
-            h("span", { className: "eyebrow" }, "CONSULTATION"),
-            h("h1", null, "교육과정 상담 신청"),
-            h("p", { className: "lead" }, "희망 과정과 현재 경험, 학습 목표를 남겨주시면 적합한 학습 방향을 안내합니다."),
-            h("div", { className: "consultation-visual-caption" }, "YOUR NEXT STEP STARTS HERE")
-          ),
-          h(AcademyScene, { variant: "consultation" })
+          h("p", { className: "program-section-index" }, "상담 신청"),
+          h("h1", null, "지금의 경험과 다음 목표를 알려주세요."),
+          h("p", null, "관심 있는 분야와 현재 학습 경험을 확인해 과정의 커리큘럼, 준비 내용과 운영 조건을 안내하는 상담을 위한 양식입니다.")
         ),
         h("section", { className: "consultation-preparation", "aria-labelledby": "consultation-preparation-title" },
-          h("span", { className: "eyebrow" }, "BEFORE YOU APPLY"),
+          h("p", { className: "program-section-index" }, "상담 전 준비"),
           h("h2", { id: "consultation-preparation-title" }, "상담 전에 정리하면 좋은 네 가지"),
           h("div", { className: "consultation-prep-list" },
             [
@@ -791,7 +826,7 @@ function Consultation() {
           )
         ),
         h("section", { className: "consultation-process", "aria-labelledby": "consultation-process-title" },
-          h("span", { className: "eyebrow" }, "HOW IT WORKS"),
+          h("p", { className: "program-section-index" }, "상담 진행"),
           h("h2", { id: "consultation-process-title" }, "상담 진행 흐름"),
           h("ol", null,
             h("li", null, h("b", null, "01"), h("span", null, "희망 과정과 문의 내용을 작성합니다.")),
@@ -800,7 +835,7 @@ function Consultation() {
           )
         )
       ),
-      h("form", { className: "form", onSubmit: submitForm },
+      h("form", { className: "consultation-form", onSubmit: submitForm },
         h("label", null, "이름 *",
           h("input", { required: true, name: "name", autoComplete: "name", maxLength: 40, value: form.name, onChange: function (e) { updateField("name", e.target.value); } })
         ),
@@ -851,7 +886,7 @@ function Consultation() {
           " 마케팅 수신 동의 (선택)"
         ),
         error ? h("p", { className: "error", role: "alert", "aria-live": "assertive" }, error) : null,
-        h("button", { className: "btn full", disabled: submitting || !form.privacyConsent || courseLoading || availableCourses.length === 0 },
+        h("button", { type: "submit", className: "site-button consultation-submit", disabled: submitting || !form.privacyConsent || courseLoading || availableCourses.length === 0 },
           submitting ? "신청 처리 중..." : "상담 신청하기"
         )
       )
