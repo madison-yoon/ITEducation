@@ -43,11 +43,11 @@ test("home and project pages do not present an invented 100-point academy assess
   assert.match(academy, /academy-project-feature/);
 });
 
-test("static preview never publishes fabricated notices as operational news", function () {
-  assert.deepEqual(previewNotices, []);
-  assert.match(app, /게시된 공지사항이 없습니다/);
+test("static preview renders the sample notice collection and labels it as example content", function () {
+  assert.equal(previewNotices.length, 7);
+  assert.ok(previewNotices.every(function (notice) { return notice.isDemo === true; }));
   assert.match(app, /previewNotices/);
-  assert.doesNotMatch(app, /2026년 11월 교육과정 운영 및 상담 안내/);
+  assert.match(app, /일부 게시물은 화면 구성과 기능 확인을 위한 예시 데이터입니다/);
 });
 
 test("notice categories have distinct semantic classes and notice content is parsed into blocks", function () {
@@ -63,10 +63,12 @@ test("notice categories have distinct semantic classes and notice content is par
   }
 });
 
-test("static preview does not show a personal-data form that cannot submit", function () {
-  assert.match(app, /consultation-preview-unavailable/);
-  assert.match(app, /이 미리보기에서는 상담 신청 내용을 저장하지 않습니다/);
-  assert.match(css, /\.consultation-preview-unavailable/);
+test("static preview shows the consultation form and routes submissions to the backend", function () {
+  const consultation = app.slice(app.indexOf("function Consultation()"), app.indexOf("function getTodayLocalDate()"));
+  assert.doesNotMatch(consultation, /consultation-preview-unavailable|이 미리보기에서는 상담 신청 내용을 저장하지 않습니다/);
+  assert.match(consultation, /className: "consultation-form"/);
+  assert.match(consultation, /api\.post\("\/inquiries"/);
+  assert.match(consultation, /name: "privacyConsent"/);
 });
 
 test("the consultation form remains available in the connected service mode", function () {
