@@ -62,6 +62,7 @@ test.describe("IT ACADEMY public website", function () {
     await page.goto("notices");
 
     await expect(page.getByRole("heading", { level: 1 }).first()).toBeVisible();
+    await expect(page.getByRole("note").filter({ hasText: "시연용 예시 게시물" })).toBeVisible();
     await page.getByRole("link", { name: /2026년 11월 교육과정 운영 및 상담 안내/ }).click();
 
     await expect(page).toHaveURL(/\/notices\/sample-notice-01$/);
