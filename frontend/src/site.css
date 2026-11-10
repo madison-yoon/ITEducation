@@ -471,6 +471,10 @@ p { color: var(--site-ink-soft); }
 .academy-status { padding: 4px 8px; border: 1px solid var(--site-line); color: var(--site-muted); font-size: 11px; }
 .academy-course-card h3 { margin: 0 0 9px; font-size: 22px; }
 .academy-course-card p { min-height: 55px; margin-bottom: 19px; color: var(--site-muted); font-size: 14px; line-height: 1.75; }
+.academy-course-type { padding: 4px 0; color: var(--site-muted); font-size: 12px; font-weight: 650; }
+.academy-course-output { display: grid; gap: 4px; margin-top: 17px; padding-top: 12px; border-top: 1px solid var(--site-line); }
+.academy-course-output b { color: var(--site-brand-strong); font-size: 12px; }
+.academy-course-output span { color: var(--site-ink-soft); font-size: 13px; line-height: 1.65; }
 .academy-course-foot { display: flex; justify-content: space-between; gap: 16px; padding-top: 13px; border-top: 1px solid var(--site-line); }
 .academy-course-foot span { color: var(--site-muted); font-size: 12px; }
 .academy-course-foot a { color: var(--site-brand); font-size: 13px; font-weight: 750; text-decoration: underline; text-underline-offset: 4px; }
