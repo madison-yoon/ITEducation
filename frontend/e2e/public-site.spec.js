@@ -12,6 +12,18 @@ test.describe("IT ACADEMY approved landing-page composition", function () {
     await expect(page.locator(".academy-course-card")).toHaveCount(4);
     await expect(page.locator(".academy-project-feature")).toContainText("MOMO 영화 리뷰 커뮤니티");
     await expect(page.locator(".academy-project-side-item")).toHaveCount(3);
+    const featuredProjectImage = page.locator(".academy-feature-image");
+    await expect(featuredProjectImage).toHaveCount(1);
+    await expect.poll(async function () {
+      return featuredProjectImage.evaluate(function (image) { return image.complete && image.naturalWidth > 0; });
+    }, { timeout: 15000 }).toBe(true);
+    const relatedImages = page.locator(".academy-project-side-image img");
+    await expect(relatedImages).toHaveCount(3);
+    await expect.poll(async function () {
+      return relatedImages.evaluateAll(function (images) {
+        return images.every(function (image) { return image.complete && image.naturalWidth > 0; });
+      });
+    }, { timeout: 15000 }).toBe(true);
     await expect(page.locator(".academy-home-notices")).toBeVisible();
     await expect(page.locator(".academy-home-consultation")).toBeVisible();
     await expect(page.locator(".academy-final-cta")).toBeVisible();
