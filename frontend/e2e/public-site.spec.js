@@ -66,6 +66,8 @@ test.describe("IT ACADEMY public website", function () {
 
     await expect(page).toHaveURL(/\/notices\/sample-notice-01$/);
     await expect(page.getByRole("heading", { name: "2026년 11월 교육과정 운영 및 상담 안내" })).toBeVisible();
+    await expect(page.getByRole("note").filter({ hasText: "시연용 예시 게시물" })).toBeVisible();
+    await expect(page.getByRole("note").filter({ hasText: "실제 운영 공지가 아닙니다" })).toHaveCount(0);
   });
 
   test("loads the new project artwork and exposes the full implementation blueprint", async function ({ page }) {
@@ -95,15 +97,20 @@ test.describe("IT ACADEMY public website", function () {
     await page.goto("./");
     const images = page.locator(".academy-feature-image");
     await expect(images).toHaveCount(3);
-    for (let index = 0; index < await images.count(); index += 1) {
-      const image = images.nth(index);
-      await image.scrollIntoViewIfNeeded();
-      await expect.poll(async function () {
-        return image.evaluate(function (element) {
-          return element.complete && element.naturalWidth > 0;
+    // Home feature cards are below the fold and intentionally lazy-loaded.
+    // Promote only the test targets to eager loading instead of waiting for smooth-scroll.
+    await images.evaluateAll(function (elements) {
+      elements.forEach(function (image) {
+        image.loading = "eager";
+      });
+    });
+    await expect.poll(async function () {
+      return images.evaluateAll(function (elements) {
+        return elements.every(function (image) {
+          return image.complete && image.naturalWidth > 0;
         });
-      }).toBe(true);
-    }
+      });
+    }, { timeout: 15000 }).toBe(true);
   });
 
   test("closes the project detail dialog with Escape and restores focus", async function ({ page }) {
