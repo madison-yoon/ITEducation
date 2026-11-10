@@ -89,6 +89,20 @@ const courseDetailData = {
   }
 };
 
+function AcademyBrandMark() {
+  return h("svg", {
+    className: "academy-brand-mark",
+    viewBox: "0 0 40 40",
+    "aria-hidden": "true",
+    focusable: "false"
+  },
+    h("path", { d: "M5 9.5c5.2-2 9.9-1.8 15 1.2v21c-5.1-2.9-9.8-3.2-15-1.2z", fill: "currentColor" }),
+    h("path", { d: "M35 9.5c-5.2-2-9.9-1.8-15 1.2v21c5.1-2.9 9.8-3.2 15-1.2z", fill: "none", stroke: "currentColor", strokeWidth: "2" }),
+    h("path", { d: "M20 11v21", stroke: "var(--site-signal)", strokeWidth: "2.5" }),
+    h("path", { d: "M9 16h6M9 21h6M25 16h6M25 21h6", stroke: "var(--site-brand-soft)", strokeWidth: "1.6" })
+  );
+}
+
 function Header() {
   const [menuOpen, setMenuOpen] = React.useState(false);
   const location = useLocation();
@@ -116,10 +130,10 @@ function Header() {
     h("header", { className: "header academy-site-header" },
       h("div", { className: "container nav" },
         h(Link, { to: "/", className: "brand academy-brand", "aria-label": "IT ACADEMY 홈" },
-          h("span", { className: "academy-brand-symbol", "aria-hidden": "true" }, "IT"),
+          h("span", { className: "academy-brand-symbol", "aria-hidden": "true" }, h(AcademyBrandMark)),
           h("span", { className: "academy-brand-copy" },
             h("b", null, "ACADEMY"),
-            h("small", null, "AI · DATA · ENGINEERING")
+            h("small", null, "AI / DATA / SOFTWARE")
           )
         ),
         h("button", {
@@ -164,19 +178,19 @@ function Layout() {
             )
           ),
           h("p", null, "기술을 이해하고, 문제를 해결하며, 결과를 검증하는 교육"),
-          h("small", null, "LEARN THE PRINCIPLE. BUILD THE PRODUCT. PROVE THE QUALITY.")
+          h("small", null, "이해하고 구현해 결과를 설명하는 학습")
         ),
         h("div", { className: "academy-footer-links" },
-          h("b", null, "EXPLORE"),
+          h("b", null, "사이트 안내"),
           h(Link, { to: "/about" }, "교육 철학"),
           h(Link, { to: "/courses" }, "교육과정"),
-          h(Link, { to: "/projects" }, "프로젝트 심사 기준"),
+          h(Link, { to: "/projects" }, "프로젝트 사례"),
           h(Link, { to: "/notices" }, "공지사항")
         ),
         h("div", { className: "academy-footer-links" },
-          h("b", null, "CONTACT"),
+          h("b", null, "상담 안내"),
           h(Link, { to: "/consultation" }, "교육 상담 신청"),
-          h("span", null, "운영 일정·정원·교육비는 최신 공지 기준")
+          h("span", null, "모집·운영 조건은 확정된 공지로 안내합니다.")
         )
       ),
       h("div", { className: "container academy-footer-bottom" },
