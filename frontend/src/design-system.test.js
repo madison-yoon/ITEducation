@@ -61,10 +61,11 @@ test("responsive, keyboard-focus and reduced-motion rules are present", function
   assert.match(css, /min-height:\s*48px/);
 });
 
-test("the favicon is the same flat orange A mark used by the academy brand", function () {
+test("the favicon uses the same ivory A mark and orange crossbar as the academy brand", function () {
   assert.match(favicon, /viewBox="0 0 64 64"/);
   assert.match(favicon, /#102b23/);
-  assert.match(favicon, /#f1a16e/);
+  assert.match(favicon, /#f2dfc7/);
+  assert.match(favicon, /#e8753a/);
   assert.doesNotMatch(favicon, /linearGradient|radialGradient/);
   assert.match(html, /favicon\.svg/);
 });
