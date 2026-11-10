@@ -46,7 +46,7 @@ test("project blueprints include architecture, steps, completion and risk contro
 });
 
 test("course modules explain practice, evidence and an observable completion check", function () {
-  assert.match(app, /COMPLETION CHECK/);
+  assert.match(app, /확인할 내용/);
   assert.match(app, /validation:/);
   assert.match(app, /동일한 평가 데이터에서 Precision@K/);
   assert.match(app, /서버 요청 단위로 권한이 검증/);
